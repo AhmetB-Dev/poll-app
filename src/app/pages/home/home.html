@@ -1,1 +1,67 @@
-<p>home works!</p>
+<main class="home">
+  <section class="home-hero">
+    <div class="home-hero__content">
+      <img
+        class="home-hero__decor"
+        src="./assets/img/logos/poll-app-logo-accent.png"
+        alt=""
+        aria-hidden="true"
+      />
+
+      <h1 class="home-hero__title">Collect Feedback, Unlock Ideas</h1>
+
+      <img
+        class="home-hero__image"
+        src="./assets/img/poll-phone-preview-01.png"
+        alt="PollApp dashboard preview"
+      />
+
+      <p class="home-hero__text">
+        Create and share surveys in minutes – from team events to workplace culture. Collect
+        opinions, engage your audience, and turn feedback into action.
+      </p>
+
+      <a class="home-hero__button" routerLink="/create"> New survey </a>
+    </div>
+  </section>
+
+  <section class="home-surveys">
+    <div class="home-surveys__header">
+      <div>
+        <h2 class="home-surveys__title">Your surveys</h2>
+
+        <p class="home-surveys__subtitle">Ending soon surveys</p>
+      </div>
+
+      <div class="home-surveys__actions">
+        <button class="home-surveys__filter home-surveys__filter--active" type="button">
+          Active survey
+        </button>
+
+        <button class="home-surveys__filter" type="button">Past survey</button>
+      </div>
+    </div>
+
+    <article class="home-surveys__card">
+      <p class="home-surveys__category">Health / Gaming</p>
+
+      <h3 class="home-surveys__card-title">Fit & wellness survey!</h3>
+
+      <span class="home-surveys__date"> Ends in 2 days </span>
+    </article>
+  </section>
+
+  <section class="home-features">
+    <div class="home-features__header">
+      <p class="home-features__eyebrow">Sort by categories</p>
+    </div>
+
+    <article class="home-features__card">
+      <span class="home-features__category"> Team activities </span>
+
+      <h2 class="home-features__title">Let’s Plan the Next Team Event Together</h2>
+
+      <span class="home-features__date"> Ends in 1 Day </span>
+    </article>
+  </section>
+</main>
