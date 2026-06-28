@@ -1,1 +1,139 @@
-<p>survey-detail works!</p>
+<main class="survey-detail">
+  <img class="survey-detail__image" src="" alt="" />
+
+  <div class="survey-detail__layout">
+    <section class="survey-detail__content">
+      <div class="survey-detail__status-row">
+        <span class="survey-detail__status">Published</span>
+
+        <button class="survey-detail__close-button" type="button" aria-label="Close survey">
+          X
+        </button>
+      </div>
+
+      <div class="survey-detail__meta">
+        <p class="survey-detail__meta-item">Ends on</p>
+        <p class="survey-detail__meta-item">Category</p>
+      </div>
+
+      <h1 class="survey-detail__title">Let’s Plan the Next Team Event Together?</h1>
+
+      <p class="survey-detail__description">
+        We want to create team activities that everyone will enjoy – share your preferences and
+        ideas in our survey to help us plan better experiences together.
+      </p>
+
+      <form class="survey-detail__form">
+        <fieldset class="survey-question">
+          <legend class="survey-question__title">Which team activity would you prefer?</legend>
+
+          <div class="survey-question__answers">
+            <label class="survey-question__answer">
+              <input
+                class="survey-question__input"
+                type="radio"
+                name="team-activity"
+                value="outdoor"
+              />
+
+              <span class="survey-question__box"> Outdoor team event </span>
+            </label>
+
+            <label class="survey-question__answer">
+              <input
+                class="survey-question__input"
+                type="radio"
+                name="team-activity"
+                value="workshop"
+              />
+
+              <span class="survey-question__box"> Creative workshop </span>
+            </label>
+
+            <label class="survey-question__answer">
+              <input
+                class="survey-question__input"
+                type="radio"
+                name="team-activity"
+                value="dinner"
+              />
+
+              <span class="survey-question__box"> Team dinner </span>
+            </label>
+
+            <label class="survey-question__answer">
+              <input
+                class="survey-question__input"
+                type="radio"
+                name="team-activity"
+                value="game-night"
+              />
+
+              <span class="survey-question__box"> Game night </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <button class="survey-detail__submit-button" type="submit">Complete</button>
+      </form>
+    </section>
+
+    <aside class="survey-results" aria-labelledby="survey-results-title">
+      <div class="survey-results__header">
+        <h2 class="survey-results__title" id="survey-results-title">
+          Survey results <span class="survey-results__live">LIVE</span>
+        </h2>
+
+        <p class="survey-results__subtitle">
+          Results will be shown here after participants complete the survey.
+        </p>
+      </div>
+
+      <div class="survey-results__list">
+        <article class="survey-results__item">
+          <div class="survey-results__row">
+            <h3 class="survey-results__question">Which team activity would you prefer?</h3>
+
+            <span class="survey-results__votes"> 128 votes </span>
+          </div>
+
+          <div class="survey-results__option">
+            <div class="survey-results__option-header">
+              <span class="survey-results__label">Outdoor team event</span>
+              <span class="survey-results__value">42%</span>
+            </div>
+
+            <progress class="survey-results__progress" value="42" max="100">42%</progress>
+          </div>
+
+          <div class="survey-results__option">
+            <div class="survey-results__option-header">
+              <span class="survey-results__label">Creative workshop</span>
+              <span class="survey-results__value">28%</span>
+            </div>
+
+            <progress class="survey-results__progress" value="28" max="100">28%</progress>
+          </div>
+
+          <div class="survey-results__option">
+            <div class="survey-results__option-header">
+              <span class="survey-results__label">Team dinner</span>
+              <span class="survey-results__value">19%</span>
+            </div>
+
+            <progress class="survey-results__progress" value="19" max="100">19%</progress>
+          </div>
+
+          <div class="survey-results__option">
+            <div class="survey-results__option-header">
+              <span class="survey-results__label">Game night</span>
+              <span class="survey-results__value">11%</span>
+            </div>
+
+            <progress class="survey-results__progress" value="11" max="100">11%</progress>
+          </div>
+        </article>
+      </div>
+    </aside>
+  </div>
+</main>
