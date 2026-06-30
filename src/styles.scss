@@ -1,7 +1,64 @@
+@font-face {
+  font-family: 'Nerko';
+  src: url('/assets/fonts/nerko_One/NerkoOne-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mulish';
+  src: url('/assets/fonts/mulish/static/Mulish-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nokora';
+  src: url('/assets/fonts/nokora/static/Nokora-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --dark-bg: rgba(53, 39, 58, 1);
+  --light-bg: #ffffff;
+  --color-title: #ee9236;
+  --font-nerko: 'Nerko';
+  --font-mulish: 'Mulish';
+  --font-nokora: 'Nokora';
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  margin: 0   ;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1 {
+  font-family: var(--font-nerko);
+}
+
+h2 {
+  font-family: var(--font-nerko);
+}
+
+p {
+  font-family: var(--font-mulish);
+}
+
+a {
+  font-family: var(--font-nokora);
+}
+
+button {
+  font-family: var(--font-nokora);
 }

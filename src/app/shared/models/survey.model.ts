@@ -6,6 +6,7 @@ export interface Survey {
   id: string;
   title: string;
   description?: string;
+  category: string;
   questions: Question[];
 
   status: SurveyStatus;

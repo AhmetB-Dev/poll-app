@@ -1,128 +1,191 @@
 <main class="create-survey">
   <section class="create-survey__panel">
-    <img class="create-survey__image" src="" alt="" />
+    <img class="create-survey__image" src="/assets/img/logos/poll-app-logo-dark.png" alt="" />
 
-    <div class="create-survey__topbar">
-      <span class="create-survey__status">Draft</span>
-
-      <button class="create-survey__close-button" type="button" aria-label="Close create survey">
-        X
-      </button>
-    </div>
-
-    <h1 class="create-survey__title">Create new survey</h1>
-
-    <form class="create-survey__form">
-      <div class="create-survey__field">
-        <label class="create-survey__label" for="survey-title"> Survey title </label>
-
-        <input
-          class="create-survey__input"
-          id="survey-title"
-          type="text"
-          name="survey-title"
-          placeholder="e.g. Team Event Survey"
-        />
-      </div>
-
-      <div class="create-survey__field">
-        <label class="create-survey__label" for="survey-description"> Description </label>
-
-        <textarea
-          class="create-survey__textarea"
-          id="survey-description"
-          name="survey-description"
-          rows="4"
-          placeholder="Describe what your survey is about"
-        ></textarea>
-      </div>
-
-      <div class="create-survey__row">
-        <div class="create-survey__field">
-          <label class="create-survey__label" for="survey-category"> Category </label>
-
-          <select class="create-survey__select" id="survey-category" name="survey-category">
-            <option value="">Select category</option>
-            <option value="team-activities">Team activities</option>
-            <option value="health">Health</option>
-            <option value="gaming">Gaming</option>
-            <option value="workplace">Workplace</option>
-          </select>
+    <div class="bg-color">
+      <div class="create-survey__topbar">
+        <div>
+          <span class="create-survey__status">Draft</span>
         </div>
 
-        <div class="create-survey__field">
-          <label class="create-survey__label" for="survey-end-date"> Ends on </label>
+        <div>
+          <a class="create-survey__close-button" routerLink="/" aria-label="Close create survey">
+            X
+          </a>
+        </div>
+      </div>
 
+      <h1 class="create-survey__title">Create new survey</h1>
+
+      <form class="create-survey__form" [formGroup]="surveyForm" (ngSubmit)="submitSurvey()">
+        <div class="create-survey__field">
+          <div>
+            <label class="create-survey__label" for="survey-title"> Survey title </label>
+            <img src="/assets/icons/icon-delete-light.svg" alt="" />
+          </div>
           <input
             class="create-survey__input"
-            id="survey-end-date"
-            type="datetime-local"
-            name="survey-end-date"
-          />
-        </div>
-      </div>
-
-      <fieldset class="create-question">
-        <legend class="create-question__legend">Question 1</legend>
-
-        <div class="create-question__field">
-          <label class="create-question__label" for="question-title"> Question </label>
-
-          <input
-            class="create-question__input"
-            id="question-title"
+            id="survey-title"
             type="text"
-            name="question-title"
-            placeholder="e.g. Which activity would you prefer?"
+            formControlName="title"
+            placeholder="e.g. Team Event Survey"
           />
+
+          @if (surveyForm.controls.title.invalid && surveyForm.controls.title.touched) {
+            <small class="create-survey__error"> Please enter at least 3 characters. </small>
+          }
         </div>
 
-        <div class="create-question__answers">
-          <div class="create-question__answer">
-            <label class="create-question__label" for="answer-1"> Answer 1 </label>
-
-            <input
-              class="create-question__input"
-              id="answer-1"
-              type="text"
-              name="answer-1"
-              placeholder="e.g. Outdoor team event"
-            />
+        <div class="create-survey__field">
+          <div>
+            <label class="create-survey__label" for="survey-description"> Description </label>
+            <img src="/assets/icons/icon-delete-light.svg" alt="" />
           </div>
 
-          <div class="create-question__answer">
-            <label class="create-question__label" for="answer-2"> Answer 2 </label>
+          <textarea
+            class="create-survey__textarea"
+            id="survey-description"
+            rows="4"
+            formControlName="description"
+            placeholder="Describe what your survey is about"
+          ></textarea>
+        </div>
 
-            <input
-              class="create-question__input"
-              id="answer-2"
-              type="text"
-              name="answer-2"
-              placeholder="e.g. Creative workshop"
-            />
+        <div class="create-survey__row">
+          <div class="create-survey__field">
+            <div>
+              <label class="create-survey__label" for="survey-category"> Category </label>
+              <img src="/assets/icons/icon-delete-light.svg" alt="" />
+            </div>
+            <select class="create-survey__select" id="survey-category" formControlName="category">
+              <option value="">Select category</option>
+              <option value="team-activities">Team activities</option>
+              <option value="health">Health</option>
+              <option value="gaming">Gaming</option>
+              <option value="workplace">Workplace</option>
+            </select>
+
+            @if (surveyForm.controls.category.invalid && surveyForm.controls.category.touched) {
+              <small class="create-survey__error"> Please select a category. </small>
+            }
           </div>
 
-          <div class="create-question__answer">
-            <label class="create-question__label" for="answer-3"> Answer 3 </label>
-
+          <div class="create-survey__field">
+            <div>
+              <label class="create-survey__label" for="survey-end-date"> Ends on </label>
+              <img src="/assets/icons/icon-delete-light.svg" alt="" />
+            </div>
             <input
-              class="create-question__input"
-              id="answer-3"
-              type="text"
-              name="answer-3"
-              placeholder="e.g. Team dinner"
+              class="create-survey__input"
+              id="survey-end-date"
+              type="datetime-local"
+              formControlName="endsAt"
             />
           </div>
         </div>
 
-        <button class="create-question__add-answer" type="button">Add answer</button>
-      </fieldset>
+        <div class="create-survey__questions" formArrayName="questions">
+          @for (question of questions.controls; track $index; let questionIndex = $index) {
+            <fieldset class="create-question" [formGroupName]="questionIndex">
+              <div class="create-question__topbar">
+                <div>
+                  <legend class="create-question__legend">Question {{ questionIndex + 1 }}</legend>
+                  <img src="/assets/icons/icon-delete-light.svg" alt="" />
+                </div>
+                <button
+                  class="create-question__remove-question"
+                  type="button"
+                  (click)="removeQuestion(questionIndex)"
+                  [disabled]="questions.length <= 1"
+                >
+                  Remove question
+                </button>
+              </div>
 
-      <div class="create-survey__actions">
-        <button class="create-survey__secondary-button" type="button">Add next question</button>
+              <div class="create-question__field">
+                <div>
+                  <label class="create-question__label" [for]="'question-title-' + questionIndex">
+                    Question
+                  </label>
+                  <img src="/assets/icons/icon-delete-light.svg" alt="" />
+                </div>
+                <input
+                  class="create-question__input"
+                  [id]="'question-title-' + questionIndex"
+                  type="text"
+                  formControlName="title"
+                  placeholder="e.g. Which activity would you prefer?"
+                />
 
-        <button class="create-survey__primary-button" type="submit">Publish</button>
-      </div>
-    </form>
+                @if (question.get('title')?.invalid && question.get('title')?.touched) {
+                  <small class="create-survey__error"> Please enter at least 5 characters. </small>
+                }
+              </div>
+
+              <div class="create-question__answers" formArrayName="answers">
+                @for (
+                  answer of getAnswers(questionIndex).controls;
+                  track $index;
+                  let answerIndex = $index
+                ) {
+                  <div class="create-question__answer">
+                    <div>
+                      <label
+                        class="create-question__label"
+                        [for]="'answer-' + questionIndex + '-' + answerIndex"
+                      >
+                        Answer {{ answerIndex + 1 }}
+                      </label>
+                      <img src="/assets/icons/icon-delete-light.svg" alt="" />
+                    </div>
+
+                    <div class="create-question__answer-row">
+                      <input
+                        class="create-question__input"
+                        [id]="'answer-' + questionIndex + '-' + answerIndex"
+                        type="text"
+                        [formControlName]="answerIndex"
+                        placeholder="e.g. Outdoor team event"
+                      />
+
+                      <button
+                        class="create-question__remove-answer"
+                        type="button"
+                        (click)="removeAnswer(questionIndex, answerIndex)"
+                        [disabled]="getAnswers(questionIndex).length <= 2"
+                      >
+                        X
+                      </button>
+                    </div>
+
+                    @if (answer.invalid && answer.touched) {
+                      <small class="create-survey__error">
+                        Please enter at least 2 characters.
+                      </small>
+                    }
+                  </div>
+                }
+              </div>
+
+              <button
+                class="create-question__add-answer"
+                type="button"
+                (click)="addAnswer(questionIndex)"
+              >
+                Add answer
+              </button>
+            </fieldset>
+          }
+        </div>
+
+        <div class="create-survey__actions">
+          <button class="create-survey__secondary-button" type="button" (click)="addQuestion()">
+            Add next question
+          </button>
+
+          <button class="create-survey__primary-button" type="submit">Publish</button>
+        </div>
+      </form>
+    </div>
   </section>
 </main>

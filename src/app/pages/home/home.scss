@@ -1,83 +1,139 @@
+@use '../../../styles/mixins' as *;
 .home {
+  color: white;
+  background-color: var(--dark-bg);
+}
+
+.home-hero {
+  &__header {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__decor {
+  }
+
+  &__title {
+    color: var(--color-title);
+    font-size: clamp(1rem, 16vw, 18rem);
+  }
+
+  &__image {
+  }
+
+  &__text {
+  }
+
+  &__actions-wrapper {
+    @include flex-center;
+  }
+
+  &__actions {
+    display: flex;
+    padding: 1em 1em;
+    gap: 0.8rem;
+    background-color: rgba(238, 146, 54, 1);
+  }
+
+  &__button {
+  }
 }
 
 /* HERO */
 
-.home-hero {
-}
-
-.home-hero__content {
-}
-
-.home-hero__decor {
-}
-
-.home-hero__title {
-}
-
-.home-hero__image {
-}
-
-.home-hero__text {
-}
-
-.home-hero__button {
-}
-
 /* SURVEYS */
 
 .home-surveys {
-}
+  width: 100%;
+  overflow: hidden;
+  &__header {
+    display: flex;
+    justify-content: center;
+  }
 
-.home-surveys__header {
-}
+  &__title {
+    color: var(--color-title);
+  }
 
-.home-surveys__title {
-}
+  &__subtitle {
+  }
 
-.home-surveys__subtitle {
-}
+  &__actions {
+  }
 
-.home-surveys__actions {
-}
+  &__filter {
+  }
 
-.home-surveys__filter {
-}
+  &__filter--active {
+  }
 
-.home-surveys__filter--active {
-}
+  &__scroll {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+  }
 
-.home-surveys__card {
-}
+  &__track {
+    display: flex;
+    gap: 1em;
+    width: max-content;
+  }
 
-.home-surveys__category {
-}
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 4.5em;
+    padding: 1rem;
+    max-width: 13rem;
+    border-top-right-radius: 80px;
+    background: var(--light-bg);
+    color: black;
+  }
 
-.home-surveys__card-title {
-}
+  &__status-filter {
+    display: flex;
+    gap: 1.5rem;
+    padding: 3em 0em;
+  }
 
-.home-surveys__date {
+  &__wrapper {
+  }
+
+  &__card {
+  }
+
+  &__category {
+  }
+
+  &__card-title {
+  }
+
+  &__date {
+  }
 }
 
 /* FEATURES */
 
 .home-features {
-}
+  &__header {
+  }
 
-.home-features__header {
-}
+  &__eyebrow {
+  }
 
-.home-features__eyebrow {
-}
+  &__card {
+  }
 
-.home-features__card {
-}
+  &__category {
+  }
 
-.home-features__category {
-}
+  &__title {
+  }
 
-.home-features__title {
-}
-
-.home-features__date {
+  &__date {
+  }
 }

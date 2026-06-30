@@ -1,67 +1,114 @@
 <main class="home">
   <section class="home-hero">
-    <div class="home-hero__content">
-      <img
-        class="home-hero__decor"
-        src="./assets/img/logos/poll-app-logo-accent.png"
-        alt=""
-        aria-hidden="true"
-      />
+    <div class="home-hero__header">
+      <img src="/assets/img/logos/poll-app-logo-accent.png" alt="" />
 
-      <h1 class="home-hero__title">Collect Feedback, Unlock Ideas</h1>
+      <h1 class="home-hero__title">
+        Collect <br />Feedback, <br />
+        Unlock Ideas
+      </h1>
+    </div>
 
-      <img
-        class="home-hero__image"
-        src="./assets/img/poll-phone-preview-01.png"
-        alt="PollApp dashboard preview"
-      />
+    <img src="/assets/img/poll-phone-preview-01.png" alt="" />
 
-      <p class="home-hero__text">
-        Create and share surveys in minutes – from team events to workplace culture. Collect
-        opinions, engage your audience, and turn feedback into action.
-      </p>
+    <p class="home-hero__description">
+      Create and share surveys in minutes – from team events to workplace culture. Collect opinions,
+      engage your audience, and turn feedback into action.
+    </p>
 
-      <a class="home-hero__button" routerLink="/survey"> New survey </a>
+    <div class="home-hero__actions-wrapper">
+      <div class="home-hero__actions">
+        <a class="home-hero__button" routerLink="/create"> New survey </a>
+
+        <img class="home-hero__action-icon" src="/assets/icons/icon-add-circle-dark.svg" alt="" />
+      </div>
     </div>
   </section>
 
   <section class="home-surveys">
     <div class="home-surveys__header">
-      <div>
-        <h2 class="home-surveys__title">Your surveys</h2>
+      <h2 class="home-surveys__title">Your surveys</h2>
+    </div>
 
-        <p class="home-surveys__subtitle">Ending soon surveys</p>
-      </div>
+    <p>Ending soon surveys</p>
 
-      <div class="home-surveys__actions">
-        <button class="home-surveys__filter home-surveys__filter--active" type="button">
-          Active survey
-        </button>
+    <div class="home-surveys__scroll">
+      <div class="home-surveys__track">
+        <article class="home-surveys__card">
+          <div>
+            <span class="home-surveys__category">Health</span>
 
-        <button class="home-surveys__filter" type="button">Past survey</button>
+            <h3 class="home-surveys__card-title">Fit & Wellasddddness Survey</h3>
+          </div>
+
+          <time class="home-surveys__end-date" datetime="2026-07-01"> Ends in 2 days </time>
+        </article>
+
+        <article class="home-surveys__card">
+          <div>
+            <span class="home-surveys__category">Health</span>
+
+            <h3 class="home-surveys__card-title">Fit & Wellness Survey</h3>
+          </div>
+
+          <time class="home-surveys__end-date" datetime="2026-07-01"> Ends in 2 days </time>
+        </article>
       </div>
     </div>
 
-    <article class="home-surveys__card">
-      <p class="home-surveys__category">Health / Gaming</p>
+    <div class="home-surveys__status-filter">
+      <button>active survey</button>
+      <button>past survey</button>
+    </div>
 
-      <h3 class="home-surveys__card-title">Fit & wellness survey!</h3>
+    <details class="survey-search__categories" aria-label="Survey categories">
+      @for (category of categories; track category) {
+        <span>Team activuties </span>
 
-      <span class="home-surveys__date"> Ends in 2 days </span>
-    </article>
+        <button
+          class="survey-search__category"
+          type="button"
+          [class.survey-search__category--active]="selectedCategory() === category"
+          (click)="selectCategory(category)"
+        >
+          {{ category }}
+        </button>
+      }
+
+      <span>ends in 1 day</span>
+    </details>
   </section>
 
-  <section class="home-features">
-    <div class="home-features__header">
-      <p class="home-features__eyebrow">Sort by categories</p>
-    </div>
+  <section class="survey-list" aria-label="Available surveys">
+    @for (survey of filteredSurveys(); track survey.id) {
+      <article class="survey-card">
+        <div class="survey-card__top">
+          <span class="survey-card__status">
+            {{ survey.status }}
+          </span>
 
-    <article class="home-features__card">
-      <span class="home-features__category"> Team activities </span>
+          <span class="survey-card__category">
+            {{ survey.category }}
+          </span>
+        </div>
 
-      <h2 class="home-features__title">Let’s Plan the Next Team Event Together</h2>
+        <h3 class="survey-card__title">
+          {{ survey.title }}
+        </h3>
 
-      <span class="home-features__date"> Ends in 1 Day </span>
-    </article>
+        <p class="survey-card__description">
+          {{ survey.description }}
+        </p>
+
+        <div class="survey-card__meta">
+          <span>Ends {{ survey.endsAt }}</span>
+          <span>{{ totalVotes(survey) }} votes</span>
+        </div>
+
+        <a class="survey-card__link" [routerLink]="['/survey', survey.id]"> Open survey </a>
+      </article>
+    } @empty {
+      <p class="survey-list__empty">No surveys found.</p>
+    }
   </section>
 </main>
