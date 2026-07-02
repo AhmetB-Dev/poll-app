@@ -1,31 +1,38 @@
 .create-survey {
   background-color: var(--light-bg);
   padding: 4em 0em 2em 0em;
+
+  &__logo {
+    padding: 0em 0em 3em 1em;
+    img {
+      width: 9em;
+    }
+  }
+
   &__header {
     padding: 0em 0em 0em 0.6em;
   }
 
-  &__toolbar {
+  &__status-row {
     display: flex;
     justify-content: space-between;
   }
 
-  &__status {
+  &__draft-badge {
     background-color: #ffcfa1;
     border-top-right-radius: 18px;
     padding: 0.6em 1em 0.6em 0.4em;
   }
 
-  &__close {
+  &__close-action {
     padding: 0.6em;
     display: flex;
     align-items: center;
-
     border-radius: 10px;
     background-color: rgba(255, 183, 112, 0.3019607843);
   }
 
-  &__workspace {
+  &__editor {
     background-color: #35273a;
     border-top-right-radius: 100px;
     padding: 4em 1em 4em 1em;
@@ -35,14 +42,15 @@
     font-size: 2.5ch;
   }
 
-  &__field-head {
+  &__field-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     // padding: 2em 2em 2em 1em;
   }
 
-  &__field {
+  &__field,
+  &__question-card {
     padding: 2em 2em 2em 1em;
   }
 
@@ -51,62 +59,47 @@
     border-radius: 5px 80px 5px 5px;
   }
 
-  &__shell {
-  }
-  &__logo {
-  }
-  &__status {
-  }
-  &__form {
-  }
-  &__publish-wrapper {
+  &__publish-area {
     display: flex;
     justify-content: center;
     padding: 4em 0em 0em 0em;
   }
-  &__actions {
+
+  &__publish-button {
     padding: 1em 1.5em 1em 1.5em;
     background-color: #ffb770;
     border-radius: 10px;
   }
-  &__add-question-wrapper {
+
+  &__add-question-area {
     display: flex;
     justify-content: center;
     padding: 6em 0em 3em 0em;
   }
-  &__add-question {
+
+  &__add-question-button {
     background-color: rgba(255, 183, 112, 0.3019607843);
     padding: 1em 1.5em 1em 1.5em;
     display: flex;
     align-items: center;
   }
-  &__field-body {
-    // padding: 2em 2em 2em 1em;
-  }
-  & {
-  }
-  & {
-  }
-  & {
-  }
-  & {
-  }
-}
-textarea {
-  resize: none;
-  width: 100%;
-}
-input {
-  width: 100%;
-  min-height: 3em;
 
-  border-radius: 5px 20px 5px 5px;
-}
-.survey-builder {
-  &__field-head {
+  &__question-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     // padding: 2em 2em 2em 1em;
   }
+}
+
+textarea {
+  resize: none;
+  width: 100%;
+  min-height: 8em;
+}
+
+input {
+  width: 100%;
+  min-height: 3em;
+  border-radius: 5px 20px 5px 5px;
 }
