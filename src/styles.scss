@@ -39,12 +39,9 @@ body {
   margin: 0;
 }
 
-a {
-  text-decoration: none;
-}
-
 h1 {
   font-family: var(--font-nerko);
+  color: var(--color-title);
 }
 
 h2 {
@@ -56,9 +53,20 @@ p {
 }
 
 a {
+  text-decoration: none;
   font-family: var(--font-nokora);
 }
 
 button {
   font-family: var(--font-nokora);
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-nokora);
+}
+
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
 }
