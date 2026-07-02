@@ -9,8 +9,6 @@ export interface Survey {
   category: string;
   questions: Question[];
 
-  status: SurveyStatus;
-
   createdAt: string;
   updatedAt?: string;
   endsAt: string | null;

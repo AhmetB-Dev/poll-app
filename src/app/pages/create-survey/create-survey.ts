@@ -93,7 +93,6 @@ export class CreateSurvey {
       title: formValue.title.trim(),
       description: formValue.description.trim() || undefined,
       category: formValue.category,
-      status: 'active',
       createdAt: now,
       updatedAt: now,
       endsAt: formValue.endsAt ? new Date(formValue.endsAt).toISOString() : null,
