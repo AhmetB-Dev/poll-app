@@ -1,17 +1,8 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, HostListener, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { SurveyService } from '../../features/surveys/services/survey.service';
 import { Survey } from '../../shared/models/survey.model';
-interface SurveyPreview {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  status: 'active' | 'draft' | 'closed';
-  endsAt: string;
-  votesCount: number;
-}
 
 @Component({
   selector: 'app-home',
@@ -25,7 +16,15 @@ export class Home {
   protected readonly searchTerm = signal('');
   protected readonly selectedCategory = signal('All');
 
-  protected readonly categories = ['All', 'team-activities', 'health', 'gaming', 'workplace'];
+  protected categoryMenuOpen = false;
+  protected categoryTriggerHovered = false;
+
+  protected readonly categoryOptions = [
+    { label: 'Team activities', value: 'team-activities' },
+    { label: 'Health & wellness', value: 'health' },
+    { label: 'Gaming & entertainment', value: 'gaming' },
+    { label: 'Workplace & workflow', value: 'workplace' },
+  ];
 
   protected readonly surveys = computed(() => this.surveyService.allSurveys());
 
@@ -45,13 +44,49 @@ export class Home {
     });
   });
 
-  protected updateSearch(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.searchTerm.set(input.value);
+  protected get categoryIconSrc(): string {
+    if (this.categoryMenuOpen && this.categoryTriggerHovered) {
+      return '/assets/icons/arrow_drop_up_white.svg';
+    }
+
+    if (this.categoryMenuOpen) {
+      return '/assets/icons/arrow_drop_up_orange.svg';
+    }
+
+    if (this.categoryTriggerHovered) {
+      return '/assets/icons/arrow_drop_down_orange.svg';
+    }
+
+    return '/assets/icons/arrow_drop_down.svg';
+  }
+
+  protected toggleCategoryMenu(): void {
+    this.categoryMenuOpen = !this.categoryMenuOpen;
+  }
+
+  protected closeCategoryMenu(): void {
+    this.categoryMenuOpen = false;
   }
 
   protected selectCategory(category: string): void {
     this.selectedCategory.set(category);
+    this.categoryMenuOpen = false;
+  }
+
+  protected get selectedCategoryLabel(): string {
+    return (
+      this.categoryOptions.find((category) => category.value === this.selectedCategory())?.label ??
+      'All categories'
+    );
+  }
+
+  protected get hasSelectedCategory(): boolean {
+    return this.selectedCategory() !== 'All';
+  }
+
+  protected updateSearch(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.searchTerm.set(input.value);
   }
 
   protected totalVotes(survey: Survey): number {
@@ -63,5 +98,18 @@ export class Home {
 
       return surveyTotal + questionVotes;
     }, 0);
+  }
+
+  @HostListener('document:click', ['$event'])
+  protected closeCategoryMenuOnOutsideClick(event: MouseEvent): void {
+    const target = event.target;
+
+    if (!(target instanceof HTMLElement)) {
+      return;
+    }
+
+    if (!target.closest('.home-surveys__category-select')) {
+      this.categoryMenuOpen = false;
+    }
   }
 }
