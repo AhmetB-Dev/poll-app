@@ -27,8 +27,24 @@
           <div class="create-survey__field-header">
             <label class="create-survey__label" for="survey-title">Survey name</label>
 
-            <button type="button" aria-label="Clear survey name">
-              <img src="/assets/icons/icon-delete-white.svg" alt="" />
+            <button
+              class="create-survey__clear-field-button"
+              type="button"
+              aria-label="Clear survey name"
+            >
+              <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
+                <img
+                  class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
+                  src="/assets/icons/icon-delete-white.svg"
+                  alt=""
+                />
+
+                <img
+                  class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
+                  src="/assets/icons/icon-delete-dark.svg"
+                  alt=""
+                />
+              </span>
             </button>
           </div>
 
@@ -38,20 +54,60 @@
               id="survey-title"
               type="text"
               formControlName="title"
-              placeholder="e.g. Team Event Survey"
             />
 
             @if (surveyForm.controls.title.invalid && surveyForm.controls.title.touched) {
               <small class="create-survey__error">Please enter at least 3 characters.</small>
             }
 
-            <select class="create-survey__control" id="survey-category" formControlName="category">
-              <option value="">Select category</option>
-              <option value="team-activities">Team activities</option>
-              <option value="health">Health</option>
-              <option value="gaming">Gaming</option>
-              <option value="workplace">Workplace</option>
-            </select>
+            <div class="create-survey__category-select">
+              <button
+                class="create-survey__category-trigger"
+                type="button"
+                aria-haspopup="listbox"
+                aria-controls="survey-category-list"
+                [attr.aria-expanded]="categoryMenuOpen"
+                (click)="toggleCategoryMenu()"
+                (mouseenter)="categoryTriggerHovered = true"
+                (mouseleave)="categoryTriggerHovered = false"
+                (keydown.escape)="closeCategoryMenu()"
+              >
+                <span>Choose category</span>
+
+                <img class="create-survey__category-icon" [src]="categoryIconSrc" alt="" />
+              </button>
+
+              @if (categoryMenuOpen) {
+                <div
+                  class="create-survey__category-menu"
+                  id="survey-category-list"
+                  role="listbox"
+                  aria-label="Survey category"
+                >
+                  @for (category of categoryOptions; track category.value) {
+                    <button
+                      class="create-survey__category-option"
+                      type="button"
+                      role="option"
+                      [attr.aria-selected]="surveyForm.controls.category.value === category.value"
+                      (click)="selectCategory(category.value)"
+                    >
+                      {{ category.label }}
+                    </button>
+                  }
+                </div>
+              }
+
+              @if (hasSelectedCategory) {
+                <p class="create-survey__selected-category">
+                  <strong>{{ selectedCategoryLabel }}</strong>
+                </p>
+              }
+
+              @if (surveyForm.controls.category.invalid && surveyForm.controls.category.touched) {
+                <small class="create-survey__error">Please choose a category.</small>
+              }
+            </div>
           </div>
         </div>
 
@@ -59,8 +115,24 @@
           <div class="create-survey__field-header">
             <label class="create-survey__label" for="survey-end-date">Set end date optional</label>
 
-            <button type="button" aria-label="Clear end date">
-              <img src="/assets/icons/icon-delete-white.svg" alt="" />
+            <button
+              class="create-survey__clear-field-button"
+              type="button"
+              aria-label="Clear end date"
+            >
+              <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
+                <img
+                  class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
+                  src="/assets/icons/icon-delete-white.svg"
+                  alt=""
+                />
+
+                <img
+                  class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
+                  src="/assets/icons/icon-delete-dark.svg"
+                  alt=""
+                />
+              </span>
             </button>
           </div>
 
@@ -78,8 +150,24 @@
               Describing text optional
             </label>
 
-            <button type="button" aria-label="Clear description">
-              <img src="/assets/icons/icon-delete-white.svg" alt="" />
+            <button
+              class="create-survey__clear-field-button"
+              type="button"
+              aria-label="Clear description"
+            >
+              <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
+                <img
+                  class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
+                  src="/assets/icons/icon-delete-white.svg"
+                  alt=""
+                />
+
+                <img
+                  class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
+                  src="/assets/icons/icon-delete-dark.svg"
+                  alt=""
+                />
+              </span>
             </button>
           </div>
 
@@ -88,7 +176,6 @@
             id="survey-description"
             rows="4"
             formControlName="description"
-            placeholder="Describe what your survey is about"
           ></textarea>
         </div>
 
@@ -101,13 +188,25 @@
                 </legend>
 
                 <button
-                  class="create-survey__remove-question-button"
+                  class="create-survey__clear-field-button"
                   type="button"
                   (click)="removeQuestion(questionIndex)"
                   [disabled]="questions.length <= 1"
                   aria-label="Remove question"
                 >
-                  <img src="/assets/icons/icon-delete-white.svg" alt="" />
+                  <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
+                    <img
+                      class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
+                      src="/assets/icons/icon-delete-white.svg"
+                      alt=""
+                    />
+
+                    <img
+                      class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
+                      src="/assets/icons/icon-delete-dark.svg"
+                      alt=""
+                    />
+                  </span>
                 </button>
               </div>
 
@@ -117,7 +216,6 @@
                   [id]="'question-title-' + questionIndex"
                   type="text"
                   formControlName="title"
-                  placeholder="e.g. Which activity would you prefer?"
                 />
 
                 @if (question.get('title')?.invalid && question.get('title')?.touched) {
@@ -146,13 +244,25 @@
                       </label>
 
                       <button
-                        class="create-survey__remove-answer-button"
+                        class="create-survey__clear-field-button"
                         type="button"
                         (click)="removeAnswer(questionIndex, answerIndex)"
                         [disabled]="getAnswers(questionIndex).length <= 2"
                         aria-label="Remove answer"
                       >
-                        <img src="/assets/icons/icon-delete-white.svg" alt="" />
+                        <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
+                          <img
+                            class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
+                            src="/assets/icons/icon-delete-white.svg"
+                            alt=""
+                          />
+
+                          <img
+                            class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
+                            src="/assets/icons/icon-delete-dark.svg"
+                            alt=""
+                          />
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -163,7 +273,6 @@
                       [id]="'answer-' + questionIndex + '-' + answerIndex"
                       type="text"
                       [formControlName]="answerIndex"
-                      placeholder="e.g. Outdoor team event"
                     />
                   </div>
                 }
