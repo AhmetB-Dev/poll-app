@@ -75,14 +75,13 @@ export class SurveyDetail {
 
   protected get resultsIconSrc(): string {
     if (this.resultsPopupOpen) {
-      return '/assets/icons/arrow_drop_up_dark.svg';
+      return '/assets/icons/arrow_drop_down_dark.svg';
     }
 
     if (this.resultsPopupOpen) {
-      return '/assets/icons/arrow_drop_up_dark.svg';
+      return '/assets/icons/arrow_drop_down_dark.svg';
     }
-
-    return '/assets/icons/arrow_drop_down_dark.svg';
+    return '/assets/icons/arrow_drop_up_dark.svg';
   }
 
   protected toggleResultsPopup(): void {

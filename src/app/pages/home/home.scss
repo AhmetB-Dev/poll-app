@@ -300,11 +300,16 @@
     font-size: 0.84rem;
   }
 
+  &__deadline {
+    display: flex;
+    justify-content: flex-end;
+  }
+
   &__link {
     width: fit-content;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
-    background-color: var(--color-title);
+    background-color: #ffcfa1;
     color: var(--dark-bg);
     font-size: 0.75rem;
     font-weight: 800;

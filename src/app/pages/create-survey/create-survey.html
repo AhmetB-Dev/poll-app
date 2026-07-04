@@ -100,7 +100,7 @@
 
               @if (hasSelectedCategory) {
                 <p class="create-survey__selected-category">
-                  <strong>{{ selectedCategoryLabel }}</strong>
+                  {{ selectedCategoryLabel }}
                 </p>
               }
 
@@ -241,48 +241,48 @@
                     track $index;
                     let answerIndex = $index
                   ) {
-                  <div class="create-survey__answer-item">
-                    <div class="create-survey__field-header">
-                      <label
-                        class="create-survey__label"
-                        [for]="'answer-' + questionIndex + '-' + answerIndex"
-                      >
-                        {{ answerIndex + 1 }}. Answer
-                      </label>
+                    <div class="create-survey__answer-item">
+                      <div class="create-survey__field-header">
+                        <label
+                          class="create-survey__label"
+                          [for]="'answer-' + questionIndex + '-' + answerIndex"
+                        >
+                          {{ answerIndex + 1 }}. Answer
+                        </label>
 
-                      <button
-                        class="create-survey__clear-field-button"
-                        type="button"
-                        (click)="removeAnswer(questionIndex, answerIndex)"
-                        [disabled]="getAnswers(questionIndex).length <= 2"
-                        aria-label="Remove answer"
-                      >
-                        <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
-                          <img
-                            class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
-                            src="/assets/icons/icon-delete-white.svg"
-                            alt=""
-                          />
+                        <button
+                          class="create-survey__clear-field-button"
+                          type="button"
+                          (click)="removeAnswer(questionIndex, answerIndex)"
+                          [disabled]="getAnswers(questionIndex).length <= 2"
+                          aria-label="Remove answer"
+                        >
+                          <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
+                            <img
+                              class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
+                              src="/assets/icons/icon-delete-white.svg"
+                              alt=""
+                            />
 
-                          <img
-                            class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
-                            src="/assets/icons/icon-delete-dark.svg"
-                            alt=""
-                          />
-                        </span>
-                      </button>
+                            <img
+                              class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
+                              src="/assets/icons/icon-delete-dark.svg"
+                              alt=""
+                            />
+                          </span>
+                        </button>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="create-survey__answer-field">
-                    <input
-                      class="create-survey__control"
-                      [id]="'answer-' + questionIndex + '-' + answerIndex"
-                      type="text"
-                      [formControlName]="answerIndex"
-                    />
-                  </div>
-                }
+                    <div class="create-survey__answer-field">
+                      <input
+                        class="create-survey__control"
+                        [id]="'answer-' + questionIndex + '-' + answerIndex"
+                        type="text"
+                        [formControlName]="answerIndex"
+                      />
+                    </div>
+                  }
                 </ng-container>
               </div>
 

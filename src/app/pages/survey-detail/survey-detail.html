@@ -85,18 +85,20 @@
       </div>
       <aside class="survey-results">
         <div class="survey-results__popup">
-          <button
-            class="survey-results__trigger"
-            type="button"
-            aria-controls="survey-results-panel"
-            [attr.aria-expanded]="resultsPopupOpen"
-            (click)="toggleResultsPopup()"
-            (keydown.escape)="closeResultsPopup()"
-          >
-            <span>Close results</span>
+          <div class="survey-results__trigger-container">
+            <button
+              class="survey-results__trigger"
+              type="button"
+              aria-controls="survey-results-panel"
+              [attr.aria-expanded]="resultsPopupOpen"
+              (click)="toggleResultsPopup()"
+              (keydown.escape)="closeResultsPopup()"
+            >
+              <span>Close results</span>
 
-            <img class="survey-results__icon" [src]="resultsIconSrc" alt="" />
-          </button>
+              <img class="survey-results__icon" [src]="resultsIconSrc" alt="" />
+            </button>
+          </div>
           @if (resultsPopupOpen) {
             <div
               class="survey-results__menu"
@@ -104,12 +106,13 @@
               role="region"
               aria-label="Survey results"
             >
-              <h2>Survey Result Live</h2>
-              @for (question of survey.questions; track question.id) {
+              <h2>Survey Result <span> Live </span></h2>
+              @for (question of survey.questions; track question.id; let questionIndex = $index) {
                 <article class="survey-results__item">
                   <div class="survey-results__header">
-                    <h3>
-                      {{ question.title }}
+                    <h3 class="survey-results__question-title">
+                      <span class="survey-results__question-number">{{ questionIndex + 1 }}.</span>
+                      <span>{{ question.title }}</span>
                     </h3>
                   </div>
 
@@ -125,7 +128,7 @@
                         max="100"
                       ></progress>
 
-                      <strong>{{ percentage(question, answer.votesCount) }}%</strong>
+                      <span>{{ percentage(question, answer.votesCount) }}%</span>
                     </div>
                   }
                 </article>

@@ -69,6 +69,10 @@ input[type='checkbox'] {
     width: 100%;
   }
 
+  &__trigger-container {
+    padding: 3em 1em 0em 1em;
+  }
+
   &__trigger {
     color: #000000;
     display: flex;
@@ -78,17 +82,18 @@ input[type='checkbox'] {
     cursor: pointer;
   }
 
+  &__question-title {
+    padding: 0em 0.5em;
+    gap: 0.2em;
+    display: flex;
+  }
+
   &__icon {
     width: 1em;
     height: 1em;
-    flex-shrink: 0;
   }
 
   &__menu {
-    width: 100%;
-    background-color: #ffffff;
-    color: #35273a;
-    border-radius: 5px 20px 5px 5px;
   }
 
   &__item {
