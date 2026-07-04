@@ -64,6 +64,36 @@ input[type='checkbox'] {
 }
 
 .survey-results {
+  &__popup {
+    position: relative;
+    width: 100%;
+  }
+
+  &__trigger {
+    color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.35em;
+    cursor: pointer;
+  }
+
+  &__icon {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+  }
+
+  &__menu {
+    width: 100%;
+    background-color: #ffffff;
+    color: #35273a;
+    border-radius: 5px 20px 5px 5px;
+  }
+
+  &__item {
+  }
+
   &__progress {
     width: 100%;
     height: 0.8em;

@@ -17,6 +17,8 @@ export class SurveyDetail {
 
   protected readonly selectedAnswers = signal<Record<string, string[]>>({});
 
+  protected resultsPopupOpen = false;
+
   protected readonly survey = computed<Survey | undefined>(() => {
     const surveyId = this.route.snapshot.paramMap.get('id');
 
@@ -71,8 +73,27 @@ export class SurveyDetail {
     return Math.round((votesCount / total) * 100);
   }
 
+  protected get resultsIconSrc(): string {
+    if (this.resultsPopupOpen) {
+      return '/assets/icons/arrow_drop_up_dark.svg';
+    }
+
+    if (this.resultsPopupOpen) {
+      return '/assets/icons/arrow_drop_up_dark.svg';
+    }
+
+    return '/assets/icons/arrow_drop_down_dark.svg';
+  }
+
+  protected toggleResultsPopup(): void {
+    this.resultsPopupOpen = !this.resultsPopupOpen;
+  }
+
+  protected closeResultsPopup(): void {
+    this.resultsPopupOpen = false;
+  }
   protected answerOptionLabel(answerIndex: number): string {
-    let label = '.';
+    let label = '';
     let currentIndex = answerIndex;
 
     do {

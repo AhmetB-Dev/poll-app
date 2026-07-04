@@ -84,33 +84,55 @@
         </form>
       </div>
       <aside class="survey-results">
-        <h2 class="survey-results__title">Survey results</h2>
+        <div class="survey-results__popup">
+          <button
+            class="survey-results__trigger"
+            type="button"
+            aria-controls="survey-results-panel"
+            [attr.aria-expanded]="resultsPopupOpen"
+            (click)="toggleResultsPopup()"
+            (keydown.escape)="closeResultsPopup()"
+          >
+            <span>Close results</span>
 
-        @for (question of survey.questions; track question.id) {
-          <article class="survey-results__item">
-            <div class="survey-results__header">
-              <h3>
-                {{ question.title }}
-              </h3>
+            <img class="survey-results__icon" [src]="resultsIconSrc" alt="" />
+          </button>
+          @if (resultsPopupOpen) {
+            <div
+              class="survey-results__menu"
+              id="survey-results-panel"
+              role="region"
+              aria-label="Survey results"
+            >
+              <h2>Survey Result Live</h2>
+              @for (question of survey.questions; track question.id) {
+                <article class="survey-results__item">
+                  <div class="survey-results__header">
+                    <h3>
+                      {{ question.title }}
+                    </h3>
+                  </div>
+
+                  @for (answer of question.answers; track answer.id; let answerIndex = $index) {
+                    <div class="survey-results__option">
+                      <span class="survey-results__answer-label" aria-hidden="true">
+                        {{ answerOptionLabel(answerIndex) }}
+                      </span>
+
+                      <progress
+                        class="survey-results__progress"
+                        [value]="percentage(question, answer.votesCount)"
+                        max="100"
+                      ></progress>
+
+                      <strong>{{ percentage(question, answer.votesCount) }}%</strong>
+                    </div>
+                  }
+                </article>
+              }
             </div>
-
-            @for (answer of question.answers; track answer.id; let answerIndex = $index) {
-              <div class="survey-results__option">
-                <span class="survey-results__answer-label" aria-hidden="true">
-                  {{ answerOptionLabel(answerIndex) }}
-                </span>
-
-                <progress
-                  class="survey-results__progress"
-                  [value]="percentage(question, answer.votesCount)"
-                  max="100"
-                ></progress>
-
-                <strong>{{ percentage(question, answer.votesCount) }}%</strong>
-              </div>
-            }
-          </article>
-        }
+          }
+        </div>
       </aside>
     </section>
   } @else {
