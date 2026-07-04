@@ -60,6 +60,7 @@
                       [name]="'question-' + question.id"
                       [value]="answer.id"
                       [checked]="isSelected(question.id, answer.id)"
+                      (change)="toggleAnswer(question, answer.id, $event)"
                     />
 
                     <span class="survey-question__box">
@@ -93,13 +94,18 @@
               </h3>
             </div>
 
-            @for (answer of question.answers; track answer.id) {
+            @for (answer of question.answers; track answer.id; let answerIndex = $index) {
               <div class="survey-results__option">
+                <span class="survey-results__answer-label" aria-hidden="true">
+                  {{ answerOptionLabel(answerIndex) }}
+                </span>
+
                 <progress
                   class="survey-results__progress"
                   [value]="percentage(question, answer.votesCount)"
                   max="100"
                 ></progress>
+
                 <strong>{{ percentage(question, answer.votesCount) }}%</strong>
               </div>
             }
