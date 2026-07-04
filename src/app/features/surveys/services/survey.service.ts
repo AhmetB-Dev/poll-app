@@ -18,7 +18,7 @@ export class SurveyService {
     return this.surveys().find((survey) => survey.id === id);
   }
 
-  vote(surveyId: string, selectedAnswers: Record<string, string>): void {
+  vote(surveyId: string, selectedAnswers: Record<string, string[]>): void {
     this.surveys.update((currentSurveys) =>
       currentSurveys.map((survey) => {
         if (survey.id !== surveyId) {
@@ -28,12 +28,12 @@ export class SurveyService {
         return {
           ...survey,
           questions: survey.questions.map((question) => {
-            const selectedAnswerId = selectedAnswers[question.id];
+            const selectedAnswerIds = selectedAnswers[question.id] ?? [];
 
             return {
               ...question,
               answers: question.answers.map((answer) => {
-                if (answer.id !== selectedAnswerId) {
+                if (!selectedAnswerIds.includes(answer.id)) {
                   return answer;
                 }
 
@@ -66,6 +66,7 @@ export class SurveyService {
             id: 'fit-question-1',
             surveyId: 'fit-wellness-survey',
             title: 'Which wellness activity would you prefer?',
+            allowMultipleChoice: false,
             answers: [
               {
                 id: 'fit-answer-1',
@@ -96,6 +97,7 @@ export class SurveyService {
             id: 'team-question-1',
             surveyId: 'team-event-survey',
             title: 'Which team event should we choose?',
+            allowMultipleChoice: false,
             answers: [
               {
                 id: 'team-answer-1',
@@ -126,6 +128,7 @@ export class SurveyService {
             id: 'gaming-question-1',
             surveyId: 'favorite-game-genre',
             title: 'Which game genre is your favorite?',
+            allowMultipleChoice: false,
             answers: [
               {
                 id: 'gaming-answer-1',

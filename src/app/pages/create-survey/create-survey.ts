@@ -75,6 +75,7 @@ export class CreateSurvey {
   protected createQuestion() {
     return this.fb.group({
       title: ['', [Validators.required, Validators.minLength(5)]],
+      allowMultipleChoice: false,
       answers: this.fb.array([
         this.fb.control('', [Validators.required, Validators.minLength(2)]),
         this.fb.control('', [Validators.required, Validators.minLength(2)]),
@@ -173,6 +174,7 @@ export class CreateSurvey {
           id: questionId,
           surveyId,
           title: question.title.trim(),
+          allowMultipleChoice: question.allowMultipleChoice,
           answers: question.answers.map((answer) => ({
             id: crypto.randomUUID(),
             questionId,

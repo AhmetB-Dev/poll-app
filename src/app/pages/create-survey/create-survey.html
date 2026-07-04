@@ -223,17 +223,24 @@
                 }
               </div>
 
-              <div class="create-survey__answer-list" formArrayName="answers">
+              <div class="create-survey__answer-list">
                 <div class="create-survey__answer-list-header">
                   <span>Answers</span>
+
+                  <label class="create-survey__multiple-choice-option">
+                    <input type="checkbox" formControlName="allowMultipleChoice" />
+                    <span>Allow multiple choice</span>
+                  </label>
+
                   <small>{{ getAnswers(questionIndex).length }} minimum 2, maximum optional</small>
                 </div>
 
-                @for (
-                  answer of getAnswers(questionIndex).controls;
-                  track $index;
-                  let answerIndex = $index
-                ) {
+                <ng-container formArrayName="answers">
+                  @for (
+                    answer of getAnswers(questionIndex).controls;
+                    track $index;
+                    let answerIndex = $index
+                  ) {
                   <div class="create-survey__answer-item">
                     <div class="create-survey__field-header">
                       <label
@@ -276,6 +283,7 @@
                     />
                   </div>
                 }
+                </ng-container>
               </div>
 
               <button

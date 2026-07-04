@@ -47,6 +47,10 @@
                 <span>{{ question.title }}</span>
               </legend>
 
+              @if (question.allowMultipleChoice) {
+                <p class="survey-question__multiple-choice-hint">Multiple answers possible</p>
+              }
+
               <div class="survey-question__answers">
                 @for (answer of question.answers; track answer.id; let answerIndex = $index) {
                   <label class="survey-question__answer">
@@ -56,7 +60,6 @@
                       [name]="'question-' + question.id"
                       [value]="answer.id"
                       [checked]="isSelected(question.id, answer.id)"
-                      (change)="selectAnswer(question.id, answer.id)"
                     />
 
                     <span class="survey-question__box">
@@ -88,22 +91,16 @@
               <h3>
                 {{ question.title }}
               </h3>
-
-              <span> {{ totalVotes(question) }} votes </span>
             </div>
 
             @for (answer of question.answers; track answer.id) {
               <div class="survey-results__option">
-                <div class="survey-results__option-header">
-                  <span>{{ answer.text }}</span>
-                  <strong>{{ percentage(question, answer.votesCount) }}%</strong>
-                </div>
-
                 <progress
                   class="survey-results__progress"
                   [value]="percentage(question, answer.votesCount)"
                   max="100"
                 ></progress>
+                <strong>{{ percentage(question, answer.votesCount) }}%</strong>
               </div>
             }
           </article>

@@ -15,7 +15,7 @@ export class SurveyDetail {
   private readonly route = inject(ActivatedRoute);
   private readonly surveyService = inject(SurveyService);
 
-  protected readonly selectedAnswers = signal<Record<string, string>>({});
+  protected readonly selectedAnswers = signal<Record<string, string[]>>({});
 
   protected readonly survey = computed<Survey | undefined>(() => {
     const surveyId = this.route.snapshot.paramMap.get('id');
@@ -27,15 +27,34 @@ export class SurveyDetail {
     return this.surveyService.getSurveyById(surveyId);
   });
 
-  protected selectAnswer(questionId: string, answerId: string): void {
-    this.selectedAnswers.update((currentAnswers) => ({
-      ...currentAnswers,
-      [questionId]: answerId,
-    }));
+  protected toggleAnswer(question: Question, answerId: string, event: Event): void {
+    const input = event.target;
+
+    if (!(input instanceof HTMLInputElement)) {
+      return;
+    }
+
+    this.selectedAnswers.update((currentAnswers) => {
+      const selectedAnswerIds = currentAnswers[question.id] ?? [];
+
+      if (!question.allowMultipleChoice) {
+        return {
+          ...currentAnswers,
+          [question.id]: input.checked ? [answerId] : [],
+        };
+      }
+
+      return {
+        ...currentAnswers,
+        [question.id]: input.checked
+          ? [...selectedAnswerIds, answerId]
+          : selectedAnswerIds.filter((selectedAnswerId) => selectedAnswerId !== answerId),
+      };
+    });
   }
 
   protected isSelected(questionId: string, answerId: string): boolean {
-    return this.selectedAnswers()[questionId] === answerId;
+    return this.selectedAnswers()[questionId]?.includes(answerId) ?? false;
   }
 
   protected totalVotes(question: Question): number {
@@ -72,7 +91,7 @@ export class SurveyDetail {
     }
 
     const allQuestionsAnswered = survey.questions.every(
-      (question) => this.selectedAnswers()[question.id],
+      (question) => (this.selectedAnswers()[question.id]?.length ?? 0) > 0,
     );
 
     if (!allQuestionsAnswered) {
