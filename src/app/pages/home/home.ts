@@ -4,6 +4,8 @@ import { RouterLink } from '@angular/router';
 import { SurveyService } from '../../features/surveys/services/survey.service';
 import { Survey } from '../../shared/models/survey.model';
 
+type SurveyStatusFilter = 'active' | 'past';
+
 @Component({
   selector: 'app-home',
   imports: [RouterLink],
@@ -13,8 +15,8 @@ import { Survey } from '../../shared/models/survey.model';
 export class Home {
   private readonly surveyService = inject(SurveyService);
 
-  protected readonly searchTerm = signal('');
-  protected readonly selectedCategory = signal('All');
+  protected readonly selectedStatus = signal<SurveyStatusFilter>('active');
+  protected readonly selectedCategory = signal('');
 
   protected categoryMenuOpen = false;
   protected categoryTriggerHovered = false;
@@ -28,21 +30,39 @@ export class Home {
 
   protected readonly surveys = computed(() => this.surveyService.allSurveys());
 
+  protected readonly endingSoonSurveys = computed(() =>
+    this.surveys()
+      .filter((survey) => this.isActiveSurvey(survey) && survey.endsAt)
+      .sort((firstSurvey, secondSurvey) => {
+        return new Date(firstSurvey.endsAt!).getTime() - new Date(secondSurvey.endsAt!).getTime();
+      })
+      .slice(0, 3),
+  );
+
   protected readonly filteredSurveys = computed(() => {
-    const search = this.searchTerm().toLowerCase().trim();
-    const category = this.selectedCategory();
+    const selectedStatus = this.selectedStatus();
+    const selectedCategory = this.selectedCategory();
 
     return this.surveys().filter((survey) => {
-      const matchesSearch =
-        survey.title.toLowerCase().includes(search) ||
-        survey.description?.toLowerCase().includes(search) ||
-        survey.category.toLowerCase().includes(search);
+      const matchesStatus =
+        selectedStatus === 'active' ? this.isActiveSurvey(survey) : this.isPastSurvey(survey);
 
-      const matchesCategory = category === 'All' || survey.category === category;
+      const matchesCategory = selectedCategory === '' || survey.category === selectedCategory;
 
-      return matchesSearch && matchesCategory;
+      return matchesStatus && matchesCategory;
     });
   });
+
+  protected get selectedCategoryLabel(): string {
+    return (
+      this.categoryOptions.find((category) => category.value === this.selectedCategory())?.label ??
+      ''
+    );
+  }
+
+  protected get hasSelectedCategory(): boolean {
+    return this.selectedCategory() !== '';
+  }
 
   protected get categoryIconSrc(): string {
     if (this.categoryMenuOpen && this.categoryTriggerHovered) {
@@ -60,6 +80,10 @@ export class Home {
     return '/assets/icons/arrow_drop_down.svg';
   }
 
+  protected selectStatus(status: SurveyStatusFilter): void {
+    this.selectedStatus.set(status);
+  }
+
   protected toggleCategoryMenu(): void {
     this.categoryMenuOpen = !this.categoryMenuOpen;
   }
@@ -73,31 +97,30 @@ export class Home {
     this.categoryMenuOpen = false;
   }
 
-  protected get selectedCategoryLabel(): string {
+  protected categoryLabel(categoryValue: string): string {
     return (
-      this.categoryOptions.find((category) => category.value === this.selectedCategory())?.label ??
-      'All categories'
+      this.categoryOptions.find((category) => category.value === categoryValue)?.label ??
+      categoryValue
     );
   }
 
-  protected get hasSelectedCategory(): boolean {
-    return this.selectedCategory() !== 'All';
-  }
+  protected endingSoonLabel(survey: Survey): string {
+    if (!survey.endsAt) {
+      return 'No end date';
+    }
 
-  protected updateSearch(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.searchTerm.set(input.value);
-  }
+    const oneDay = 24 * 60 * 60 * 1000;
+    const daysLeft = Math.ceil((new Date(survey.endsAt).getTime() - Date.now()) / oneDay);
 
-  protected totalVotes(survey: Survey): number {
-    return survey.questions.reduce((surveyTotal, question) => {
-      const questionVotes = question.answers.reduce(
-        (answerTotal, answer) => answerTotal + answer.votesCount,
-        0,
-      );
+    if (daysLeft <= 0) {
+      return 'Ends today';
+    }
 
-      return surveyTotal + questionVotes;
-    }, 0);
+    if (daysLeft === 1) {
+      return 'Ends tomorrow';
+    }
+
+    return `Ends in ${daysLeft} days`;
   }
 
   @HostListener('document:click', ['$event'])
@@ -111,5 +134,21 @@ export class Home {
     if (!target.closest('.home-surveys__category-select')) {
       this.categoryMenuOpen = false;
     }
+  }
+
+  private isActiveSurvey(survey: Survey): boolean {
+    if (!survey.endsAt) {
+      return true;
+    }
+
+    return new Date(survey.endsAt).getTime() >= Date.now();
+  }
+
+  private isPastSurvey(survey: Survey): boolean {
+    if (!survey.endsAt) {
+      return false;
+    }
+
+    return new Date(survey.endsAt).getTime() < Date.now();
   }
 }

@@ -80,28 +80,15 @@
     scrollbar-width: thin;
     scrollbar-color: var(--color-title) transparent;
     -webkit-overflow-scrolling: touch;
-  }
-  &::-webkit-scrollbar {
-    height: 0.45rem;
-  }
 
-  &::-webkit-scrollbar-thumb {
-    border-radius: 999px;
-    background-color: var(--color-title);
-  }
+    &::-webkit-scrollbar {
+      height: 0.45rem;
+    }
 
-  &__category-menu {
-    display: flex;
-    padding: 0.2em 0em 0em 0em;
-  }
-
-  &__category-options {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    background-color: white;
-    padding: 0.5em 0.5em 0.5em 0em;
-    border-radius: 6px;
+    &::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background-color: var(--color-title);
+    }
   }
 
   &__track {
@@ -111,27 +98,32 @@
   }
 
   &__highlight-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 2rem;
     width: 13.5rem;
-    padding: 1rem;
     border-top-right-radius: 5rem;
     background: var(--light-bg);
     color: var(--dark-bg);
   }
 
-  &__category {
-    color: var(--dark-bg);
-    font-size: 0.78rem;
-    font-weight: 800;
+  &__highlight-link {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1rem;
+    color: inherit;
   }
 
   &__highlight-content {
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
+  }
+
+  &__category {
+    color: var(--dark-bg);
+    font-size: 0.78rem;
+    font-weight: 800;
   }
 
   &__card-title {
@@ -158,28 +150,13 @@
     margin: 1.2rem 0;
   }
 
-  &__category-select {
-    color: white;
-  }
-  &__category-trigger {
-    color: white;
-    padding: 0;
-  }
-
-  &__selected-category {
-    font-size: 0.75rem;
-    color: #ffb770;
-  }
-
-  &__tabs,
-  &__category-filter {
+  &__tabs {
     display: flex;
     flex-wrap: wrap;
     gap: 0.65rem;
   }
 
-  &__tab,
-  &__category-button {
+  &__tab {
     min-height: 2rem;
     border: 0;
     border-radius: 999px;
@@ -189,36 +166,90 @@
     cursor: pointer;
     font-size: 0.86rem;
     font-weight: 800;
-  }
 
-  &__tab,
-  &__category-button {
     &--active {
       background-color: var(--color-title);
       color: var(--dark-bg);
     }
   }
 
-  &__search {
-    display: grid;
-    gap: 0.35rem;
+  &__category-select {
+    position: relative;
+    width: fit-content;
+    color: var(--light-bg);
   }
 
-  &__search-label {
-    color: rgba(255, 255, 255, 0.78);
+  &__category-trigger {
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    color: var(--light-bg);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    cursor: pointer;
     font-family: var(--font-mulish);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+
+    &:hover {
+      background-color: #d9d9d91f;
+    }
   }
 
-  &__search-input {
-    border: 0;
-    border-radius: 0.35rem;
-    padding: 0 0.8rem;
+  &__category-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  &__category-menu {
+    position: absolute;
+    top: calc(100% + 0.3rem);
+    left: 0;
+    z-index: 30;
+  }
+
+  &__category-options {
+    min-width: 12rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.45rem;
+    border-radius: 5px 20px 5px 5px;
     background-color: var(--light-bg);
+    box-shadow: 0 0.8rem 1.8rem rgba(0, 0, 0, 0.28);
+  }
+
+  &__category-option {
+    border: none;
+    border-radius: 5px 14px 5px 5px;
+    padding: 0.55rem 0.7rem;
+    background-color: transparent;
     color: var(--dark-bg);
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--font-mulish);
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    &:hover,
+    &[aria-selected='true'] {
+      background-color: #ffb770;
+      color: var(--dark-bg);
+    }
+  }
+
+  &__selected-category {
+    margin: 0.45rem 0 0;
+    color: #ffb770;
+    font-size: 0.75rem;
+    font-weight: 800;
   }
 
   &__grid {
+    display: grid;
+    gap: 1rem;
   }
 
   &__empty {
@@ -246,6 +277,16 @@
     font-size: 0.78rem;
   }
 
+  &__status {
+    color: #ffb770;
+    font-weight: 800;
+  }
+
+  &__category {
+    color: rgba(255, 255, 255, 0.78);
+    font-weight: 700;
+  }
+
   &__title {
     margin: 0;
     color: var(--light-bg);
@@ -260,6 +301,7 @@
   }
 
   &__link {
+    width: fit-content;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
     background-color: var(--color-title);

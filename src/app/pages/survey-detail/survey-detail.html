@@ -40,14 +40,15 @@
         </div>
 
         <form class="survey-detail__form" (submit)="submitVote(); $event.preventDefault()">
-          @for (question of survey.questions; track question.id) {
+          @for (question of survey.questions; track question.id; let questionIndex = $index) {
             <fieldset class="survey-question">
               <legend class="survey-question__title">
-                {{ question.title }}
+                <span class="survey-question__number">{{ questionIndex + 1 }}.</span>
+                <span>{{ question.title }}</span>
               </legend>
 
               <div class="survey-question__answers">
-                @for (answer of question.answers; track answer.id) {
+                @for (answer of question.answers; track answer.id; let answerIndex = $index) {
                   <label class="survey-question__answer">
                     <input
                       class="survey-question__input"
@@ -59,7 +60,13 @@
                     />
 
                     <span class="survey-question__box">
-                      {{ answer.text }}
+                      <span class="survey-question__answer-label" aria-hidden="true">
+                        {{ answerOptionLabel(answerIndex) }}
+                      </span>
+
+                      <span class="survey-question__answer-text">
+                        {{ answer.text }}
+                      </span>
                     </span>
                   </label>
                 }

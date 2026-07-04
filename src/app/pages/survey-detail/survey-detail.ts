@@ -52,6 +52,18 @@ export class SurveyDetail {
     return Math.round((votesCount / total) * 100);
   }
 
+  protected answerOptionLabel(answerIndex: number): string {
+    let label = '.';
+    let currentIndex = answerIndex;
+
+    do {
+      label = String.fromCharCode(65 + (currentIndex % 26)) + label;
+      currentIndex = Math.floor(currentIndex / 26) - 1;
+    } while (currentIndex >= 0);
+
+    return label;
+  }
+
   protected submitVote(): void {
     const survey = this.survey();
 
