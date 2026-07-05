@@ -19,7 +19,7 @@ export class SurveyDetail {
 
   protected readonly selectedAnswers = signal<Record<string, string[]>>({});
 
-  protected resultsPopupOpen = false;
+  protected resultsPopupOpen = true;
 
   protected readonly survey = computed<Survey | undefined>(() => {
     const surveyId = this.route.snapshot.paramMap.get('id');

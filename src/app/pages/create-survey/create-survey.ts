@@ -96,6 +96,24 @@ export class CreateSurvey {
     this.surveyForm.controls.category.markAsTouched();
   }
 
+  protected clearSurveyTitle(): void {
+    this.surveyForm.controls.title.reset('');
+    this.surveyForm.controls.title.markAsTouched();
+    this.surveyForm.controls.title.updateValueAndValidity();
+  }
+
+  protected clearEndDate(): void {
+    this.surveyForm.controls.endsAt.reset('');
+    this.surveyForm.controls.endsAt.markAsTouched();
+    this.surveyForm.controls.endsAt.updateValueAndValidity();
+  }
+
+  protected clearDescription(): void {
+    this.surveyForm.controls.description.reset('');
+    this.surveyForm.controls.description.markAsTouched();
+    this.surveyForm.controls.description.updateValueAndValidity();
+  }
+
   protected selectCategory(value: string): void {
     this.surveyForm.controls.category.setValue(value);
     this.surveyForm.controls.category.markAsTouched();
@@ -123,10 +141,32 @@ export class CreateSurvey {
 
   protected removeQuestion(questionIndex: number): void {
     if (this.questions.length <= 1) {
+      this.clearQuestion(questionIndex);
       return;
     }
 
     this.questions.removeAt(questionIndex);
+  }
+
+  protected clearQuestion(questionIndex: number): void {
+    const question = this.questions.at(questionIndex);
+    const answers = this.getAnswers(questionIndex);
+
+    question.get('title')?.reset('');
+    question.get('title')?.markAsTouched();
+    question.get('allowMultipleChoice')?.reset(false);
+
+    while (answers.length > 2) {
+      answers.removeAt(answers.length - 1);
+    }
+
+    answers.controls.forEach((answer) => {
+      answer.reset('');
+      answer.markAsTouched();
+      answer.updateValueAndValidity();
+    });
+
+    question.updateValueAndValidity();
   }
 
   protected addAnswer(questionIndex: number): void {
@@ -139,10 +179,19 @@ export class CreateSurvey {
     const answers = this.getAnswers(questionIndex);
 
     if (answers.length <= 2) {
+      this.clearAnswer(questionIndex, answerIndex);
       return;
     }
 
     answers.removeAt(answerIndex);
+  }
+
+  protected clearAnswer(questionIndex: number, answerIndex: number): void {
+    const answer = this.getAnswers(questionIndex).at(answerIndex);
+
+    answer.reset('');
+    answer.markAsTouched();
+    answer.updateValueAndValidity();
   }
 
   protected async submitSurvey(): Promise<void> {

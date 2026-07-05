@@ -31,6 +31,7 @@
               class="create-survey__clear-field-button"
               type="button"
               aria-label="Clear survey name"
+              (click)="clearSurveyTitle()"
             >
               <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
                 <img
@@ -119,6 +120,7 @@
               class="create-survey__clear-field-button"
               type="button"
               aria-label="Clear end date"
+              (click)="clearEndDate()"
             >
               <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
                 <img
@@ -154,6 +156,7 @@
               class="create-survey__clear-field-button"
               type="button"
               aria-label="Clear description"
+              (click)="clearDescription()"
             >
               <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
                 <img
@@ -191,8 +194,7 @@
                   class="create-survey__clear-field-button"
                   type="button"
                   (click)="removeQuestion(questionIndex)"
-                  [disabled]="questions.length <= 1"
-                  aria-label="Remove question"
+                  aria-label="Clear or remove question"
                 >
                   <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
                     <img
@@ -254,8 +256,7 @@
                           class="create-survey__clear-field-button"
                           type="button"
                           (click)="removeAnswer(questionIndex, answerIndex)"
-                          [disabled]="getAnswers(questionIndex).length <= 2"
-                          aria-label="Remove answer"
+                          aria-label="Clear or remove answer"
                         >
                           <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
                             <img
