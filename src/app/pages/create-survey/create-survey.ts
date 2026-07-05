@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { Survey } from '../../shared/models/survey.model';
 import { SurveyService } from '../../features/surveys/services/survey.service';
 
@@ -19,7 +19,9 @@ import { SurveyService } from '../../features/surveys/services/survey.service';
 export class CreateSurvey {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly surveyService = inject(SurveyService);
-  private readonly router = inject(Router);
+
+  protected publishPopupOpen = false;
+  protected isPublishing = false;
 
   protected categoryMenuOpen = false;
   protected categoryTriggerHovered = false;
@@ -117,6 +119,10 @@ export class CreateSurvey {
     }
   }
 
+  protected closePublishPopup(): void {
+    this.publishPopupOpen = false;
+  }
+
   protected addQuestion(): void {
     this.questions.push(this.createQuestion());
   }
@@ -195,6 +201,10 @@ export class CreateSurvey {
   }
 
   protected async submitSurvey(): Promise<void> {
+    if (this.isPublishing) {
+      return;
+    }
+
     if (this.surveyForm.invalid) {
       this.surveyForm.markAllAsTouched();
       return;
@@ -233,10 +243,13 @@ export class CreateSurvey {
     };
 
     try {
+      this.isPublishing = true;
       await this.surveyService.createSurvey(survey);
-      await this.router.navigate(['/survey', survey.id]);
+      this.publishPopupOpen = true;
     } catch (error) {
       console.error('Survey could not be created:', error);
+    } finally {
+      this.isPublishing = false;
     }
   }
 }
