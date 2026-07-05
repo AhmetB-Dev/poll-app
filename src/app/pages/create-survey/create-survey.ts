@@ -145,11 +145,8 @@ export class CreateSurvey {
     answers.removeAt(answerIndex);
   }
 
-  protected submitSurvey(): void {
-    console.log('Submit clicked');
-
+  protected async submitSurvey(): Promise<void> {
     if (this.surveyForm.invalid) {
-      console.log('Form is invalid:', this.surveyForm.getRawValue());
       this.surveyForm.markAllAsTouched();
       return;
     }
@@ -164,6 +161,7 @@ export class CreateSurvey {
       title: formValue.title.trim(),
       description: formValue.description.trim() || undefined,
       category: formValue.category,
+      status: 'active',
       createdAt: now,
       updatedAt: now,
       endsAt: formValue.endsAt ? new Date(formValue.endsAt).toISOString() : null,
@@ -185,9 +183,11 @@ export class CreateSurvey {
       }),
     };
 
-    console.log('Created survey:', survey);
-
-    this.surveyService.createSurvey(survey);
-    this.router.navigate(['/survey', survey.id]);
+    try {
+      await this.surveyService.createSurvey(survey);
+      await this.router.navigate(['/survey', survey.id]);
+    } catch (error) {
+      console.error('Survey could not be created:', error);
+    }
   }
 }

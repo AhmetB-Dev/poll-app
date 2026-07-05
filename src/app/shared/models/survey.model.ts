@@ -7,6 +7,7 @@ export interface Survey {
   title: string;
   description?: string;
   category: string;
+  status: SurveyStatus;
   questions: Question[];
 
   createdAt: string;

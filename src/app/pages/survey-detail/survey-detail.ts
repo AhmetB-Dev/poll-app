@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { SurveyService } from '../../features/surveys/services/survey.service';
+import { VoteService } from '../../features/votes/services/vote.service';
 import { Question } from '../../shared/models/question.model';
 import { Survey } from '../../shared/models/survey.model';
 
@@ -14,6 +15,7 @@ import { Survey } from '../../shared/models/survey.model';
 export class SurveyDetail {
   private readonly route = inject(ActivatedRoute);
   private readonly surveyService = inject(SurveyService);
+  private readonly voteService = inject(VoteService);
 
   protected readonly selectedAnswers = signal<Record<string, string[]>>({});
 
@@ -78,9 +80,6 @@ export class SurveyDetail {
       return '/assets/icons/arrow_drop_down_dark.svg';
     }
 
-    if (this.resultsPopupOpen) {
-      return '/assets/icons/arrow_drop_down_dark.svg';
-    }
     return '/assets/icons/arrow_drop_up_dark.svg';
   }
 
@@ -91,6 +90,7 @@ export class SurveyDetail {
   protected closeResultsPopup(): void {
     this.resultsPopupOpen = false;
   }
+
   protected answerOptionLabel(answerIndex: number): string {
     let label = '';
     let currentIndex = answerIndex;
@@ -103,7 +103,7 @@ export class SurveyDetail {
     return label;
   }
 
-  protected submitVote(): void {
+  protected async submitVote(): Promise<void> {
     const survey = this.survey();
 
     if (!survey) {
@@ -119,10 +119,12 @@ export class SurveyDetail {
       return;
     }
 
-    this.surveyService.vote(survey.id, this.selectedAnswers());
-
-    console.log('Vote saved:', this.selectedAnswers());
-
-    this.selectedAnswers.set({});
+    try {
+      await this.voteService.submitVote(survey, this.selectedAnswers());
+      await this.surveyService.loadSurveys();
+      this.selectedAnswers.set({});
+    } catch (error) {
+      console.error('Vote could not be saved:', error);
+    }
   }
 }
