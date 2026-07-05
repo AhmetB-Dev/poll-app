@@ -5,6 +5,7 @@ import { Answer } from '../../../shared/models/answer.model';
 import { Question } from '../../../shared/models/question.model';
 import { Survey, SurveyStatus } from '../../../shared/models/survey.model';
 
+/** Raw database row from the surveys table. */
 type SurveyRow = {
   id: string;
   title: string;
@@ -16,6 +17,7 @@ type SurveyRow = {
   ends_at: string | null;
 };
 
+/** Raw database row from the questions table. */
 type QuestionRow = {
   id: string;
   survey_id: string;
@@ -24,6 +26,7 @@ type QuestionRow = {
   position: number;
 };
 
+/** Raw database row from the answers table. */
 type AnswerRow = {
   id: string;
   question_id: string;
@@ -31,11 +34,21 @@ type AnswerRow = {
   position: number;
 };
 
+/** Read-only result row that combines answer ids with their current vote count. */
 type AnswerResultRow = {
   answer_id: string;
   votes_count: number;
 };
 
+/**
+ * Central data service for surveys.
+ *
+ * Responsibilities:
+ * - loads surveys, questions, answers and result counts from Supabase
+ * - maps database rows into nested Survey models used by the UI
+ * - creates new surveys by inserting survey, question and answer rows
+ * - exposes loaded surveys as a readonly Angular signal
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -43,12 +56,15 @@ export class SurveyService {
   private readonly supabase = inject(SupabaseService).client;
   private readonly surveys = signal<Survey[]>([]);
 
+  /** Readonly survey state used by components. */
   readonly allSurveys = this.surveys.asReadonly();
 
+  /** Loads initial survey data as soon as the service is created. */
   constructor() {
     void this.loadSurveys();
   }
 
+  /** Fetches all survey-related data from Supabase and refreshes local state. */
   async loadSurveys(): Promise<void> {
     const responses = await this.fetchSurveyData();
     this.throwIfResponseError(...responses);
@@ -65,10 +81,17 @@ export class SurveyService {
     );
   }
 
+  /** Returns one loaded survey by id, or undefined when it is not available locally. */
   getSurveyById(id: string): Survey | undefined {
     return this.surveys().find((survey) => survey.id === id);
   }
 
+  /**
+   * Persists a new survey with all its questions and answers.
+   *
+   * Important: These inserts are sequential frontend calls, not a database transaction.
+   * For a production-level app, this should later become a Supabase RPC/Postgres function.
+   */
   async createSurvey(survey: Survey): Promise<void> {
     await this.insertSurvey(survey);
     await this.insertQuestions(survey);
@@ -77,6 +100,7 @@ export class SurveyService {
     this.surveys.update((currentSurveys) => [survey, ...currentSurveys]);
   }
 
+  /** Starts all read requests needed to build the nested survey view model. */
   private fetchSurveyData() {
     return Promise.all([
       this.supabase
@@ -92,6 +116,7 @@ export class SurveyService {
     ]);
   }
 
+  /** Throws the first Supabase response error so calling code can stop safely. */
   private throwIfResponseError(...responses: Array<{ error: unknown }>): void {
     for (const response of responses) {
       if (response.error) {
@@ -100,6 +125,7 @@ export class SurveyService {
     }
   }
 
+  /** Inserts the main survey row into the surveys table. */
   private async insertSurvey(survey: Survey): Promise<void> {
     const { error } = await this.supabase.from('surveys').insert({
       id: survey.id,
@@ -113,24 +139,28 @@ export class SurveyService {
     this.throwIfError(error);
   }
 
+  /** Inserts all question rows that belong to the survey. */
   private async insertQuestions(survey: Survey): Promise<void> {
     const { error } = await this.supabase.from('questions').insert(this.createQuestionRows(survey));
 
     this.throwIfError(error);
   }
 
+  /** Inserts all answer rows for all questions in the survey. */
   private async insertAnswers(survey: Survey): Promise<void> {
     const { error } = await this.supabase.from('answers').insert(this.createAnswerRows(survey));
 
     this.throwIfError(error);
   }
 
+  /** Throws a Supabase insert error when a write request failed. */
   private throwIfError(error: unknown): void {
     if (error) {
       throw error;
     }
   }
 
+  /** Converts question models into database insert rows. */
   private createQuestionRows(survey: Survey) {
     return survey.questions.map((question, questionIndex) => ({
       id: question.id,
@@ -141,6 +171,7 @@ export class SurveyService {
     }));
   }
 
+  /** Converts nested answer models into flat database insert rows. */
   private createAnswerRows(survey: Survey) {
     return survey.questions.flatMap((question) =>
       question.answers.map((answer, answerIndex) => ({
@@ -152,6 +183,7 @@ export class SurveyService {
     );
   }
 
+  /** Builds nested Survey models from flat database rows. */
   private mapSurveyRows(
     surveyRows: SurveyRow[],
     questionRows: QuestionRow[],
@@ -165,10 +197,12 @@ export class SurveyService {
     return surveyRows.map((surveyRow) => this.mapSurveyRow(surveyRow, questionsBySurveyId));
   }
 
+  /** Creates a lookup map so vote counts can be assigned quickly to answers. */
   private createVotesByAnswerId(resultRows: AnswerResultRow[]): Map<string, number> {
     return new Map(resultRows.map((resultRow) => [resultRow.answer_id, resultRow.votes_count]));
   }
 
+  /** Groups answer models by their question id. */
   private groupAnswersByQuestionId(
     answerRows: AnswerRow[],
     votesByAnswerId: Map<string, number>,
@@ -182,6 +216,7 @@ export class SurveyService {
     return answersByQuestionId;
   }
 
+  /** Adds one mapped answer to the answers-by-question lookup map. */
   private addAnswerToQuestionMap(
     answersByQuestionId: Map<string, Answer[]>,
     answerRow: AnswerRow,
@@ -193,6 +228,7 @@ export class SurveyService {
     answersByQuestionId.set(answerRow.question_id, answers);
   }
 
+  /** Converts one answer database row into the app Answer model. */
   private mapAnswerRow(answerRow: AnswerRow, votesByAnswerId: Map<string, number>): Answer {
     return {
       id: answerRow.id,
@@ -202,6 +238,7 @@ export class SurveyService {
     };
   }
 
+  /** Groups question models by their survey id. */
   private groupQuestionsBySurveyId(
     questionRows: QuestionRow[],
     answersByQuestionId: Map<string, Answer[]>,
@@ -215,6 +252,7 @@ export class SurveyService {
     return questionsBySurveyId;
   }
 
+  /** Adds one mapped question to the questions-by-survey lookup map. */
   private addQuestionToSurveyMap(
     questionsBySurveyId: Map<string, Question[]>,
     questionRow: QuestionRow,
@@ -226,6 +264,7 @@ export class SurveyService {
     questionsBySurveyId.set(questionRow.survey_id, questions);
   }
 
+  /** Converts one question database row into the app Question model. */
   private mapQuestionRow(
     questionRow: QuestionRow,
     answersByQuestionId: Map<string, Answer[]>,
@@ -239,6 +278,7 @@ export class SurveyService {
     };
   }
 
+  /** Converts one survey database row into the app Survey model. */
   private mapSurveyRow(surveyRow: SurveyRow, questionsBySurveyId: Map<string, Question[]>): Survey {
     return {
       id: surveyRow.id,

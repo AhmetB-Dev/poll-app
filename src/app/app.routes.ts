@@ -4,6 +4,12 @@ import { CreateSurvey } from './pages/create-survey/create-survey';
 import { SurveyDetail } from './pages/survey-detail/survey-detail';
 import { NotFound } from './pages/not-found/not-found';
 
+/**
+ * Application routes for PollApp.
+ *
+ * The survey detail route expects a survey id as URL parameter. The wildcard route
+ * catches every unknown URL and displays the not-found page.
+ */
 export const routes: Routes = [
   {
     path: '',

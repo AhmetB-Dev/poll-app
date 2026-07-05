@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { SupabaseService } from '../../../core/supabase/supabase.service';
 import { Survey } from '../../../shared/models/survey.model';
 
+/** Database insert shape for one selected answer vote. */
 type VoteInsertRow = {
   survey_id: string;
   question_id: string;
@@ -10,12 +11,26 @@ type VoteInsertRow = {
   voter_key: string;
 };
 
+/**
+ * Handles vote persistence.
+ *
+ * Responsibilities:
+ * - converts selected answer ids into database rows
+ * - stores a browser-local voter key
+ * - inserts vote rows into Supabase
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class VoteService {
   private readonly supabase = inject(SupabaseService).client;
 
+  /**
+   * Saves all selected answers for one survey.
+   *
+   * @param survey Survey that the user voted on.
+   * @param selectedAnswers Map of question id to selected answer ids.
+   */
   async submitVote(survey: Survey, selectedAnswers: Record<string, string[]>): Promise<void> {
     const voteRows = this.createVoteRows(survey, selectedAnswers);
 
@@ -30,6 +45,7 @@ export class VoteService {
     }
   }
 
+  /** Creates all vote insert rows for the selected answers of one survey. */
   private createVoteRows(
     survey: Survey,
     selectedAnswers: Record<string, string[]>,
@@ -46,6 +62,7 @@ export class VoteService {
     );
   }
 
+  /** Creates vote rows for all selected answers of one question. */
   private createQuestionVoteRows(
     surveyId: string,
     questionId: string,
@@ -60,6 +77,12 @@ export class VoteService {
     }));
   }
 
+  /**
+   * Returns a stable browser-local voter id.
+   *
+   * This is not real authentication. It only helps identify repeated votes from the
+   * same browser and should not be treated as secure user identity.
+   */
   private getVoterKey(): string {
     const storageKey = 'pollapp-voter-key';
     const existingKey = localStorage.getItem(storageKey);
