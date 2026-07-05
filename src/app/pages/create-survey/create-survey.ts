@@ -1,5 +1,6 @@
 import { Component, HostListener, inject } from '@angular/core';
 import {
+  AbstractControl,
   FormArray,
   FormControl,
   NonNullableFormBuilder,
@@ -7,9 +8,16 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { Survey } from '../../shared/models/survey.model';
+
 import { SurveyService } from '../../features/surveys/services/survey.service';
 import { SURVEY_CATEGORIES } from '../../shared/constants/survey-categories';
+import { Survey } from '../../shared/models/survey.model';
+
+type SurveyQuestionFormValue = {
+  title: string;
+  allowMultipleChoice: boolean;
+  answers: string[];
+};
 
 @Component({
   selector: 'app-create-survey',
@@ -74,10 +82,7 @@ export class CreateSurvey {
     return this.fb.group({
       title: ['', [Validators.required, Validators.minLength(5)]],
       allowMultipleChoice: false,
-      answers: this.fb.array([
-        this.fb.control('', [Validators.required, Validators.minLength(2)]),
-        this.fb.control('', [Validators.required, Validators.minLength(2)]),
-      ]),
+      answers: this.fb.array([this.createAnswerControl(), this.createAnswerControl()]),
     });
   }
 
@@ -106,11 +111,7 @@ export class CreateSurvey {
   protected closeCategoryMenuOnOutsideClick(event: MouseEvent): void {
     const target = event.target;
 
-    if (!(target instanceof HTMLElement)) {
-      return;
-    }
-
-    if (!target.closest('.create-survey__category-select')) {
+    if (target instanceof HTMLElement && !target.closest('.create-survey__category-select')) {
       this.categoryMenuOpen = false;
     }
   }
@@ -124,11 +125,7 @@ export class CreateSurvey {
   }
 
   protected clearMainField(fieldName: 'title' | 'description' | 'endsAt'): void {
-    const control = this.surveyForm.controls[fieldName];
-
-    control.setValue('');
-    control.markAsPristine();
-    control.markAsUntouched();
+    this.clearTextControl(this.surveyForm.controls[fieldName]);
   }
 
   protected removeQuestion(questionIndex: number): void {
@@ -141,77 +138,83 @@ export class CreateSurvey {
   }
 
   protected addAnswer(questionIndex: number): void {
-    this.getAnswers(questionIndex).push(
-      this.fb.control('', [Validators.required, Validators.minLength(2)]),
-    );
+    this.getAnswers(questionIndex).push(this.createAnswerControl());
   }
 
   protected removeAnswer(questionIndex: number, answerIndex: number): void {
     const answers = this.getAnswers(questionIndex);
 
     if (answers.length <= 2) {
-      answers.at(answerIndex).setValue('');
-      answers.at(answerIndex).markAsPristine();
-      answers.at(answerIndex).markAsUntouched();
+      this.clearTextControl(answers.at(answerIndex));
       return;
     }
 
     answers.removeAt(answerIndex);
   }
 
+  protected async submitSurvey(): Promise<void> {
+    if (this.isPublishing || !this.hasValidSurveyForm()) {
+      return;
+    }
+
+    await this.publishSurvey(this.buildSurvey());
+  }
+
+  private createAnswerControl(): FormControl<string> {
+    return this.fb.control('', [Validators.required, Validators.minLength(2)]);
+  }
+
   private clearQuestion(questionIndex: number): void {
     const question = this.questions.at(questionIndex);
     const answers = this.getAnswers(questionIndex);
 
+    this.resetQuestionValues(question);
+    this.keepMinimumAnswers(answers);
+    this.clearAnswerControls(answers);
+    this.resetControlState(question);
+  }
+
+  private resetQuestionValues(question: AbstractControl): void {
     question.patchValue({
       title: '',
       allowMultipleChoice: false,
     });
+  }
 
+  private keepMinimumAnswers(answers: FormArray<FormControl<string>>): void {
     while (answers.length > 2) {
       answers.removeAt(answers.length - 1);
     }
-
-    answers.controls.forEach((answer) => {
-      answer.setValue('');
-      answer.markAsPristine();
-      answer.markAsUntouched();
-    });
-
-    question.markAsPristine();
-    question.markAsUntouched();
   }
 
-  private toEndOfDayIso(dateValue: string): string | null {
-    if (!dateValue) {
-      return null;
-    }
-
-    const endOfDay = new Date(`${dateValue}T23:59:59.999`);
-
-    if (Number.isNaN(endOfDay.getTime())) {
-      return null;
-    }
-
-    return endOfDay.toISOString();
+  private clearAnswerControls(answers: FormArray<FormControl<string>>): void {
+    answers.controls.forEach((answer) => this.clearTextControl(answer));
   }
 
-  protected async submitSurvey(): Promise<void> {
-    if (this.isPublishing) {
-      return;
+  private clearTextControl(control: FormControl<string>): void {
+    control.setValue('');
+    this.resetControlState(control);
+  }
+
+  private resetControlState(control: AbstractControl): void {
+    control.markAsPristine();
+    control.markAsUntouched();
+  }
+
+  private hasValidSurveyForm(): boolean {
+    if (this.surveyForm.valid) {
+      return true;
     }
 
-    if (this.surveyForm.invalid) {
-      this.surveyForm.markAllAsTouched();
-      return;
-    }
+    this.surveyForm.markAllAsTouched();
+    return false;
+  }
 
+  private buildSurvey(): Survey {
     const formValue = this.surveyForm.getRawValue();
-
     const surveyId = crypto.randomUUID();
     const now = new Date().toISOString();
-
-    const survey: Survey = {
+    return {
       id: surveyId,
       title: formValue.title.trim(),
       description: formValue.description.trim() || undefined,
@@ -220,24 +223,54 @@ export class CreateSurvey {
       createdAt: now,
       updatedAt: now,
       endsAt: this.toEndOfDayIso(formValue.endsAt),
-      questions: formValue.questions.map((question) => {
-        const questionId = crypto.randomUUID();
-
-        return {
-          id: questionId,
-          surveyId,
-          title: question.title.trim(),
-          allowMultipleChoice: question.allowMultipleChoice,
-          answers: question.answers.map((answer) => ({
-            id: crypto.randomUUID(),
-            questionId,
-            text: answer.trim(),
-            votesCount: 0,
-          })),
-        };
-      }),
+      questions: this.buildQuestions(formValue.questions, surveyId),
     };
+  }
 
+  private buildQuestions(
+    questions: SurveyQuestionFormValue[],
+    surveyId: string,
+  ): Survey['questions'] {
+    return questions.map((question) => this.buildQuestion(question, surveyId));
+  }
+
+  private buildQuestion(
+    question: SurveyQuestionFormValue,
+    surveyId: string,
+  ): Survey['questions'][number] {
+    const questionId = crypto.randomUUID();
+
+    return {
+      id: questionId,
+      surveyId,
+      title: question.title.trim(),
+      allowMultipleChoice: question.allowMultipleChoice,
+      answers: this.buildAnswers(question.answers, questionId),
+    };
+  }
+
+  private buildAnswers(
+    answers: string[],
+    questionId: string,
+  ): Survey['questions'][number]['answers'] {
+    return answers.map((answer) => ({
+      id: crypto.randomUUID(),
+      questionId,
+      text: answer.trim(),
+      votesCount: 0,
+    }));
+  }
+
+  private toEndOfDayIso(dateValue: string): string | null {
+    if (!dateValue) {
+      return null;
+    }
+
+    const endOfDay = new Date(`${dateValue}T23:59:59.999`);
+    return Number.isNaN(endOfDay.getTime()) ? null : endOfDay.toISOString();
+  }
+
+  private async publishSurvey(survey: Survey): Promise<void> {
     try {
       this.isPublishing = true;
       await this.surveyService.createSurvey(survey);

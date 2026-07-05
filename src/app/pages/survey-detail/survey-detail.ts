@@ -21,40 +21,18 @@ export class SurveyDetail {
 
   protected resultsPopupOpen = true;
 
-  protected readonly survey = computed<Survey | undefined>(() => {
-    const surveyId = this.route.snapshot.paramMap.get('id');
-
-    if (!surveyId) {
-      return undefined;
-    }
-
-    return this.surveyService.getSurveyById(surveyId);
-  });
+  protected readonly survey = computed<Survey | undefined>(() => this.getCurrentSurvey());
 
   protected toggleAnswer(question: Question, answerId: string, event: Event): void {
-    const input = event.target;
+    const input = this.getInputElement(event);
 
-    if (!(input instanceof HTMLInputElement)) {
+    if (!input) {
       return;
     }
 
-    this.selectedAnswers.update((currentAnswers) => {
-      const selectedAnswerIds = currentAnswers[question.id] ?? [];
-
-      if (!question.allowMultipleChoice) {
-        return {
-          ...currentAnswers,
-          [question.id]: input.checked ? [answerId] : [],
-        };
-      }
-
-      return {
-        ...currentAnswers,
-        [question.id]: input.checked
-          ? [...selectedAnswerIds, answerId]
-          : selectedAnswerIds.filter((selectedAnswerId) => selectedAnswerId !== answerId),
-      };
-    });
+    this.selectedAnswers.update((currentAnswers) =>
+      this.updateSelectedAnswers(currentAnswers, question, answerId, input.checked),
+    );
   }
 
   protected isSelected(questionId: string, answerId: string): boolean {
@@ -106,19 +84,84 @@ export class SurveyDetail {
   protected async submitVote(): Promise<void> {
     const survey = this.survey();
 
-    if (!survey) {
-      return;
-    }
-
-    const allQuestionsAnswered = survey.questions.every(
-      (question) => (this.selectedAnswers()[question.id]?.length ?? 0) > 0,
-    );
-
-    if (!allQuestionsAnswered) {
+    if (!survey || !this.hasAnsweredAllQuestions(survey)) {
       console.log('Please answer all questions.');
       return;
     }
 
+    await this.saveVote(survey);
+  }
+
+  private getCurrentSurvey(): Survey | undefined {
+    const surveyId = this.route.snapshot.paramMap.get('id');
+    return surveyId ? this.surveyService.getSurveyById(surveyId) : undefined;
+  }
+
+  private getInputElement(event: Event): HTMLInputElement | null {
+    return event.target instanceof HTMLInputElement ? event.target : null;
+  }
+
+  private updateSelectedAnswers(
+    currentAnswers: Record<string, string[]>,
+    question: Question,
+    answerId: string,
+    checked: boolean,
+  ): Record<string, string[]> {
+    if (!question.allowMultipleChoice) {
+      return this.updateSingleChoiceAnswer(currentAnswers, question.id, answerId, checked);
+    }
+
+    return this.updateMultipleChoiceAnswer(currentAnswers, question.id, answerId, checked);
+  }
+
+  private updateSingleChoiceAnswer(
+    currentAnswers: Record<string, string[]>,
+    questionId: string,
+    answerId: string,
+    checked: boolean,
+  ): Record<string, string[]> {
+    return {
+      ...currentAnswers,
+      [questionId]: checked ? [answerId] : [],
+    };
+  }
+
+  private updateMultipleChoiceAnswer(
+    currentAnswers: Record<string, string[]>,
+    questionId: string,
+    answerId: string,
+    checked: boolean,
+  ): Record<string, string[]> {
+    const selectedAnswerIds = currentAnswers[questionId] ?? [];
+    const nextAnswers = this.toggleAnswerId(selectedAnswerIds, answerId, checked);
+
+    return {
+      ...currentAnswers,
+      [questionId]: nextAnswers,
+    };
+  }
+
+  private toggleAnswerId(
+    selectedAnswerIds: string[],
+    answerId: string,
+    checked: boolean,
+  ): string[] {
+    if (checked) {
+      return [...selectedAnswerIds, answerId];
+    }
+
+    return selectedAnswerIds.filter((selectedAnswerId) => selectedAnswerId !== answerId);
+  }
+
+  private hasAnsweredAllQuestions(survey: Survey): boolean {
+    return survey.questions.every((question) => this.hasSelectedAnswer(question.id));
+  }
+
+  private hasSelectedAnswer(questionId: string): boolean {
+    return (this.selectedAnswers()[questionId]?.length ?? 0) > 0;
+  }
+
+  private async saveVote(survey: Survey): Promise<void> {
     try {
       await this.voteService.submitVote(survey, this.selectedAnswers());
       await this.surveyService.loadSurveys();

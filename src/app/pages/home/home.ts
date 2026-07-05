@@ -2,8 +2,8 @@ import { Component, HostListener, computed, inject, signal } from '@angular/core
 import { RouterLink } from '@angular/router';
 
 import { SurveyService } from '../../features/surveys/services/survey.service';
-import { Survey } from '../../shared/models/survey.model';
 import { SURVEY_CATEGORIES } from '../../shared/constants/survey-categories';
+import { Survey } from '../../shared/models/survey.model';
 
 type SurveyStatusFilter = 'active' | 'past';
 
@@ -29,25 +29,13 @@ export class Home {
   protected readonly endingSoonSurveys = computed(() =>
     this.surveys()
       .filter((survey) => this.isActiveSurvey(survey) && survey.endsAt)
-      .sort((firstSurvey, secondSurvey) => {
-        return new Date(firstSurvey.endsAt!).getTime() - new Date(secondSurvey.endsAt!).getTime();
-      })
+      .sort((firstSurvey, secondSurvey) => this.sortByEndDate(firstSurvey, secondSurvey))
       .slice(0, 3),
   );
 
-  protected readonly filteredSurveys = computed(() => {
-    const selectedStatus = this.selectedStatus();
-    const selectedCategory = this.selectedCategory();
-
-    return this.surveys().filter((survey) => {
-      const matchesStatus =
-        selectedStatus === 'active' ? this.isActiveSurvey(survey) : this.isPastSurvey(survey);
-
-      const matchesCategory = selectedCategory === '' || survey.category === selectedCategory;
-
-      return matchesStatus && matchesCategory;
-    });
-  });
+  protected readonly filteredSurveys = computed(() =>
+    this.filterSurveys(this.selectedStatus(), this.selectedCategory()),
+  );
 
   protected get selectedCategoryLabel(): string {
     return (
@@ -105,31 +93,47 @@ export class Home {
       return 'No end date';
     }
 
-    const oneDay = 24 * 60 * 60 * 1000;
-    const daysLeft = Math.ceil((new Date(survey.endsAt).getTime() - Date.now()) / oneDay);
-
-    if (daysLeft <= 0) {
-      return 'Ends today';
-    }
-
-    if (daysLeft === 1) {
-      return 'Ends tomorrow';
-    }
-
-    return `Ends in ${daysLeft} days`;
+    return this.formatDaysLeft(this.getDaysLeft(survey.endsAt));
   }
 
   @HostListener('document:click', ['$event'])
   protected closeCategoryMenuOnOutsideClick(event: MouseEvent): void {
     const target = event.target;
 
-    if (!(target instanceof HTMLElement)) {
-      return;
-    }
-
-    if (!target.closest('.home-surveys__category-select')) {
+    if (target instanceof HTMLElement && !target.closest('.home-surveys__category-select')) {
       this.categoryMenuOpen = false;
     }
+  }
+
+  private filterSurveys(status: SurveyStatusFilter, category: string): Survey[] {
+    return this.surveys().filter((survey) => {
+      return this.matchesStatus(survey, status) && this.matchesCategory(survey, category);
+    });
+  }
+
+  private matchesStatus(survey: Survey, status: SurveyStatusFilter): boolean {
+    return status === 'active' ? this.isActiveSurvey(survey) : this.isPastSurvey(survey);
+  }
+
+  private matchesCategory(survey: Survey, category: string): boolean {
+    return category === '' || survey.category === category;
+  }
+
+  private sortByEndDate(firstSurvey: Survey, secondSurvey: Survey): number {
+    return new Date(firstSurvey.endsAt!).getTime() - new Date(secondSurvey.endsAt!).getTime();
+  }
+
+  private getDaysLeft(endDate: string): number {
+    const oneDay = 24 * 60 * 60 * 1000;
+    return Math.ceil((new Date(endDate).getTime() - Date.now()) / oneDay);
+  }
+
+  private formatDaysLeft(daysLeft: number): string {
+    if (daysLeft <= 0) {
+      return 'Ends today';
+    }
+
+    return daysLeft === 1 ? 'Ends tomorrow' : `Ends in ${daysLeft} days`;
   }
 
   private isActiveSurvey(survey: Survey): boolean {

@@ -50,41 +50,10 @@ export class SurveyService {
   }
 
   async loadSurveys(): Promise<void> {
-    const [surveysResponse, questionsResponse, answersResponse, resultsResponse] =
-      await Promise.all([
-        this.supabase
-          .from('surveys')
-          .select('id, title, description, category, status, created_at, updated_at, ends_at')
-          .order('created_at', { ascending: false }),
+    const responses = await this.fetchSurveyData();
+    this.throwIfResponseError(...responses);
 
-        this.supabase
-          .from('questions')
-          .select('id, survey_id, title, allow_multiple_choice, position')
-          .order('position', { ascending: true }),
-
-        this.supabase
-          .from('answers')
-          .select('id, question_id, text, position')
-          .order('position', { ascending: true }),
-
-        this.supabase.from('answer_results').select('answer_id, votes_count'),
-      ]);
-
-    if (surveysResponse.error) {
-      throw surveysResponse.error;
-    }
-
-    if (questionsResponse.error) {
-      throw questionsResponse.error;
-    }
-
-    if (answersResponse.error) {
-      throw answersResponse.error;
-    }
-
-    if (resultsResponse.error) {
-      throw resultsResponse.error;
-    }
+    const [surveysResponse, questionsResponse, answersResponse, resultsResponse] = responses;
 
     this.surveys.set(
       this.mapSurveyRows(
@@ -101,7 +70,38 @@ export class SurveyService {
   }
 
   async createSurvey(survey: Survey): Promise<void> {
-    const { error: surveyError } = await this.supabase.from('surveys').insert({
+    await this.insertSurvey(survey);
+    await this.insertQuestions(survey);
+    await this.insertAnswers(survey);
+
+    this.surveys.update((currentSurveys) => [survey, ...currentSurveys]);
+  }
+
+  private fetchSurveyData() {
+    return Promise.all([
+      this.supabase
+        .from('surveys')
+        .select('id, title, description, category, status, created_at, updated_at, ends_at')
+        .order('created_at', { ascending: false }),
+      this.supabase
+        .from('questions')
+        .select('id, survey_id, title, allow_multiple_choice, position')
+        .order('position', { ascending: true }),
+      this.supabase.from('answers').select('id, question_id, text, position').order('position'),
+      this.supabase.from('answer_results').select('answer_id, votes_count'),
+    ]);
+  }
+
+  private throwIfResponseError(...responses: Array<{ error: unknown }>): void {
+    for (const response of responses) {
+      if (response.error) {
+        throw response.error;
+      }
+    }
+  }
+
+  private async insertSurvey(survey: Survey): Promise<void> {
+    const { error } = await this.supabase.from('surveys').insert({
       id: survey.id,
       title: survey.title,
       description: survey.description ?? null,
@@ -110,25 +110,39 @@ export class SurveyService {
       ends_at: survey.endsAt,
     });
 
-    if (surveyError) {
-      throw surveyError;
-    }
+    this.throwIfError(error);
+  }
 
-    const questionRows = survey.questions.map((question, questionIndex) => ({
+  private async insertQuestions(survey: Survey): Promise<void> {
+    const { error } = await this.supabase.from('questions').insert(this.createQuestionRows(survey));
+
+    this.throwIfError(error);
+  }
+
+  private async insertAnswers(survey: Survey): Promise<void> {
+    const { error } = await this.supabase.from('answers').insert(this.createAnswerRows(survey));
+
+    this.throwIfError(error);
+  }
+
+  private throwIfError(error: unknown): void {
+    if (error) {
+      throw error;
+    }
+  }
+
+  private createQuestionRows(survey: Survey) {
+    return survey.questions.map((question, questionIndex) => ({
       id: question.id,
       survey_id: survey.id,
       title: question.title,
       allow_multiple_choice: question.allowMultipleChoice,
       position: questionIndex + 1,
     }));
+  }
 
-    const { error: questionsError } = await this.supabase.from('questions').insert(questionRows);
-
-    if (questionsError) {
-      throw questionsError;
-    }
-
-    const answerRows = survey.questions.flatMap((question) =>
+  private createAnswerRows(survey: Survey) {
+    return survey.questions.flatMap((question) =>
       question.answers.map((answer, answerIndex) => ({
         id: answer.id,
         question_id: question.id,
@@ -136,14 +150,6 @@ export class SurveyService {
         position: answerIndex + 1,
       })),
     );
-
-    const { error: answersError } = await this.supabase.from('answers').insert(answerRows);
-
-    if (answersError) {
-      throw answersError;
-    }
-
-    this.surveys.update((currentSurveys) => [survey, ...currentSurveys]);
   }
 
   private mapSurveyRows(
@@ -152,42 +158,89 @@ export class SurveyService {
     answerRows: AnswerRow[],
     resultRows: AnswerResultRow[],
   ): Survey[] {
-    const votesByAnswerId = new Map(
-      resultRows.map((resultRow) => [resultRow.answer_id, resultRow.votes_count]),
-    );
+    const votesByAnswerId = this.createVotesByAnswerId(resultRows);
+    const answersByQuestionId = this.groupAnswersByQuestionId(answerRows, votesByAnswerId);
+    const questionsBySurveyId = this.groupQuestionsBySurveyId(questionRows, answersByQuestionId);
 
+    return surveyRows.map((surveyRow) => this.mapSurveyRow(surveyRow, questionsBySurveyId));
+  }
+
+  private createVotesByAnswerId(resultRows: AnswerResultRow[]): Map<string, number> {
+    return new Map(resultRows.map((resultRow) => [resultRow.answer_id, resultRow.votes_count]));
+  }
+
+  private groupAnswersByQuestionId(
+    answerRows: AnswerRow[],
+    votesByAnswerId: Map<string, number>,
+  ): Map<string, Answer[]> {
     const answersByQuestionId = new Map<string, Answer[]>();
 
     for (const answerRow of answerRows) {
-      const answers = answersByQuestionId.get(answerRow.question_id) ?? [];
-
-      answers.push({
-        id: answerRow.id,
-        questionId: answerRow.question_id,
-        text: answerRow.text,
-        votesCount: votesByAnswerId.get(answerRow.id) ?? 0,
-      });
-
-      answersByQuestionId.set(answerRow.question_id, answers);
+      this.addAnswerToQuestionMap(answersByQuestionId, answerRow, votesByAnswerId);
     }
 
+    return answersByQuestionId;
+  }
+
+  private addAnswerToQuestionMap(
+    answersByQuestionId: Map<string, Answer[]>,
+    answerRow: AnswerRow,
+    votesByAnswerId: Map<string, number>,
+  ): void {
+    const answers = answersByQuestionId.get(answerRow.question_id) ?? [];
+
+    answers.push(this.mapAnswerRow(answerRow, votesByAnswerId));
+    answersByQuestionId.set(answerRow.question_id, answers);
+  }
+
+  private mapAnswerRow(answerRow: AnswerRow, votesByAnswerId: Map<string, number>): Answer {
+    return {
+      id: answerRow.id,
+      questionId: answerRow.question_id,
+      text: answerRow.text,
+      votesCount: votesByAnswerId.get(answerRow.id) ?? 0,
+    };
+  }
+
+  private groupQuestionsBySurveyId(
+    questionRows: QuestionRow[],
+    answersByQuestionId: Map<string, Answer[]>,
+  ): Map<string, Question[]> {
     const questionsBySurveyId = new Map<string, Question[]>();
 
     for (const questionRow of questionRows) {
-      const questions = questionsBySurveyId.get(questionRow.survey_id) ?? [];
-
-      questions.push({
-        id: questionRow.id,
-        surveyId: questionRow.survey_id,
-        title: questionRow.title,
-        allowMultipleChoice: questionRow.allow_multiple_choice,
-        answers: answersByQuestionId.get(questionRow.id) ?? [],
-      });
-
-      questionsBySurveyId.set(questionRow.survey_id, questions);
+      this.addQuestionToSurveyMap(questionsBySurveyId, questionRow, answersByQuestionId);
     }
 
-    return surveyRows.map((surveyRow) => ({
+    return questionsBySurveyId;
+  }
+
+  private addQuestionToSurveyMap(
+    questionsBySurveyId: Map<string, Question[]>,
+    questionRow: QuestionRow,
+    answersByQuestionId: Map<string, Answer[]>,
+  ): void {
+    const questions = questionsBySurveyId.get(questionRow.survey_id) ?? [];
+
+    questions.push(this.mapQuestionRow(questionRow, answersByQuestionId));
+    questionsBySurveyId.set(questionRow.survey_id, questions);
+  }
+
+  private mapQuestionRow(
+    questionRow: QuestionRow,
+    answersByQuestionId: Map<string, Answer[]>,
+  ): Question {
+    return {
+      id: questionRow.id,
+      surveyId: questionRow.survey_id,
+      title: questionRow.title,
+      allowMultipleChoice: questionRow.allow_multiple_choice,
+      answers: answersByQuestionId.get(questionRow.id) ?? [],
+    };
+  }
+
+  private mapSurveyRow(surveyRow: SurveyRow, questionsBySurveyId: Map<string, Question[]>): Survey {
+    return {
       id: surveyRow.id,
       title: surveyRow.title,
       description: surveyRow.description ?? undefined,
@@ -197,6 +250,6 @@ export class SurveyService {
       updatedAt: surveyRow.updated_at,
       endsAt: surveyRow.ends_at,
       questions: questionsBySurveyId.get(surveyRow.id) ?? [],
-    }));
+    };
   }
 }

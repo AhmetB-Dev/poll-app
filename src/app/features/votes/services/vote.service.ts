@@ -36,16 +36,28 @@ export class VoteService {
   ): VoteInsertRow[] {
     const voterKey = this.getVoterKey();
 
-    return survey.questions.flatMap((question) => {
-      const selectedAnswerIds = selectedAnswers[question.id] ?? [];
+    return survey.questions.flatMap((question) =>
+      this.createQuestionVoteRows(
+        survey.id,
+        question.id,
+        selectedAnswers[question.id] ?? [],
+        voterKey,
+      ),
+    );
+  }
 
-      return selectedAnswerIds.map((answerId) => ({
-        survey_id: survey.id,
-        question_id: question.id,
-        answer_id: answerId,
-        voter_key: voterKey,
-      }));
-    });
+  private createQuestionVoteRows(
+    surveyId: string,
+    questionId: string,
+    answerIds: string[],
+    voterKey: string,
+  ): VoteInsertRow[] {
+    return answerIds.map((answerId) => ({
+      survey_id: surveyId,
+      question_id: questionId,
+      answer_id: answerId,
+      voter_key: voterKey,
+    }));
   }
 
   private getVoterKey(): string {
