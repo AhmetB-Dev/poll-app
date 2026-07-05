@@ -9,6 +9,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { Survey } from '../../shared/models/survey.model';
 import { SurveyService } from '../../features/surveys/services/survey.service';
+import { SURVEY_CATEGORIES } from '../../shared/constants/survey-categories';
 
 @Component({
   selector: 'app-create-survey',
@@ -26,12 +27,7 @@ export class CreateSurvey {
   protected categoryMenuOpen = false;
   protected categoryTriggerHovered = false;
 
-  protected readonly categoryOptions = [
-    { label: 'Team activities', value: 'team-activities' },
-    { label: 'Health & wellness', value: 'health' },
-    { label: 'Gaming & entertainment', value: 'gaming' },
-    { label: 'Workplace & workflow', value: 'workplace' },
-  ];
+  protected readonly categoryOptions = SURVEY_CATEGORIES;
 
   protected readonly surveyForm = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(3)]],

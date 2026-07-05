@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 
 import { SurveyService } from '../../features/surveys/services/survey.service';
 import { Survey } from '../../shared/models/survey.model';
+import { SURVEY_CATEGORIES } from '../../shared/constants/survey-categories';
 
 type SurveyStatusFilter = 'active' | 'past';
 
@@ -21,12 +22,7 @@ export class Home {
   protected categoryMenuOpen = false;
   protected categoryTriggerHovered = false;
 
-  protected readonly categoryOptions = [
-    { label: 'Team activities', value: 'team-activities' },
-    { label: 'Health & wellness', value: 'health' },
-    { label: 'Gaming & entertainment', value: 'gaming' },
-    { label: 'Workplace & workflow', value: 'workplace' },
-  ];
+  protected readonly categoryOptions = SURVEY_CATEGORIES;
 
   protected readonly surveys = computed(() => this.surveyService.allSurveys());
 
