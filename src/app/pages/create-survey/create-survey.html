@@ -30,8 +30,8 @@
             <button
               class="create-survey__clear-field-button"
               type="button"
+              (click)="clearMainField('title')"
               aria-label="Clear survey name"
-              (click)="clearSurveyTitle()"
             >
               <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
                 <img
@@ -119,8 +119,8 @@
             <button
               class="create-survey__clear-field-button"
               type="button"
+              (click)="clearMainField('endsAt')"
               aria-label="Clear end date"
-              (click)="clearEndDate()"
             >
               <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
                 <img
@@ -141,7 +141,7 @@
           <input
             class="create-survey__control"
             id="survey-end-date"
-            type="datetime-local"
+            type="date"
             formControlName="endsAt"
           />
         </div>
@@ -155,8 +155,8 @@
             <button
               class="create-survey__clear-field-button"
               type="button"
+              (click)="clearMainField('description')"
               aria-label="Clear description"
-              (click)="clearDescription()"
             >
               <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
                 <img
