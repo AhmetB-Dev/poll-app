@@ -1,14 +1,18 @@
 <main class="home">
   <section class="home-hero" aria-labelledby="home-title">
-    <img class="home-hero__logo" src="/assets/img/logos/poll-app-logo-accent.png" alt="PollApp" />
+    <a routerLink="">
+      <img class="home-hero__logo" src="/assets/img/logos/poll-app-logo-accent.svg" alt="PollApp" />
+    </a>
 
     <h1 class="home-hero__title" id="home-title">Collect <br />Feedback, <br />Unlock Ideas</h1>
 
-    <img
-      class="home-hero__preview"
-      src="/assets/img/poll-phone-preview.png"
-      alt="Survey preview on a phone"
-    />
+    <div class="home-hero__preview-wrapper">
+      <img
+        class="home-hero__preview"
+        src="/assets/img/poll-phone-preview.svg"
+        alt="Survey preview on a phone"
+      />
+    </div>
 
     <p class="home-hero__description">
       Create and share surveys in minutes – from team events to workplace culture. Collect opinions,
@@ -17,8 +21,8 @@
 
     <div class="home-hero__cta-wrapper">
       <a class="home-hero__cta" routerLink="/create">
-        <span>New survey</span>
-        <img src="/assets/icons/icon-add-circle-dark.svg" alt="" />
+        New survey
+        <img class="home-hero__cta-icon" src="/assets/icons/icon-add-circle-dark.svg" alt="" />
       </a>
     </div>
   </section>
@@ -42,7 +46,9 @@
                   </span>
 
                   <h4 class="home-surveys__card-title">
-                    {{ survey.title }}
+                    <strong>
+                      {{ survey.title }}
+                    </strong>
                   </h4>
                 </div>
 
@@ -129,7 +135,7 @@
       </div>
     </div>
 
-    <div class="home-surveys__grid" aria-label="Available surveys">
+    <div class="survey-card__grid" aria-label="Available surveys">
       @for (survey of filteredSurveys(); track survey.id) {
         <article class="survey-card">
           <span class="survey-card__category">

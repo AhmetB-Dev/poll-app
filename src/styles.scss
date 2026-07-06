@@ -23,6 +23,7 @@
 }
 
 :root {
+  --border-right-radius: 5rem;
   --dark-bg: rgba(53, 39, 58, 1);
   --light-bg: #ffffff;
   --color-title: #ee9236;
@@ -53,6 +54,7 @@ p {
 }
 
 a {
+  color: inherit;
   text-decoration: none;
   font-family: var(--font-nokora);
 }
@@ -62,7 +64,6 @@ button {
   background-color: transparent;
   border: 0;
   cursor: pointer;
-  font-family: var(--font-nokora);
 }
 
 fieldset {
