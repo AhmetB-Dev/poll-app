@@ -54,7 +54,7 @@
 }
 
 .home-surveys {
-  padding: 0 1.25rem 11rem;
+  padding: 0 1.25rem 6rem;
 
   &__header {
     display: flex;
@@ -210,38 +210,36 @@
   }
 
   &__category-menu {
+    display: flex;
+    flex-direction: column;
+
     position: absolute;
-    top: calc(100% + 0.3rem);
     left: 0;
     z-index: 30;
+    background-color: white;
+    border-radius: 6px;
+    min-width: 12em;
   }
 
   &__category-options {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    min-width: 12rem;
     padding: 0.45rem;
-    border-radius: 5px 20px 5px 5px;
+    border-radius: 6px;
     background-color: var(--light-bg);
-    box-shadow: 0 0.8rem 1.8rem rgba(0, 0, 0, 0.28);
+    min-width: 12rem;
   }
 
   &__category-option {
-    border: none;
-    border-radius: 5px 14px 5px 5px;
-    padding: 0.55rem 0.7rem;
-    background-color: transparent;
-    color: var(--dark-bg);
-    cursor: pointer;
-    text-align: left;
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
     font-family: var(--font-mulish);
     font-size: 0.78rem;
-    font-weight: 700;
+    text-align: left;
 
     &:hover,
     &[aria-selected='true'] {
-      background-color: #ffb770;
+      background-color: #f4e9fb;
       color: var(--dark-bg);
     }
   }
@@ -254,8 +252,17 @@
 
   &__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(26rem, 1fr));
     gap: 1rem;
+
+    &:has(> .survey-card:nth-of-type(7)) {
+      max-height: 70dvh;
+      overflow-y: auto;
+      padding-right: 0.35rem;
+      scrollbar-width: thin;
+      scrollbar-color: #ee9236 transparent;
+      -webkit-overflow-scrolling: touch;
+    }
   }
 
   &__empty {
@@ -270,7 +277,6 @@
 .survey-card {
   display: grid;
   gap: 0.65rem;
-  padding: 1rem;
   border-radius: 0.45rem;
   background-color: rgba(255, 255, 255, 0.08);
 
@@ -278,16 +284,20 @@
     background-color: #d9d9d929;
   }
 
+  &__link {
+    padding: 1rem;
+  }
+
   &__category {
-    color: rgba(255, 255, 255, 0.78);
-    font-weight: 700;
+    color: #ffcfa1;
+    font-size: clamp(0.8rem, 2vw, 4rem);
   }
 
   &__title {
     margin: 0;
     color: var(--light-bg);
     font-family: var(--font-mulish);
-    font-size: 1rem;
+    font-size: clamp(1rem, 6vw, 6rem);
   }
 
   &__deadline {
@@ -295,7 +305,7 @@
     justify-content: flex-end;
   }
 
-  &__link {
+  &__deadline-text {
     width: fit-content;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
