@@ -54,7 +54,7 @@
 }
 
 .home-surveys {
-  padding: 0 1.25rem 4rem;
+  padding: 0 1.25rem 11rem;
 
   &__header {
     display: flex;
@@ -135,8 +135,8 @@
   }
 
   &__card-title {
-    font-size: 1rem;
     margin: 0;
+    font-size: 1rem;
   }
 
   &__deadline {
@@ -167,12 +167,11 @@
     border-radius: 999px;
     padding: 0 0.75rem;
     background-color: #fee9d4;
-
     cursor: pointer;
     font-size: 0.86rem;
     font-weight: 800;
 
-    &:not(&--active):hover {
+    &:not(.home-surveys__tab--active):hover {
       background-color: #ffcfa1;
     }
 
@@ -191,13 +190,13 @@
   &__category-trigger {
     display: inline-flex;
     align-items: center;
+    gap: 0.45rem;
     border: none;
+    border-radius: 6px;
     padding: 0.5em 0.5em;
     color: white;
-    gap: 0.45rem;
     font-family: var(--font-mulish);
     font-size: 0.9rem;
-    border-radius: 6px;
 
     &:hover {
       background-color: #d9d9d91f;
@@ -218,10 +217,10 @@
   }
 
   &__category-options {
-    min-width: 12rem;
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    min-width: 12rem;
     padding: 0.45rem;
     border-radius: 5px 20px 5px 5px;
     background-color: var(--light-bg);
@@ -249,12 +248,13 @@
 
   &__selected-category {
     padding: 0.5em 0.5em;
-    font-size: 0.75rem;
     color: #ffb770;
+    font-size: 0.75rem;
   }
 
   &__grid {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
     gap: 1rem;
   }
 
@@ -274,28 +274,8 @@
   border-radius: 0.45rem;
   background-color: rgba(255, 255, 255, 0.08);
 
-  &__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    gap: 1rem;
-  }
-
   &:hover {
     background-color: #d9d9d929;
-  }
-
-  &__header,
-  &__meta {
-    display: flex;
-    justify-content: space-between;
-    gap: 0.75rem;
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 0.78rem;
-  }
-
-  &__status {
-    color: #ffb770;
-    font-weight: 800;
   }
 
   &__category {
@@ -308,12 +288,6 @@
     color: var(--light-bg);
     font-family: var(--font-mulish);
     font-size: 1rem;
-  }
-
-  &__description {
-    margin: 0;
-    color: rgba(255, 255, 255, 0.76);
-    font-size: 0.84rem;
   }
 
   &__deadline {
