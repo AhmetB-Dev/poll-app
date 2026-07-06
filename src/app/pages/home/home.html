@@ -1,29 +1,30 @@
 <main class="home">
+  <a routerLink="">
+    <img class="home-hero__logo" src="/assets/img/logos/poll-app-logo-accent.svg" alt="PollApp" />
+  </a>
   <section class="home-hero" aria-labelledby="home-title">
-    <a routerLink="">
-      <img class="home-hero__logo" src="/assets/img/logos/poll-app-logo-accent.svg" alt="PollApp" />
-    </a>
+    <div class="home-hero__header">
+      <h1 class="home-hero__title" id="home-title">Collect <br />Feedback, <br />Unlock Ideas</h1>
 
-    <h1 class="home-hero__title" id="home-title">Collect <br />Feedback, <br />Unlock Ideas</h1>
+      <div class="home-hero__preview-wrapper">
+        <img
+          class="home-hero__preview"
+          src="/assets/img/poll-phone-preview.svg"
+          alt="Survey preview on a phone"
+        />
+      </div>
 
-    <div class="home-hero__preview-wrapper">
-      <img
-        class="home-hero__preview"
-        src="/assets/img/poll-phone-preview.svg"
-        alt="Survey preview on a phone"
-      />
-    </div>
+      <div class="home-hero__content">
+        <p class="home-hero__description">
+          Create and share surveys in minutes – from team events to workplace culture. Collect
+          opinions, engage your audience, and turn feedback into action.
+        </p>
 
-    <p class="home-hero__description">
-      Create and share surveys in minutes – from team events to workplace culture. Collect opinions,
-      engage your audience, and turn feedback into action.
-    </p>
-
-    <div class="home-hero__cta-wrapper">
-      <a class="home-hero__cta" routerLink="/create">
-        New survey
-        <img class="home-hero__cta-icon" src="/assets/icons/icon-add-circle-dark.svg" alt="" />
-      </a>
+        <a class="home-hero__cta" routerLink="/create">
+          New survey
+          <img class="home-hero__cta-icon" src="/assets/icons/icon-add-circle-dark.svg" alt="" />
+        </a>
+      </div>
     </div>
   </section>
 
@@ -111,7 +112,6 @@
             role="listbox"
             aria-label="Survey categories"
           >
-            <!-- <div class="home-surveys__category-options"> -->
             @for (category of categoryOptions; track category.value) {
               <button
                 class="home-surveys__category-option"
@@ -123,7 +123,6 @@
                 {{ category.label }}
               </button>
             }
-            <!-- </div> -->
           </div>
         }
 
