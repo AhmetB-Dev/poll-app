@@ -12,27 +12,25 @@
   padding: 2rem 1.25rem 3rem;
 
   &__header {
-    display: grid;
-    grid-template-areas:
-      'title'
-      'preview'
-      'content';
-    gap: 2rem;
+    display: flex;
+    flex-direction: column;
   }
 
-  &__logo {
-    width: 30%;
+  // Mobile: Wrapper verschwindet optisch.
+  // Dadurch können title, preview und content einzeln sortiert werden.
+  &__text {
+    display: contents;
   }
 
   &__title {
-    grid-area: title;
+    order: 1;
     color: var(--color-title);
     font-size: clamp(3.1rem, 14vw, 18rem);
     line-height: 0.82;
   }
 
   &__preview-wrapper {
-    grid-area: preview;
+    order: 2;
     @include flex-center();
   }
 
@@ -41,7 +39,7 @@
   }
 
   &__content {
-    grid-area: content;
+    order: 3;
     @include flex-center();
     flex-direction: column;
     padding-top: 2.5em;
@@ -68,15 +66,27 @@
 
   @media (min-width: 800px) {
     &__header {
-      grid-template-columns: 50%;
-      grid-template-areas: 'title preview' 'content preview';
+      display: flex;
       align-items: center;
-      column-gap: 4rem;
+      flex-direction: unset;
+      gap: 4rem;
+    }
+
+    &__text {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      order: 1;
+    }
+
+    &__preview-wrapper {
+      order: 2;
+      flex: 0 0 42%;
     }
 
     &__content {
       align-items: flex-start;
-      padding-top: 0;
+      padding-top: 2.5em;
     }
 
     &__preview {
@@ -181,7 +191,8 @@
   }
 
   &__tools {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
     margin: 1.2rem 0;
   }
@@ -283,7 +294,7 @@
 
   &__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(26rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
     gap: 1rem;
 
     &:has(> .survey-card:nth-of-type(7)) {
@@ -303,13 +314,24 @@
     background-color: rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.82);
   }
+
+  @media (min-width: 800px) {
+    &__tools {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: unset;
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+  }
 }
 
 .survey-card {
   display: grid;
   gap: 0.65rem;
-  border-radius: 0.45rem;
+
   background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 6px 50px 5px 5px;
 
   &:hover {
     background-color: #d9d9d929;
@@ -317,6 +339,7 @@
 
   &__link {
     padding: 1rem;
+    border-radius: var(--border-right-radius);
   }
 
   &__category {
@@ -345,7 +368,7 @@
     font-size: 0.75rem;
     font-weight: 800;
   }
-}
 
-@media (min-width: 768px) {
+  @media (min-width: 800px) {
+  }
 }
