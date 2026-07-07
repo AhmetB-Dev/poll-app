@@ -124,6 +124,15 @@ export class CreateSurvey {
     return this.questions.at(questionIndex).get('answers') as FormArray<FormControl<string>>;
   }
 
+  /** Opens the native date picker when the user clicks into the date input. */
+  protected openNativeDatePicker(dateInput: HTMLInputElement & { showPicker?: () => void }): void {
+    dateInput.focus();
+
+    try {
+      dateInput.showPicker?.();
+    } catch {}
+  }
+
   /** Opens or closes the category dropdown. */
   protected toggleCategoryMenu(): void {
     this.categoryMenuOpen = !this.categoryMenuOpen;

@@ -5,9 +5,16 @@
 
   &__logo {
     padding: 0em 0em 3em 1em;
+
     img {
       width: 9em;
     }
+  }
+
+  &__editor {
+    background-color: #35273a;
+    border-top-right-radius: 100px;
+    padding: 4em 1em 4em 1em;
   }
 
   &__header {
@@ -36,14 +43,14 @@
     background-color: rgba(255, 183, 112, 0.3019607843);
   }
 
-  &__editor {
-    background-color: #35273a;
-    border-top-right-radius: 100px;
-    padding: 4em 1em 4em 1em;
-  }
-
   &__title {
     font-size: 2.5ch;
+  }
+
+  &__form {
+    background-color: #8e709929;
+    border-radius: 5px 80px 5px 5px;
+    padding: 2em 1em 0em 1em;
   }
 
   &__field {
@@ -57,51 +64,15 @@
     padding-right: 0.5em;
   }
 
-  &__form {
-    background-color: #8e709929;
-    border-radius: 5px 80px 5px 5px;
-    padding: 2em 1em 0em 1em;
-  }
-
-  &__publish-area {
-    display: flex;
-    justify-content: center;
-    padding: 4em 0em 0em 0em;
-  }
-
-  &__publish-button {
-    padding: 1em 1.5em 1em 1.5em;
-    background-color: #ffb770;
-    border-radius: 10px;
-  }
-
-  &__add-question-area {
-    display: flex;
-    justify-content: center;
-    padding: 6em 0em 3em 0em;
-  }
-
-  &__add-question-button {
-    background-color: rgba(255, 183, 112, 0.3019607843);
-    padding: 1em 1.5em 1em 1.5em;
-    display: flex;
-    align-items: center;
-    gap: 0.6em;
-    border-radius: 10px;
-  }
-
-  &__add-answer-button {
-    display: flex;
-    gap: 0.6em;
-    border-bottom: solid 1px white;
-    color: white;
-    padding: 2.4em 0em 0.2em 0em;
-    margin-left: 0.6em;
-  }
-
   &__clear-field-button {
     padding: 4px;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 6px;
+    background-color: transparent;
+    cursor: pointer;
 
     img {
       width: 1.4em;
@@ -110,6 +81,40 @@
     &:hover {
       background-color: #ffb77099;
     }
+
+    &:active:not(:disabled) {
+      background-color: #ffb77099;
+
+      .create-survey__clear-field-icon--default {
+        display: none;
+      }
+
+      .create-survey__clear-field-icon--active {
+        display: block;
+      }
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  &__clear-field-icon-wrap {
+    width: 1.4em;
+    height: 1.55em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__clear-field-icon {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__clear-field-icon--active {
+    display: none;
   }
 
   &__category-select {
@@ -164,6 +169,12 @@
     }
   }
 
+  &__selected-category {
+    color: #ffb770;
+    padding: 0em 0.6em;
+    margin: 0;
+  }
+
   &__answer-list-header {
     display: flex;
     justify-content: space-between;
@@ -175,10 +186,40 @@
     align-items: center;
   }
 
-  &__selected-category {
-    color: #ffb770;
-    padding: 0em 0.6em;
-    margin: 0;
+  &__add-answer-button {
+    display: flex;
+    gap: 0.6em;
+    border-bottom: solid 1px white;
+    color: white;
+    padding: 2.4em 0em 0.2em 0em;
+    margin-left: 0.6em;
+  }
+
+  &__add-question-area {
+    display: flex;
+    justify-content: center;
+    padding: 6em 0em 3em 0em;
+  }
+
+  &__add-question-button {
+    background-color: rgba(255, 183, 112, 0.3019607843);
+    padding: 1em 1.5em 1em 1.5em;
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    border-radius: 10px;
+  }
+
+  &__publish-area {
+    display: flex;
+    justify-content: center;
+    padding: 4em 0em 0em 0em;
+  }
+
+  &__publish-button {
+    padding: 1em 1.5em 1em 1.5em;
+    background-color: #ffb770;
+    border-radius: 10px;
   }
 
   &__publish-popup-backdrop {
@@ -248,51 +289,6 @@
     margin: 0.7rem 0 0;
     color: #f4e9f7;
   }
-
-  &__clear-field-button {
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    border-radius: 6px;
-    background-color: transparent;
-    cursor: pointer;
-
-    &:active:not(:disabled) {
-      background-color: #ffb77099;
-
-      .create-survey__clear-field-icon--default {
-        display: none;
-      }
-
-      .create-survey__clear-field-icon--active {
-        display: block;
-      }
-    }
-
-    &:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-  }
-
-  &__clear-field-icon-wrap {
-    width: 1.4em;
-    height: 1.55em;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  &__clear-field-icon {
-    width: 100%;
-    height: 100%;
-  }
-
-  &__clear-field-icon--active {
-    display: none;
-  }
 }
 
 @media (min-width: 800px) {
@@ -309,12 +305,14 @@ textarea {
   resize: none;
   width: 100%;
   min-height: 8em;
+
   &:focus {
     background-color: #fee9d4;
   }
 }
 
 input:not([type='checkbox']) {
+  padding: 0em 0.8em 0em 0em;
   width: 100%;
   min-height: 3em;
   border-radius: 5px 20px 5px 5px;
