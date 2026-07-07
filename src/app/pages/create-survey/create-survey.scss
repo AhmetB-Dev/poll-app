@@ -54,6 +54,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-right: 0.5em;
   }
 
   &__form {
@@ -109,12 +110,6 @@
     &:hover {
       background-color: #ffb77099;
     }
-  }
-
-  &__question-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
   }
 
   &__category-select {
