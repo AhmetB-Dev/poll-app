@@ -18,6 +18,9 @@
   }
 
   &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
     padding: 0em 0em 0em 0.6em;
   }
 
@@ -28,6 +31,8 @@
   }
 
   &__draft-badge {
+    width: fit-content;
+    margin: 0;
     color: black;
     background-color: #ffcfa1;
     border-top-right-radius: 18px;
@@ -44,7 +49,9 @@
   }
 
   &__title {
-    font-size: 2.5ch;
+    margin: 0;
+    font-size: clamp(3rem, 6vw, 6rem);
+    line-height: 0.85;
   }
 
   &__form {
@@ -293,7 +300,44 @@
 
 @media (min-width: 800px) {
   .create-survey {
+    &__header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-rows: auto auto;
+      align-items: center;
+      column-gap: 2rem;
+      row-gap: 1.4rem;
+    }
+
+    &__status-row {
+      display: contents;
+    }
+
+    &__draft-badge {
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: start;
+    }
+
+    &__title {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
     &__close-action {
+      grid-column: 2;
+      grid-row: 2;
+      justify-self: end;
+      padding: 1em 1.25em;
+      border-radius: 16px;
+      color: white;
+      font-size: 1.1rem;
+
+      img {
+        width: 1.35rem;
+        height: 1.35rem;
+      }
+
       &::before {
         content: 'Cancel';
       }
