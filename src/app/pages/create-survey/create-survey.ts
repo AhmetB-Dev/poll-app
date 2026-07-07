@@ -1,4 +1,4 @@
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -43,10 +43,10 @@ export class CreateSurvey {
   private readonly surveyService = inject(SurveyService);
 
   /** Controls the success popup after a survey was published. */
-  protected publishPopupOpen = false;
+  protected publishPopupOpen = signal(false);
 
   /** Prevents duplicate publish requests while the current request is still running. */
-  protected isPublishing = false;
+  protected isPublishing = signal(false);
 
   /** Controls whether the custom category menu is expanded. */
   protected categoryMenuOpen = false;
@@ -169,7 +169,7 @@ export class CreateSurvey {
 
   /** Closes the publish success popup manually. */
   protected closePublishPopup(): void {
-    this.publishPopupOpen = false;
+    this.publishPopupOpen.set(false);
   }
 
   /** Adds a new empty question block to the survey form. */
@@ -217,7 +217,7 @@ export class CreateSurvey {
 
   /** Validates the form and publishes the survey when all required data is valid. */
   protected async submitSurvey(): Promise<void> {
-    if (this.isPublishing || !this.hasValidSurveyForm()) {
+    if (this.isPublishing() || !this.hasValidSurveyForm()) {
       return;
     }
 
@@ -350,13 +350,13 @@ export class CreateSurvey {
   /** Sends the survey to the service and shows the success popup when saving worked. */
   private async publishSurvey(survey: Survey): Promise<void> {
     try {
-      this.isPublishing = true;
+      this.isPublishing.set(true);
       await this.surveyService.createSurvey(survey);
-      this.publishPopupOpen = true;
+      this.publishPopupOpen.set(true);
     } catch (error) {
       console.error('Survey could not be created:', error);
     } finally {
-      this.isPublishing = false;
+      this.isPublishing.set(false);
     }
   }
 }

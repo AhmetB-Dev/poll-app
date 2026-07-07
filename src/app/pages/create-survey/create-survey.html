@@ -248,9 +248,9 @@
           class="create-survey__publish-button"
           type="submit"
           form="create-survey-form"
-          [disabled]="isPublishing"
+          [disabled]="isPublishing()"
         >
-          @if (isPublishing) {
+          @if (isPublishing()) {
             Publishing...
           } @else {
             Publish
@@ -260,7 +260,7 @@
       </div>
     </div>
   </section>
-  @if (publishPopupOpen) {
+  @if (publishPopupOpen()) {
     <div class="create-survey__publish-popup-backdrop" role="presentation">
       <aside
         class="create-survey__publish-popup"
