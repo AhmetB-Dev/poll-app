@@ -2,7 +2,7 @@
   <section aria-labelledby="create-survey-title">
     <div class="create-survey__logo">
       <a routerLink="">
-        <img src="/assets/img/logos/poll-app-logo-dark.png" alt="PollApp" />
+        <img src="/assets/img/logos/poll-app-logo-dark.svg" alt="PollApp" />
       </a>
     </div>
 
@@ -58,10 +58,6 @@
               type="text"
               formControlName="title"
             />
-
-            @if (surveyForm.controls.title.invalid && surveyForm.controls.title.touched) {
-              <small class="create-survey__error">Please enter at least 3 characters.</small>
-            }
 
             <div class="create-survey__category-select">
               <button
@@ -229,10 +225,8 @@
 
                   <label class="create-survey__multiple-choice-option">
                     <input type="checkbox" formControlName="allowMultipleChoice" />
-                    <span>Allow multiple choice</span>
+                    <span>Allow multiple answers.</span>
                   </label>
-
-                  <small>{{ getAnswers(questionIndex).length }} minimum 2, maximum optional</small>
                 </div>
 
                 <ng-container formArrayName="answers">

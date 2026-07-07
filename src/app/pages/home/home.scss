@@ -16,8 +16,6 @@
     flex-direction: column;
   }
 
-  // Mobile: Wrapper verschwindet optisch.
-  // Dadurch können title, preview und content einzeln sortiert werden.
   &__text {
     display: contents;
   }
@@ -94,6 +92,7 @@
     }
   }
 }
+
 .home-surveys {
   padding: 0 1.25rem 6rem;
 
@@ -199,7 +198,7 @@
 
   &__tabs {
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     gap: 0.65rem;
   }
 

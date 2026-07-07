@@ -71,3 +71,11 @@ fieldset {
   padding: 0;
   margin: 0;
 }
+
+input[type='checkbox'] {
+  accent-color: #ffb770;
+
+  &:hover {
+    background-color: #ffb770;
+  }
+}
