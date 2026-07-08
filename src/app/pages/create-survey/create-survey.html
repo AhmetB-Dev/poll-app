@@ -5,6 +5,7 @@
         <img src="/assets/img/logos/poll-app-logo-dark.svg" alt="PollApp" />
       </a>
     </div>
+
     <div class="create-survey__editor">
       <header class="create-survey__header">
         <div class="create-survey__status-row">
@@ -15,144 +16,62 @@
         </div>
         <h1 class="create-survey__title" id="create-survey-title">Create new survey</h1>
       </header>
+
       <form
         class="create-survey__form"
         id="create-survey-form"
         [formGroup]="surveyForm"
         (ngSubmit)="submitSurvey()"
       >
-        <div class="create-survey__field">
-          <div class="create-survey__field-header">
-            <label for="survey-title">Survey name</label>
-            <button
-              class="create-survey__clear-field-button"
-              type="button"
-              (click)="clearMainField('title')"
-              aria-label="Clear survey name"
-            >
-              <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
-                <img
-                  class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
-                  src="/assets/icons/icon-delete-white.svg"
-                  alt=""
-                />
-                <img
-                  class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
-                  src="/assets/icons/icon-delete-dark.svg"
-                  alt=""
-                />
-              </span>
-            </button>
-          </div>
-          <div>
-            <input id="survey-title" type="text" formControlName="title" />
-            <div class="create-survey__category-select">
+        <div class="create-survey__top-grid">
+          <div class="create-survey__field create-survey__field--title">
+            <div class="create-survey__field-header">
+              <label for="survey-title">Survey name</label>
+            </div>
+
+            <div class="create-survey__control-row">
+              <input id="survey-title" type="text" formControlName="title" />
               <button
-                class="create-survey__category-trigger"
+                class="create-survey__clear-field-button"
                 type="button"
-                aria-haspopup="listbox"
-                aria-controls="survey-category-list"
-                [attr.aria-expanded]="categoryMenuOpen"
-                (click)="toggleCategoryMenu()"
-                (mouseenter)="categoryTriggerHovered = true"
-                (mouseleave)="categoryTriggerHovered = false"
-                (keydown.escape)="closeCategoryMenu()"
+                (click)="clearMainField('title')"
+                aria-label="Clear survey name"
               >
-                <span>Choose category</span>
-                <img [src]="categoryIconSrc" alt="" />
+                <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
+                  <img
+                    class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
+                    src="/assets/icons/icon-delete-white.svg"
+                    alt=""
+                  />
+                  <img
+                    class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
+                    src="/assets/icons/icon-delete-dark.svg"
+                    alt=""
+                  />
+                </span>
               </button>
-              @if (categoryMenuOpen) {
-                <div
-                  class="create-survey__category-menu"
-                  id="survey-category-list"
-                  role="listbox"
-                  aria-label="Survey category"
-                >
-                  @for (category of categoryOptions; track category.value) {
-                    <button
-                      class="create-survey__category-option"
-                      type="button"
-                      role="option"
-                      [attr.aria-selected]="surveyForm.controls.category.value === category.value"
-                      (click)="selectCategory(category.value)"
-                    >
-                      {{ category.label }}
-                    </button>
-                  }
-                </div>
-              }
-              @if (hasSelectedCategory) {
-                <p class="create-survey__selected-category">{{ selectedCategoryLabel }}</p>
-              }
             </div>
           </div>
-        </div>
-        <div class="create-survey__field">
-          <div class="create-survey__field-header">
-            <label for="survey-end-date">Set end date optional</label>
-            <button
-              class="create-survey__clear-field-button"
-              type="button"
-              (click)="clearMainField('endsAt')"
-              aria-label="Clear end date"
-            >
-              <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
-                <img
-                  class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
-                  src="/assets/icons/icon-delete-white.svg"
-                  alt=""
-                />
-                <img
-                  class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
-                  src="/assets/icons/icon-delete-dark.svg"
-                  alt=""
-                />
-              </span>
-            </button>
-          </div>
-          <input
-            #endDateInput
-            id="survey-end-date"
-            type="date"
-            formControlName="endsAt"
-            (click)="openNativeDatePicker(endDateInput)"
-          />
-        </div>
-        <div class="create-survey__field">
-          <div class="create-survey__field-header">
-            <label for="survey-description"> Describing text optional </label>
-            <button
-              class="create-survey__clear-field-button"
-              type="button"
-              (click)="clearMainField('description')"
-              aria-label="Clear description"
-            >
-              <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
-                <img
-                  class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
-                  src="/assets/icons/icon-delete-white.svg"
-                  alt=""
-                />
-                <img
-                  class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
-                  src="/assets/icons/icon-delete-dark.svg"
-                  alt=""
-                />
-              </span>
-            </button>
-          </div>
-          <textarea id="survey-description" rows="4" formControlName="description"></textarea>
-        </div>
-        <ng-container formArrayName="questions">
-          @for (question of questions.controls; track $index; let questionIndex = $index) {
-            <fieldset [formGroupName]="questionIndex">
+
+          <div class="create-survey__date-category-row">
+            <div class="create-survey__field create-survey__field--date">
               <div class="create-survey__field-header">
-                <legend>{{ questionIndex + 1 }}. Question</legend>
+                <label for="survey-end-date">Set end date <span>(optional)</span></label>
+              </div>
+
+              <div class="create-survey__control-row">
+                <input
+                  #endDateInput
+                  id="survey-end-date"
+                  type="date"
+                  formControlName="endsAt"
+                  (click)="openNativeDatePicker(endDateInput)"
+                />
                 <button
                   class="create-survey__clear-field-button"
                   type="button"
-                  (click)="removeQuestion(questionIndex)"
-                  aria-label="Clear or remove question"
+                  (click)="clearMainField('endsAt')"
+                  aria-label="Clear end date"
                 >
                   <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
                     <img
@@ -168,14 +87,117 @@
                   </span>
                 </button>
               </div>
-              <div>
-                <input
-                  [id]="'question-title-' + questionIndex"
-                  type="text"
-                  formControlName="title"
-                />
+            </div>
+
+            <div class="create-survey__field create-survey__field--category">
+              <div class="create-survey__category-select">
+                <button
+                  class="create-survey__category-trigger"
+                  type="button"
+                  aria-haspopup="listbox"
+                  aria-controls="survey-category-list"
+                  [attr.aria-expanded]="categoryMenuOpen"
+                  (click)="toggleCategoryMenu()"
+                  (mouseenter)="categoryTriggerHovered = true"
+                  (mouseleave)="categoryTriggerHovered = false"
+                  (keydown.escape)="closeCategoryMenu()"
+                >
+                  <span>Choose category</span>
+                  <img [src]="categoryIconSrc" alt="" />
+                </button>
+
+                @if (categoryMenuOpen) {
+                  <div
+                    class="create-survey__category-menu"
+                    id="survey-category-list"
+                    role="listbox"
+                    aria-label="Survey category"
+                  >
+                    @for (category of categoryOptions; track category.value) {
+                      <button
+                        class="create-survey__category-option"
+                        type="button"
+                        role="option"
+                        [attr.aria-selected]="surveyForm.controls.category.value === category.value"
+                        (click)="selectCategory(category.value)"
+                      >
+                        {{ category.label }}
+                      </button>
+                    }
+                  </div>
+                }
+
+                @if (hasSelectedCategory) {
+                  <p class="create-survey__selected-category">{{ selectedCategoryLabel }}</p>
+                }
               </div>
-              <div>
+            </div>
+          </div>
+
+          <div class="create-survey__field create-survey__field--description">
+            <div class="create-survey__field-header">
+              <label for="survey-description">Describing text <span>(optional)</span></label>
+            </div>
+
+            <div class="create-survey__control-row create-survey__control-row--textarea">
+              <textarea id="survey-description" rows="4" formControlName="description"></textarea>
+              <button
+                class="create-survey__clear-field-button"
+                type="button"
+                (click)="clearMainField('description')"
+                aria-label="Clear description"
+              >
+                <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
+                  <img
+                    class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
+                    src="/assets/icons/icon-delete-white.svg"
+                    alt=""
+                  />
+                  <img
+                    class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
+                    src="/assets/icons/icon-delete-dark.svg"
+                    alt=""
+                  />
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="create-survey__questions-column" formArrayName="questions">
+          @for (question of questions.controls; track $index; let questionIndex = $index) {
+              <fieldset class="create-survey__question-card" [formGroupName]="questionIndex">
+                <div class="create-survey__field-header create-survey__question-header">
+                  <legend>{{ questionIndex + 1 }}. Question</legend>
+                  <button
+                    class="create-survey__clear-field-button"
+                    type="button"
+                    (click)="removeQuestion(questionIndex)"
+                    aria-label="Clear or remove question"
+                  >
+                    <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
+                      <img
+                        class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
+                        src="/assets/icons/icon-delete-white.svg"
+                        alt=""
+                      />
+                      <img
+                        class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
+                        src="/assets/icons/icon-delete-dark.svg"
+                        alt=""
+                      />
+                    </span>
+                  </button>
+                </div>
+
+                <div class="create-survey__control-row">
+                  <input
+                    [id]="'question-title-' + questionIndex"
+                    type="text"
+                    formControlName="title"
+                  />
+                </div>
+
                 <div class="create-survey__answer-list-header">
                   <span>Answers</span>
                   <label class="create-survey__multiple-choice-option">
@@ -183,66 +205,68 @@
                     <span>Allow multiple answers.</span>
                   </label>
                 </div>
-                <ng-container formArrayName="answers">
+
+                <div class="create-survey__answers" formArrayName="answers">
                   @for (
                     answer of getAnswers(questionIndex).controls;
                     track $index;
                     let answerIndex = $index
                   ) {
-                    <div>
-                      <div class="create-survey__field-header">
-                        <label [for]="'answer-' + questionIndex + '-' + answerIndex">
-                          {{ answerIndex + 1 }}. Answer
-                        </label>
-                        <button
-                          class="create-survey__clear-field-button"
-                          type="button"
-                          (click)="removeAnswer(questionIndex, answerIndex)"
-                          aria-label="Clear or remove answer"
-                        >
-                          <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
-                            <img
-                              class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
-                              src="/assets/icons/icon-delete-white.svg"
-                              alt=""
-                            />
-                            <img
-                              class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
-                              src="/assets/icons/icon-delete-dark.svg"
-                              alt=""
-                            />
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                    <div>
+                    <div class="create-survey__answer-row">
+                      <label
+                        class="create-survey__answer-label"
+                        [for]="'answer-' + questionIndex + '-' + answerIndex"
+                      >
+                        {{ getAnswerLabel(answerIndex) }}.
+                      </label>
                       <input
                         [id]="'answer-' + questionIndex + '-' + answerIndex"
                         type="text"
                         [formControlName]="answerIndex"
                       />
+                      <button
+                        class="create-survey__clear-field-button"
+                        type="button"
+                        (click)="removeAnswer(questionIndex, answerIndex)"
+                        aria-label="Clear or remove answer"
+                      >
+                        <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
+                          <img
+                            class="create-survey__clear-field-icon create-survey__clear-field-icon--default"
+                            src="/assets/icons/icon-delete-white.svg"
+                            alt=""
+                          />
+                          <img
+                            class="create-survey__clear-field-icon create-survey__clear-field-icon--active"
+                            src="/assets/icons/icon-delete-dark.svg"
+                            alt=""
+                          />
+                        </span>
+                      </button>
                     </div>
                   }
-                </ng-container>
-              </div>
-              <button
-                class="create-survey__add-answer-button"
-                type="button"
-                (click)="addAnswer(questionIndex)"
-              >
-                Add answer
-                <img src="/assets/icons/icon-add-circle-white.svg" alt="" />
-              </button>
-            </fieldset>
+                </div>
+
+                <button
+                  class="create-survey__add-answer-button"
+                  type="button"
+                  (click)="addAnswer(questionIndex)"
+                >
+                  Add answer
+                  <img src="/assets/icons/icon-add-circle-white.svg" alt="" />
+                </button>
+              </fieldset>
           }
-        </ng-container>
-        <div class="create-survey__add-question-area">
-          <button class="create-survey__add-question-button" type="button" (click)="addQuestion()">
-            Add next question
-            <img src="/assets/icons/icon-add-circle-white.svg" alt="" />
-          </button>
+
+          <div class="create-survey__add-question-area">
+            <button class="create-survey__add-question-button" type="button" (click)="addQuestion()">
+              Add next question
+              <img src="/assets/icons/icon-add-circle-white.svg" alt="" />
+            </button>
+          </div>
         </div>
       </form>
+
       <div class="create-survey__publish-area">
         <button
           class="create-survey__publish-button"
@@ -260,6 +284,7 @@
       </div>
     </div>
   </section>
+
   @if (publishPopupOpen()) {
     <div class="create-survey__publish-popup-backdrop" role="presentation">
       <aside

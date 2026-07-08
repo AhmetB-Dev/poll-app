@@ -201,6 +201,16 @@ export class CreateSurvey {
     this.getAnswers(questionIndex).push(this.createAnswerControl());
   }
 
+  /** Returns the visible answer label used in the form. */
+  protected getAnswerLabel(answerIndex: number): string {
+    if (answerIndex >= 0 && answerIndex < 26) {
+      return String.fromCharCode(65 + answerIndex);
+    }
+
+    return String(answerIndex + 1);
+  }
+
+
   /**
    * Removes an answer or clears it when the minimum of two answers would be broken.
    */
