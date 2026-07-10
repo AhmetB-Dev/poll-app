@@ -1,7 +1,12 @@
 <main class="survey-detail">
-  <div class="survey-detail__logo">
-    <img src="/assets/img/logos/poll-app-logo-dark.png" alt="PollApp" />
-  </div>
+  <header class="survey-detail__header">
+    <img class="survey-detail__logo" src="/assets/img/logos/poll-app-logo-dark.svg" alt="PollApp" />
+
+    <a class="survey-detail__cta" routerLink="/create">
+      create survey
+      <img class="survey-detail__cta-icon" src="/assets/icons/icon-add-circle-dark.svg" alt="" />
+    </a>
+  </header>
 
   @if (survey(); as survey) {
     <section class="survey-detail__content">
@@ -42,14 +47,18 @@
         <form class="survey-detail__form" (submit)="submitVote(); $event.preventDefault()">
           @for (question of survey.questions; track question.id; let questionIndex = $index) {
             <fieldset class="survey-question">
-              <legend class="survey-question__title">
-                <span class="survey-question__number">{{ questionIndex + 1 }}.</span>
-                <span>{{ question.title }}</span>
-              </legend>
+              <div class="survey-question__title-wrapper">
+                <strong>
+                  <legend class="survey-question__title">
+                    <span class="survey-question__number">{{ questionIndex + 1 }}.</span>
+                    <span>{{ question.title }}</span>
+                  </legend>
+                </strong>
 
-              @if (question.allowMultipleChoice) {
-                <p class="survey-question__multiple-choice-hint">Multiple answers possible</p>
-              }
+                @if (question.allowMultipleChoice) {
+                  <p class="survey-question__multiple-choice-hint">Multiple answers possible</p>
+                }
+              </div>
 
               <div class="survey-question__answers">
                 @for (answer of question.answers; track answer.id; let answerIndex = $index) {
@@ -64,9 +73,11 @@
                     />
 
                     <span class="survey-question__box">
-                      <span class="survey-question__answer-label" aria-hidden="true">
-                        {{ answerOptionLabel(answerIndex) }}
-                      </span>
+                      <strong>
+                        <span class="survey-question__answer-label" aria-hidden="true">
+                          {{ answerOptionLabel(answerIndex) }}
+                        </span>
+                      </strong>
 
                       <span class="survey-question__answer-text">
                         {{ answer.text }}
@@ -77,11 +88,14 @@
               </div>
             </fieldset>
           }
-
-          <div class="survey-detail__submit-button-container">
-            <button class="survey-detail__submit-button" type="submit">Complete</button>
-          </div>
         </form>
+        <div class="survey-detail__submit-button-container">
+          <button class="survey-detail__submit-button" type="submit">
+            Complete
+
+            <img src="/assets/icons/icon-check-dark.svg" alt="" />
+          </button>
+        </div>
       </div>
       <aside class="survey-results">
         <div class="survey-results__popup">
@@ -106,7 +120,7 @@
               role="region"
               aria-label="Survey results"
             >
-              <h2>Survey Result <span> Live </span></h2>
+              <h2 class="survey-results__title">Survey Result <span> Live </span></h2>
               @for (question of survey.questions; track question.id; let questionIndex = $index) {
                 <article class="survey-results__item">
                   <div class="survey-results__header">
@@ -128,7 +142,9 @@
                         max="100"
                       ></progress>
 
-                      <span>{{ percentage(question, answer.votesCount) }}%</span>
+                      <span class="survey-results__percentage">
+                        {{ percentage(question, answer.votesCount) }}%
+                      </span>
                     </div>
                   }
                 </article>
