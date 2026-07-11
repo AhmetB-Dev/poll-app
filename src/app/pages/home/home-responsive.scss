@@ -1,0 +1,46 @@
+@media (min-width: 800px) {
+  .home-hero {
+    &__header {
+      display: flex;
+      align-items: center;
+      flex-direction: unset;
+      gap: 4rem;
+    }
+
+    &__text {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      order: 1;
+    }
+
+    &__preview-wrapper {
+      order: 2;
+      flex: 0 0 42%;
+    }
+
+    &__content {
+      align-items: flex-start;
+      padding-top: 2.5em;
+    }
+
+    &__preview {
+      width: 100%;
+    }
+  }
+
+  .home-surveys {
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+    }
+
+    &__tools {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: unset;
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+  }
+}

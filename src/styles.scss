@@ -1,26 +1,4 @@
-@font-face {
-  font-family: 'Nerko';
-  src: url('/assets/fonts/nerko_One/NerkoOne-Regular.ttf') format('truetype');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mulish';
-  src: url('/assets/fonts/mulish/static/Mulish-Regular.ttf') format('truetype');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Nokora';
-  src: url('/assets/fonts/nokora/static/Nokora-Regular.ttf') format('truetype');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
+@use './styles/fonts';
 
 :root {
   --pd-logo: 0 0 3em 1em;

@@ -21,7 +21,7 @@ type SurveyStatusFilter = 'active' | 'past';
   selector: 'app-home',
   imports: [RouterLink],
   templateUrl: './home.html',
-  styleUrl: './home.scss',
+  styleUrls: ['./home.scss', './home-responsive.scss'],
 })
 export class Home {
   private readonly surveyService = inject(SurveyService);

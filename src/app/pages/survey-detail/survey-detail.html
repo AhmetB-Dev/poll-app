@@ -2,7 +2,7 @@
   <header class="survey-detail__header">
     <img class="survey-detail__logo" src="/assets/img/logos/poll-app-logo-dark.svg" alt="PollApp" />
 
-    <a class="survey-detail__cta" routerLink="/create">
+    <a class="survey-detail__create-btn" routerLink="/create">
       create survey
       <img class="survey-detail__cta-icon" src="/assets/icons/icon-add-circle-dark.svg" alt="" />
     </a>
@@ -44,7 +44,11 @@
           }
         </div>
 
-        <form class="survey-detail__form" (submit)="submitVote(); $event.preventDefault()">
+        <form
+          id="survey-vote-form"
+          class="survey-detail__form"
+          (submit)="submitVote(); $event.preventDefault()"
+        >
           @for (question of survey.questions; track question.id; let questionIndex = $index) {
             <fieldset class="survey-question">
               <div class="survey-question__title-wrapper">
@@ -90,7 +94,7 @@
           }
         </form>
         <div class="survey-detail__submit-button-container">
-          <button class="survey-detail__submit-button" type="submit">
+          <button class="survey-detail__submit-button" type="submit" form="survey-vote-form">
             Complete
 
             <img src="/assets/icons/icon-check-dark.svg" alt="" />

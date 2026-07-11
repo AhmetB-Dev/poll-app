@@ -1,168 +1,176 @@
 <main class="home">
-  <a routerLink="">
-    <img class="home-hero__logo" src="/assets/img/logos/poll-app-logo-accent.svg" alt="PollApp" />
-  </a>
-  <section class="home-hero" aria-labelledby="home-title">
-    <div class="home-hero__header">
-      <div class="home-hero__text">
-        <h1 class="home-hero__title" id="home-title">
-          Collect <br />
-          Feedback, <br />
-          Unlock Ideas
-        </h1>
-
-        <div class="home-hero__content">
-          <p class="home-hero__description">
-            Create and share surveys in minutes – from team events to workplace culture. Collect
-            opinions, engage your audience, and turn feedback into action.
-          </p>
-
-          <a class="home-hero__cta" routerLink="/create">
-            New survey
-            <img class="home-hero__cta-icon" src="/assets/icons/icon-add-circle-dark.svg" alt="" />
-          </a>
-        </div>
-      </div>
-
-      <div class="home-hero__preview-wrapper">
-        <img
-          class="home-hero__preview"
-          src="/assets/img/poll-phone-preview.svg"
-          alt="Survey preview on a phone"
-        />
-      </div>
-    </div>
-  </section>
-
-  <section class="home-surveys" aria-labelledby="home-surveys-title">
-    <header class="home-surveys__header">
-      <h2 class="home-surveys__title" id="home-surveys-title">Your surveys</h2>
+  <section class="home__content">
+    <header class="home__header">
+      <a routerLink="">
+        <img class="home__logo" src="/assets/img/logos/poll-app-logo-accent.svg" alt="PollApp" />
+      </a>
     </header>
+    <section class="home-hero" aria-labelledby="home-title">
+      <div class="home-hero__header">
+        <div class="home-hero__text">
+          <h1 class="home-hero__title" id="home-title">
+            Collect <br />
+            Feedback, <br />
+            Unlock Ideas
+          </h1>
 
-    <section class="home-surveys__ending-soon" aria-labelledby="ending-soon-title">
-      <h3 class="home-surveys__section-title" id="ending-soon-title">Ending soon surveys</h3>
+          <div class="home-hero__content">
+            <p class="home-hero__description">
+              Create and share surveys in minutes – from team events to workplace culture. Collect
+              opinions, engage your audience, and turn feedback into action.
+            </p>
 
-      <div class="home-surveys__scroll" tabindex="0" aria-label="Ending soon surveys">
-        <div class="home-surveys__track">
-          @for (survey of endingSoonSurveys(); track survey.id) {
-            <article class="home-surveys__highlight-card">
-              <a class="home-surveys__highlight-link" [routerLink]="['/survey', survey.id]">
-                <div class="home-surveys__highlight-content">
-                  <span class="home-surveys__category">
-                    {{ categoryLabel(survey.category) }}
-                  </span>
+            <a class="home-hero__cta" routerLink="/create">
+              New survey
+              <img
+                class="home-hero__cta-icon"
+                src="/assets/icons/icon-add-circle-dark.svg"
+                alt=""
+              />
+            </a>
+          </div>
+        </div>
 
-                  <h4 class="home-surveys__card-title">
-                    <strong>
-                      {{ survey.title }}
-                    </strong>
-                  </h4>
-                </div>
-
-                <time class="home-surveys__deadline" [attr.datetime]="survey.endsAt">
-                  {{ endingSoonLabel(survey) }}
-                </time>
-              </a>
-            </article>
-          } @empty {
-            <p class="home-surveys__empty">No surveys are ending soon.</p>
-          }
+        <div class="home-hero__preview-wrapper">
+          <img
+            class="home-hero__preview"
+            src="/assets/img/poll-phone-preview.svg"
+            alt="Survey preview on a phone"
+          />
         </div>
       </div>
     </section>
 
-    <div class="home-surveys__tools" aria-label="Survey filters">
-      <div class="home-surveys__tabs" role="group" aria-label="Survey status">
-        <button
-          class="home-surveys__tab"
-          type="button"
-          [class.home-surveys__tab--active]="selectedStatus() === 'active'"
-          [attr.aria-pressed]="selectedStatus() === 'active'"
-          (click)="selectStatus('active')"
-        >
-          Active survey
-        </button>
+    <section class="home-surveys" aria-labelledby="home-surveys-title">
+      <header class="home-surveys__header">
+        <h2 class="home-surveys__title" id="home-surveys-title">Your surveys</h2>
+      </header>
 
-        <button
-          class="home-surveys__tab"
-          type="button"
-          [class.home-surveys__tab--active]="selectedStatus() === 'past'"
-          [attr.aria-pressed]="selectedStatus() === 'past'"
-          (click)="selectStatus('past')"
-        >
-          Past survey
-        </button>
-      </div>
+      <section class="home-surveys__ending-soon" aria-labelledby="ending-soon-title">
+        <h3 class="home-surveys__section-title" id="ending-soon-title">Ending soon surveys</h3>
 
-      <div class="home-surveys__category-select">
-        <button
-          class="home-surveys__category-trigger"
-          type="button"
-          aria-haspopup="listbox"
-          aria-controls="home-category-list"
-          [attr.aria-expanded]="categoryMenuOpen"
-          (click)="toggleCategoryMenu()"
-          (mouseenter)="categoryTriggerHovered = true"
-          (mouseleave)="categoryTriggerHovered = false"
-          (keydown.escape)="closeCategoryMenu()"
-        >
-          <span>Sort by categories</span>
+        <div class="home-surveys__scroll" tabindex="0" aria-label="Ending soon surveys">
+          <div class="home-surveys__track">
+            @for (survey of endingSoonSurveys(); track survey.id) {
+              <article class="home-surveys__highlight-card">
+                <a class="home-surveys__highlight-link" [routerLink]="['/survey', survey.id]">
+                  <div class="home-surveys__highlight-content">
+                    <span class="home-surveys__category">
+                      {{ categoryLabel(survey.category) }}
+                    </span>
 
-          <img class="home-surveys__category-icon" [src]="categoryIconSrc" alt="" />
-        </button>
+                    <h4 class="home-surveys__card-title">
+                      <strong>
+                        {{ survey.title }}
+                      </strong>
+                    </h4>
+                  </div>
 
-        @if (categoryMenuOpen) {
-          <div
-            class="home-surveys__category-menu"
-            id="home-category-list"
-            role="listbox"
-            aria-label="Survey categories"
-          >
-            @for (category of categoryOptions; track category.value) {
-              <button
-                class="home-surveys__category-option"
-                type="button"
-                role="option"
-                [attr.aria-selected]="selectedCategory() === category.value"
-                (click)="selectCategory(category.value)"
-              >
-                {{ category.label }}
-              </button>
+                  <time class="home-surveys__deadline" [attr.datetime]="survey.endsAt">
+                    {{ endingSoonLabel(survey) }}
+                  </time>
+                </a>
+              </article>
+            } @empty {
+              <p class="home-surveys__empty">No surveys are ending soon.</p>
             }
           </div>
-        }
+        </div>
+      </section>
 
-        @if (hasSelectedCategory) {
-          <p class="home-surveys__selected-category">
-            {{ selectedCategoryLabel }}
-          </p>
+      <div class="home-surveys__tools" aria-label="Survey filters">
+        <div class="home-surveys__tabs" role="group" aria-label="Survey status">
+          <button
+            class="home-surveys__tab"
+            type="button"
+            [class.home-surveys__tab--active]="selectedStatus() === 'active'"
+            [attr.aria-pressed]="selectedStatus() === 'active'"
+            (click)="selectStatus('active')"
+          >
+            Active survey
+          </button>
+
+          <button
+            class="home-surveys__tab"
+            type="button"
+            [class.home-surveys__tab--active]="selectedStatus() === 'past'"
+            [attr.aria-pressed]="selectedStatus() === 'past'"
+            (click)="selectStatus('past')"
+          >
+            Past survey
+          </button>
+        </div>
+
+        <div class="home-surveys__category-select">
+          <button
+            class="home-surveys__category-trigger"
+            type="button"
+            aria-haspopup="listbox"
+            aria-controls="home-category-list"
+            [attr.aria-expanded]="categoryMenuOpen"
+            (click)="toggleCategoryMenu()"
+            (mouseenter)="categoryTriggerHovered = true"
+            (mouseleave)="categoryTriggerHovered = false"
+            (keydown.escape)="closeCategoryMenu()"
+          >
+            <span>Sort by categories</span>
+
+            <img class="home-surveys__category-icon" [src]="categoryIconSrc" alt="" />
+          </button>
+
+          @if (categoryMenuOpen) {
+            <div
+              class="home-surveys__category-menu"
+              id="home-category-list"
+              role="listbox"
+              aria-label="Survey categories"
+            >
+              @for (category of categoryOptions; track category.value) {
+                <button
+                  class="home-surveys__category-option"
+                  type="button"
+                  role="option"
+                  [attr.aria-selected]="selectedCategory() === category.value"
+                  (click)="selectCategory(category.value)"
+                >
+                  {{ category.label }}
+                </button>
+              }
+            </div>
+          }
+
+          @if (hasSelectedCategory) {
+            <p class="home-surveys__selected-category">
+              {{ selectedCategoryLabel }}
+            </p>
+          }
+        </div>
+      </div>
+
+      <div class="home-surveys__grid" aria-label="Available surveys">
+        @for (survey of filteredSurveys(); track survey.id) {
+          <article class="survey-card">
+            <a class="survey-card__link" [routerLink]="['/survey', survey.id]">
+              <div class="">
+                <span class="survey-card__category">
+                  {{ categoryLabel(survey.category) }}
+                </span>
+
+                <h3 class="survey-card__title">
+                  {{ survey.title }}
+                </h3>
+              </div>
+              <div class="survey-card__deadline">
+                <p class="survey-card__deadline-text">
+                  {{ endingSoonLabel(survey) }}
+                </p>
+              </div>
+            </a>
+          </article>
+        } @empty {
+          <p class="home-surveys__empty">No surveys found yet. Create your first survey.</p>
         }
       </div>
-    </div>
-
-    <div class="home-surveys__grid" aria-label="Available surveys">
-      @for (survey of filteredSurveys(); track survey.id) {
-        <article class="survey-card">
-          <a class="survey-card__link" [routerLink]="['/survey', survey.id]">
-            <div class="">
-              <span class="survey-card__category">
-                {{ categoryLabel(survey.category) }}
-              </span>
-
-              <h3 class="survey-card__title">
-                {{ survey.title }}
-              </h3>
-            </div>
-            <div class="survey-card__deadline">
-              <p class="survey-card__deadline-text">
-                {{ endingSoonLabel(survey) }}
-              </p>
-            </div>
-          </a>
-        </article>
-      } @empty {
-        <p class="home-surveys__empty">No surveys found yet. Create your first survey.</p>
-      }
-    </div>
+    </section>
   </section>
 </main>

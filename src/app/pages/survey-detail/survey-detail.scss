@@ -1,12 +1,13 @@
 @use '../../../styles/mixins' as *;
 
 .survey-detail {
-  background-color: var(--light-bg);
+  background-color: white;
   padding: 4em 0em 2em 0em;
 
   &__header {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 0rem 5rem 0rem 5rem;
   }
 
   &__logo {
@@ -15,6 +16,11 @@
     img {
       width: 9em;
     }
+  }
+
+  &__create-btn {
+    display: flex;
+    align-items: center;
   }
 
   &__content {
@@ -135,21 +141,12 @@
   }
 
   &__option {
-    /* display: flex; */
-    /* gap: 0.8em; */
-    /* justify-content: space-between; */
-    padding: 0.2rem 0rem 0.2rem 0rem;
-
-    // display: grid;
-    // grid-template-columns: 2rem minmax(0, 1fr) 4ch;
-    // align-items: center;
-    // column-gap: 0.5rem;
-    // width: 100%;
-
     display: grid;
     grid-template-columns: 1rem minmax(0, 1fr) 6ch;
     align-items: center;
     gap: 0.5rem;
+
+    padding: 0.2rem 0rem 0.2rem 0rem;
   }
 
   &__answer-label {
@@ -159,16 +156,12 @@
   &__progress {
     width: 80%;
     height: 1em;
-    // border: none;
-    // border-radius: 999px;
-    // overflow: hidden;
+
     appearance: none;
 
     appearance: none;
     -webkit-appearance: none;
     border-radius: 0;
-    // border: none;
-    // overflow: hidden;
 
     width: 100%;
     min-width: 0;
@@ -179,7 +172,6 @@
       background-color: #f3e3d2;
       border-radius: 999px;
 
-      /* Hintergrund vom Progress-Balken */
       border-radius: 0px 100px 100px 0px;
     }
 
@@ -187,7 +179,6 @@
       background-color: #ffb770;
       border-radius: 999px;
 
-      /* Gefüllter Teil in Chrome / Edge / Safari */
       border-radius: 0px 100px 100px 0px;
     }
 
@@ -195,7 +186,6 @@
       background-color: #ffb770;
       border-radius: 999px;
 
-      /* Gefüllter Teil in Firefox */
       border-radius: 0px 100px 100px 0px;
     }
   }
@@ -208,10 +198,21 @@
 
 @media (min-width: 800px) {
   .survey-detail {
+    padding: 4em 0em 2em 0em;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &__logo {
+      padding: 0;
+    }
+
     &__content {
       display: flex;
       justify-content: center;
       align-items: baseline;
+      gap: 3rem;
     }
 
     &__close-button {
