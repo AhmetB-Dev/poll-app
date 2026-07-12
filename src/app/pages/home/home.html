@@ -1,5 +1,5 @@
 <main class="home">
-  <section class="home__content">
+  <section class="home__content page-container">
     <header class="home__header">
       <a routerLink="">
         <img class="home__logo" src="/assets/img/logos/poll-app-logo-accent.svg" alt="PollApp" />
@@ -8,11 +8,7 @@
     <section class="home-hero" aria-labelledby="home-title">
       <div class="home-hero__header">
         <div class="home-hero__text">
-          <h1 class="home-hero__title" id="home-title">
-            Collect <br />
-            Feedback, <br />
-            Unlock Ideas
-          </h1>
+          <h1 class="home-hero__title" id="home-title">Collect Feedback, Unlock Ideas</h1>
 
           <div class="home-hero__content">
             <p class="home-hero__description">
@@ -105,6 +101,8 @@
           <button
             class="home-surveys__category-trigger"
             type="button"
+            [class.home-surveys__category-trigger--active]="categoryMenuOpen"
+            type="button"
             aria-haspopup="listbox"
             aria-controls="home-category-list"
             [attr.aria-expanded]="categoryMenuOpen"
@@ -151,7 +149,7 @@
         @for (survey of filteredSurveys(); track survey.id) {
           <article class="survey-card">
             <a class="survey-card__link" [routerLink]="['/survey', survey.id]">
-              <div class="">
+              <div>
                 <span class="survey-card__category">
                   {{ categoryLabel(survey.category) }}
                 </span>

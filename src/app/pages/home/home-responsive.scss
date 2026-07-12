@@ -1,10 +1,16 @@
 @media (min-width: 800px) {
+  .home {
+    &__content[_ngcontent-ng-c4170667492] {
+      padding: 0rem 3rem;
+    }
+  }
+
   .home-hero {
     &__header {
       display: flex;
       align-items: center;
       flex-direction: unset;
-      gap: 4rem;
+      //   gap: 4rem;
     }
 
     &__text {
@@ -14,6 +20,11 @@
       order: 1;
     }
 
+    &__title {
+      margin-bottom: 0;
+      width: unset;
+    }
+
     &__preview-wrapper {
       order: 2;
       flex: 0 0 42%;
@@ -21,7 +32,7 @@
 
     &__content {
       align-items: flex-start;
-      padding-top: 2.5em;
+      padding-top: 0;
     }
 
     &__preview {
@@ -32,7 +43,7 @@
   .home-surveys {
     &__grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(31rem, 1fr));
     }
 
     &__tools {

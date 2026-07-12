@@ -11,6 +11,10 @@
   --font-nokora: 'Nokora';
 }
 
+.page-container {
+  padding-inline: max(1rem, calc((100% - 1440px) / 2));
+}
+
 * {
   box-sizing: border-box;
 }

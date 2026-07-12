@@ -36,7 +36,7 @@ type SurveyQuestionFormValue = {
   selector: 'app-create-survey',
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './create-survey.html',
-  styleUrl: './create-survey.scss',
+  styleUrls: ['./create-survey.scss', './create-survey-responsive.scss'],
 })
 export class CreateSurvey {
   private readonly fb = inject(NonNullableFormBuilder);
@@ -209,7 +209,6 @@ export class CreateSurvey {
 
     return String(answerIndex + 1);
   }
-
 
   /**
    * Removes an answer or clears it when the minimum of two answers would be broken.

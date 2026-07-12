@@ -16,7 +16,7 @@
     padding: 3rem 0rem 0rem 1rem;
   }
   &__logo {
-    width: 80%;
+    width: clamp(7.5rem, 13vw, 25rem);
   }
 }
 
@@ -39,6 +39,7 @@
     color: var(--color-title);
     font-size: clamp(3rem, 7vw, 10rem);
     line-height: 0.82;
+    width: 12ch;
   }
 
   &__preview-wrapper {
@@ -63,18 +64,18 @@
   }
 
   &__cta {
-    @include flex-center(0.6rem);
-    padding: 0.8em 1rem;
-    border-radius: 0.45rem;
-    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    @include flex-center(1rem);
+    padding: 0.7em 1.2rem;
+
+    border-radius: 10px;
+    font-size: clamp(1rem, 1.5vw, 2.8rem);
     background-color: var(--color-title);
     color: var(--dark-bg);
     font-weight: bolder;
   }
 
   &__cta-icon {
-    width: 1.15rem;
-    height: 1.15rem;
+    width: clamp(0.9rem, 1.5vh, 2.8rem);
   }
 }
 
@@ -88,7 +89,7 @@
 
   &__title {
     color: var(--color-title);
-    font-size: clamp(2rem, 6vw, 8rem);
+    font-size: clamp(3rem, 6vw, 12rem);
   }
 
   &__ending-soon {
@@ -98,7 +99,7 @@
   &__section-title {
     color: var(--light-bg);
     font-family: var(--font-mulish);
-    font-size: 0.95rem;
+    font-size: clamp(1rem, 1.2vw, 5rem);
   }
 
   &__scroll {
@@ -221,7 +222,8 @@
     font-family: var(--font-mulish);
     font-size: clamp(1rem, 2vh, 3rem);
 
-    &:hover {
+    &:hover,
+    &--active {
       background-color: #d9d9d91f;
     }
   }
@@ -233,13 +235,11 @@
   &__category-menu {
     display: flex;
     flex-direction: column;
-
     position: absolute;
     left: 0;
     z-index: 30;
     background-color: white;
     border-radius: 6px;
-    min-width: 12em;
   }
 
   &__category-options {
@@ -309,25 +309,30 @@
   }
 
   &__link {
-    padding: 1rem;
-    border-radius: var(--border-right-radius);
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 0.8rem 1rem;
+    border-radius: var(--border-right-radius) 5rem;
   }
 
   &__category {
     color: #ffcfa1;
-    font-size: clamp(0.8rem, 2vw, 4rem);
+    font-size: clamp(1rem, 1vw, 4rem);
+    padding-bottom: 0.1rem;
   }
 
   &__title {
     margin: 0;
     color: var(--light-bg);
     font-family: var(--font-mulish);
-    font-size: clamp(1rem, 3vw, 6rem);
+    font-size: clamp(1rem, 1.8vw, 5rem);
   }
 
   &__deadline {
     display: flex;
     justify-content: flex-end;
+    margin-top: auto;
   }
 
   &__deadline-text {
@@ -335,8 +340,7 @@
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
     background-color: #ffcfa1;
+    font-size: clamp(0.6rem, 1.4vh, 3rem);
     color: var(--dark-bg);
-    font-size: 0.75rem;
-    font-weight: 800;
   }
 }
