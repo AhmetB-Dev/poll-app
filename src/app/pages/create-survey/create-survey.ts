@@ -36,7 +36,11 @@ type SurveyQuestionFormValue = {
   selector: 'app-create-survey',
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './create-survey.html',
-  styleUrls: ['./create-survey.scss', './create-survey-responsive.scss'],
+  styleUrls: [
+    './create-survey.scss',
+    './create-survey-responsive.scss',
+    './create-survey-publish.scss',
+  ],
 })
 export class CreateSurvey {
   private readonly fb = inject(NonNullableFormBuilder);
