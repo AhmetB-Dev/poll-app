@@ -82,7 +82,7 @@
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    margin-top: 2.35rem;
+    padding-top: 2em;
   }
 
   &__field {
@@ -91,18 +91,19 @@
   }
 
   &__date-category-row {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
+    // //  grid-area: date-category;
+    // display: flex;
+    // /* grid-template-columns: minmax(16rem, 1fr) auto; */
+    // align-items: start;
+    // flex-direction: row;
   }
 
   &__field-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 0.4em;
+    padding-bottom: 0.5em;
     font-family: var(--font-mulish);
-    font-size: 1rem;
   }
 
   &__control-row {
@@ -117,14 +118,11 @@
 
   &__clear-field-button {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    padding: 4px;
+    padding: 0.2em 0.2em;
     border: none;
-    border-radius: 6px;
-    background-color: transparent;
-    cursor: pointer;
+    border-radius: 3px;
+    justify-content: center;
+    align-items: center;
 
     img {
       width: clamp(1rem, 2.2vh, 3rem);
@@ -220,7 +218,7 @@
     margin: 0;
     padding: 0.1em 0.6em;
     color: #ffb770;
-    font-size: 1rem;
+    font-size: clamp(0.8rem, 1.1vh, 1.4rem);
   }
 
   &__question-card {
@@ -228,7 +226,7 @@
   }
 
   &__question-header {
-    padding-right: 0.5rem;
+    // padding-right: 0rem;
   }
 
   &__answer-list-header {
@@ -290,7 +288,6 @@
   &__answer-row > .create-survey__clear-field-button {
     grid-area: delete;
     justify-self: end;
-    padding: 0;
   }
 
   &__add-answer-button {
@@ -302,14 +299,14 @@
     padding: 1.5em 0 0.2em;
     color: white;
     border-bottom: solid 1px white;
-    font-size: 1rem;
+    font-size: clamp(1rem, 1.6vh, 1.8rem);
     font-weight: 800;
   }
 
   &__add-question-area {
     display: flex;
     justify-content: center;
-    padding: 5em 0 2em;
+    padding: 4.5em 3em;
   }
 
   &__add-question-button {
@@ -320,10 +317,11 @@
     color: white;
     background-color: rgba(255, 183, 112, 0.3);
     border-radius: 10px;
-    font-size: clamp(1rem, 1.6vh, 1.8rem);
+    font-size: clamp(1rem, 1.2vh, 1.6rem);
+    white-space: nowrap;
 
     img {
-      width: clamp(1rem, 2vh, 2.5rem);
+      width: clamp(1rem, 1.6vh, 2rem);
     }
 
     &:hover {
@@ -438,39 +436,36 @@
   &__field--description > .create-survey__control-row > .create-survey__clear-field-button {
     position: absolute;
     top: 0.25rem;
-    right: 0.5rem;
+    right: 0rem;
     z-index: 2;
+  }
+
+  textarea {
+    height: 8rem;
   }
 
   textarea,
   input:not([type='checkbox']) {
     width: 100%;
+    min-height: 2em;
+    padding: 0.2em 0.8em;
+    font-size: clamp(0.9rem, 1.2vw, 1.7rem);
     border: 0;
-    outline: 0;
-    color: #35273a;
-    background-color: #ffffff;
+    border-radius: 5px 20px 5px 5px;
     font-family: var(--font-nokora);
-    font-size: 1rem;
 
     &:focus {
       background-color: #fee9d4;
     }
   }
+}
 
-  textarea {
-    min-height: 8em;
-    resize: none;
-    padding: 0.8em;
-    border-radius: 5px 20px 5px 5px;
-  }
-
-  textarea,
-  input:not([type='checkbox']) {
-    min-height: 2em;
-    padding: 0 0.8em;
-    border-radius: 5px 20px 5px 5px;
-    font-size: clamp(1rem, 1.4vw, 1.7rem);
-  }
+span,
+legend,
+label {
+  color: white;
+  font-weight: 600;
+  font-size: clamp(0.8rem, 1.2vh, 1.8rem);
 }
 
 @keyframes publish-popup-enter {
@@ -483,12 +478,4 @@
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
-}
-
-span,
-legend,
-label {
-  color: white;
-  font-weight: 600;
-  font-size: clamp(1rem, 1.6vh, 2rem);
 }
