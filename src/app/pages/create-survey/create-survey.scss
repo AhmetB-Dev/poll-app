@@ -118,11 +118,12 @@
 
   &__clear-field-button {
     display: flex;
-    padding: 0.2em 0.2em;
-    border: none;
-    border-radius: 3px;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    align-items: baseline;
+    width: fit-content;
+    gap: 2rem;
+    font-family: var(--font-mulish);
+    padding: 0rem 0.5rem;
 
     img {
       width: clamp(1rem, 2.2vh, 3rem);
@@ -208,7 +209,7 @@
     display: flex;
     border-radius: 5px 14px 5px 5px;
     padding: 0.6rem 0.5rem;
-    font-size: clamp(0.8rem, 2vh, 3rem);
+    font-size: clamp(0.6rem, 1vh, 1.5rem);
     &:hover {
       background-color: #f4e9fb;
     }
@@ -449,7 +450,7 @@
     width: 100%;
     min-height: 2em;
     padding: 0.2em 0.8em;
-    font-size: clamp(0.9rem, 1.2vw, 1.7rem);
+    font-size: clamp(0.8rem, 1vw, 1.3rem);
     border: 0;
     border-radius: 5px 20px 5px 5px;
     font-family: var(--font-nokora);

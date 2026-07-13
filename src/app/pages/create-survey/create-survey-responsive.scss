@@ -4,11 +4,12 @@
   }
 
   .create-survey {
-    padding: 0rem 5rem 2rem 4rem;
-    background-color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #ffffff;
+    height: 100dvh;
+    padding: 9rem 5rem 2rem 4rem;
 
     &__logo {
       display: none;
@@ -81,7 +82,7 @@
     &__date-category-row {
       grid-area: date-category;
       display: grid;
-      grid-template-columns: minmax(19rem, 1fr) auto;
+      grid-template-columns: clamp(13rem, 21vw, 21rem) auto;
       align-items: start;
     }
 
@@ -111,10 +112,6 @@
     &__field--date > .create-survey__control-row > .create-survey__clear-field-button,
     &__field--description > .create-survey__control-row > .create-survey__clear-field-button {
       position: unset;
-    }
-
-    &__category-option {
-      font-size: clamp(0.8rem, 1.4vh, 1.5rem);
     }
 
     &__category-menu {
@@ -238,7 +235,6 @@
       padding: 0 0.8em;
       width: 80%;
       border-radius: 5px 20px 5px 5px;
-      font-size: clamp(1rem, 1.3vw, 1.7rem);
       min-width: 70%;
     }
 
