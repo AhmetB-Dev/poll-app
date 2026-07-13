@@ -27,13 +27,14 @@
   &__header {
     display: flex;
     flex-direction: column;
-    padding: 0rem 0rem 2rem 0.6rem;
+    padding: 0rem 0rem 2.5rem 0.6rem;
   }
 
   &__status-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0.5rem 0rem 1rem 0rem;
   }
 
   &__draft-badge {
@@ -42,6 +43,7 @@
     background-color: #ffcfa1;
     border-top-right-radius: 14px;
     padding: 0.2rem 0.8rem 0.2rem 0.4rem;
+    font-size: clamp(1rem, 1.4vh, 3rem);
   }
 
   &__close-action {
@@ -51,11 +53,16 @@
     padding: 0.6em;
     border-radius: 10px;
     background-color: rgba(255, 183, 112, 0.3);
+    font-size: clamp(1rem, 1.3vh, 1.8rem);
+
+    img {
+      width: clamp(1rem, 1.4vh, 2rem);
+    }
   }
 
   &__title {
     margin: 0;
-    font-size: clamp(3rem, 6vw, 6rem);
+    font-size: var(--title-size);
     line-height: 0.85;
   }
 
@@ -93,7 +100,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 0.3em;
+    padding-bottom: 0.4em;
     font-family: var(--font-mulish);
     font-size: 1rem;
   }
@@ -120,7 +127,7 @@
     cursor: pointer;
 
     img {
-      width: 1.4em;
+      width: clamp(1rem, 2.2vh, 3rem);
     }
 
     &:hover {
@@ -162,7 +169,6 @@
     width: fit-content;
     max-width: 100%;
     border-radius: 6px;
-    padding: 0.3em 0.4em;
   }
 
   &__category-trigger {
@@ -190,20 +196,21 @@
   }
 
   &__category-menu {
-    border-radius: 5px 20px 5px 5px;
-    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
     position: absolute;
     left: 0;
-    display: flex;
     z-index: 20;
-    min-width: 12rem;
-    flex-direction: column;
+    border-radius: 5px 20px 5px 5px;
+    background-color: #ffffff;
   }
 
   &__category-option {
-    padding: 0.65rem 0.75rem;
     display: flex;
     border-radius: 5px 14px 5px 5px;
+    padding: 0.6rem 0.5rem;
+    font-size: clamp(0.8rem, 2vh, 3rem);
     &:hover {
       background-color: #f4e9fb;
     }
@@ -313,8 +320,11 @@
     color: white;
     background-color: rgba(255, 183, 112, 0.3);
     border-radius: 10px;
-    font-size: 1.15rem;
-    // /* font-weight: 800;
+    font-size: clamp(1rem, 1.6vh, 1.8rem);
+
+    img {
+      width: clamp(1rem, 2vh, 2.5rem);
+    }
 
     &:hover {
       background-color: rgba(255, 183, 112, 0.45);
@@ -454,10 +464,12 @@
     border-radius: 5px 20px 5px 5px;
   }
 
+  textarea,
   input:not([type='checkbox']) {
     min-height: 2em;
     padding: 0 0.8em;
     border-radius: 5px 20px 5px 5px;
+    font-size: clamp(1rem, 1.4vw, 1.7rem);
   }
 }
 
@@ -471,4 +483,12 @@
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
+}
+
+span,
+legend,
+label {
+  color: white;
+  font-weight: 600;
+  font-size: clamp(1rem, 1.6vh, 2rem);
 }

@@ -1,10 +1,9 @@
 @media (min-width: 1000px) {
   .create-survey {
-    padding: 4rem 6rem 1.5rem 4rem;
+    padding: 0rem 5rem 2rem 4rem;
     background-color: #ffffff;
     display: flex;
     justify-content: center;
-    height: 100dvh;
     align-items: center;
 
     &__logo {
@@ -35,7 +34,6 @@
     &__title {
       grid-column: 1;
       grid-row: 2;
-      font-size: clamp(3rem, 4.5vw, 6rem);
     }
 
     &__close-action {
@@ -47,13 +45,9 @@
       color: white;
       font-size: 1.1rem;
 
-      img {
-        width: 1.35rem;
-        height: 1.35rem;
-      }
-
       &::before {
         content: 'Cancel';
+        font-size: clamp(1rem, 1.4vh, 3rem);
       }
     }
 
@@ -71,7 +65,7 @@
       grid-template-areas:
         'title description'
         'date-category description';
-      column-gap: clamp(5.5rem, 9vw, 11rem);
+      column-gap: 8em;
       row-gap: 1rem;
       align-items: start;
     }
@@ -83,10 +77,8 @@
     &__date-category-row {
       grid-area: date-category;
       display: grid;
-      grid-template-columns: minmax(14rem, 0.58fr) auto;
+      grid-template-columns: minmax(19rem, 1fr) auto;
       align-items: start;
-      gap: 1rem;
-      margin-top: 0.1rem;
     }
 
     &__field--description {
@@ -121,28 +113,38 @@
       padding: 0.25rem;
     }
 
-    &__field-header {
-      min-height: 2.35rem;
-      margin-bottom: 0.2rem;
-      padding-right: 0;
-      font-size: clamp(1.55rem, 1.75vw, 2.05rem);
-      line-height: 1.1;
+    &__category-option {
+      font-size: clamp(0.8rem, 1.4vh, 1.5rem);
     }
 
-    &__control-row {
+    &__category-menu {
+      display: flex;
+      white-space: nowrap;
+      position: absolute;
+      left: 0;
+      width: 100%;
+      z-index: 20;
+      border-radius: 5px 20px 5px 5px;
+      background-color: #ffffff;
+      flex-direction: column;
+    }
+
+    &__category-trigger {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+      width: fit-content;
+      font-family: var(--font-mulish);
+      padding: 0rem 0.5rem;
     }
 
     &__control-row--textarea {
       gap: 1.15rem;
     }
 
-    &__clear-field-button {
-      padding: 0.25rem;
-
-      img {
-        width: clamp(1.55rem, 1.6vw, 1.95rem);
-      }
-    }
+    // &__clear-field-button {
+    //   padding: 0.25rem;
+    // }
 
     &__clear-field-icon-wrap {
       width: clamp(1.55rem, 1.6vw, 1.95rem);
@@ -155,12 +157,18 @@
     }
 
     &__category-trigger {
-      min-height: 2.35rem;
-      padding: 0;
+      // min-height: 2.35rem;
+      // padding: 0;
 
-      border-radius: 0;
-      font-size: clamp(1.55rem, 1.75vw, 2.05rem);
-      gap: 1rem;
+      // border-radius: 0;
+      // font-size: clamp(1.55rem, 1.75vw, 2.05rem);
+      // gap: 1rem;
+
+      img {
+        img {
+          width: clamp(1rem, 1.2vw, 1.5rem);
+        }
+      }
 
       &:hover {
         background-color: transparent;
@@ -168,22 +176,12 @@
       }
     }
 
-    &__category-trigger img {
-      width: clamp(1.25rem, 1.5vw, 1.7rem);
-      height: clamp(1.25rem, 1.5vw, 1.7rem);
-    }
-
-    &__category-menu {
-      min-width: 15rem;
-      font-size: 1.15rem;
-    }
-
     &__questions-column {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       align-items: start;
       gap: 6.5em;
-      margin-top: clamp(5.5rem, 7.2vw, 8rem);
+      padding-top: 2em;
     }
 
     &__question-card {
@@ -251,18 +249,6 @@
       margin-top: 0;
     }
 
-    &__add-question-button {
-      padding: 0.85em 1.05em;
-      border-radius: 0.9rem;
-      font-size: clamp(1.45rem, 1.55vw, 1.8rem);
-      line-height: 1;
-    }
-
-    &__add-question-button img {
-      width: clamp(1.55rem, 1.7vw, 2rem);
-      height: clamp(1.55rem, 1.7vw, 2rem);
-    }
-
     &__publish-area {
       justify-content: center;
       padding-top: clamp(2.5rem, 4vw, 4rem);
@@ -272,20 +258,19 @@
       font-size: 1.25rem;
     }
 
-    textarea,
-    input:not([type='checkbox']) {
-      font-size: clamp(1.15rem, 1.5vw, 1.75rem);
-      border-top-right-radius: 2.25rem;
-    }
-
     textarea {
       min-height: clamp(9rem, 11vw, 13.5rem);
       padding: 0.9rem 1.1rem;
     }
 
-    input:not([type='checkbox']) {
-      min-height: clamp(3.6rem, 4vw, 4.6rem);
-      padding: 0 1.2rem;
-    }
+    // input:not([type='checkbox']) {
+    //     min-height: 2.6rem;
+    // }
+  }
+
+  span,
+  legend,
+  label {
+    white-space: nowrap;
   }
 }

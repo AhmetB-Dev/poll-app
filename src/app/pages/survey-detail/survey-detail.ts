@@ -20,7 +20,7 @@ import { Survey } from '../../shared/models/survey.model';
   selector: 'app-survey-detail',
   imports: [RouterLink],
   templateUrl: './survey-detail.html',
-  styleUrl: './survey-detail.scss',
+  styleUrls: ['./survey-detail.scss', './survey-detail-responsive.scss'],
 })
 export class SurveyDetail {
   private readonly route = inject(ActivatedRoute);

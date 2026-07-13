@@ -1,4 +1,4 @@
-@media (min-width: 800px) {
+@media (min-width: 850px) {
   .home {
     &__content[_ngcontent-ng-c4170667492] {
       padding: 0rem 3rem;
@@ -50,8 +50,9 @@
       display: flex;
       justify-content: space-between;
       flex-direction: unset;
-      gap: 1rem;
-      margin: 1.2rem 0;
+      /* gap: 1rem; */
+      /* margin: 1.2rem 0; */
+      align-items: baseline;
     }
   }
 }

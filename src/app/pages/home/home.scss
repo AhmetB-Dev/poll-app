@@ -107,7 +107,7 @@
     overflow-x: auto;
     overflow-y: hidden;
     padding-bottom: 0.75rem;
-    scrollbar-width: thin;
+    scrollbar-width: auto;
     scrollbar-color: var(--color-title) transparent;
     -webkit-overflow-scrolling: touch;
 
@@ -181,6 +181,7 @@
     flex-direction: column;
     gap: 1rem;
     margin: 1.2rem 0;
+    padding: 1rem 0rem 4rem 0rem;
   }
 
   &__tabs {
@@ -193,7 +194,7 @@
     border-radius: 20px;
     padding: 0.2rem 0.7rem;
     background-color: #fee9d4;
-    font-size: clamp(0.8rem, 1.5vh, 2.5rem);
+    font-size: clamp(0.6rem, 1.6vh, 2.3rem);
 
     &:not(.home-surveys__tab--active):hover {
       background-color: #ffcfa1;
@@ -220,7 +221,7 @@
     padding: 0.5em 0.5em;
     color: white;
     font-family: var(--font-mulish);
-    font-size: clamp(1rem, 2vh, 3rem);
+    font-size: clamp(1rem, 1.8vh, 3rem);
 
     &:hover,
     &--active {
@@ -266,11 +267,13 @@
   }
 
   &__selected-category {
-    padding: 0.5em 0.5em;
-    color: #ffb770;
-    font-size: 0.75rem;
+    display: flex;
+    font-size: clamp(0.8rem, 1.1vh, 1.8rem);
     position: absolute;
-    top: 1em;
+    margin: 0;
+    top: 3em;
+    padding: 0.5em 0.7em;
+    color: #ffb770;
   }
 
   &__grid {
@@ -294,6 +297,7 @@
     border-radius: 0.4rem;
     background-color: rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.82);
+    font-size: clamp(0.8rem, 1.4vh, 4rem);
   }
 }
 

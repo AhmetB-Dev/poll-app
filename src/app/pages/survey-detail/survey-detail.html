@@ -1,170 +1,178 @@
 <main class="survey-detail">
-  <header class="survey-detail__header">
-    <img class="survey-detail__logo" src="/assets/img/logos/poll-app-logo-dark.svg" alt="PollApp" />
+  <section class="page-container">
+    <header class="survey-detail__header">
+      <img
+        class="survey-detail__logo"
+        src="/assets/img/logos/poll-app-logo-dark.svg"
+        alt="PollApp"
+      />
 
-    <a class="survey-detail__create-btn" routerLink="/create">
-      create survey
-      <img class="survey-detail__cta-icon" src="/assets/icons/icon-add-circle-dark.svg" alt="" />
-    </a>
-  </header>
+      <a class="survey-detail__create-btn" routerLink="/create">
+        create survey
+        <img class="survey-detail__cta-icon" src="/assets/icons/icon-add-circle-dark.svg" alt="" />
+      </a>
+    </header>
 
-  @if (survey(); as survey) {
-    <section class="survey-detail__content">
-      <div class="survey-detail__content-card">
-        <div class="survey-detail__topbar">
-          <p class="survey-detail__status">Published</p>
+    @if (survey(); as survey) {
+      <section class="survey-detail__content">
+        <div class="survey-detail__content-card">
+          <div class="survey-detail__topbar">
+            <p class="survey-detail__status">Published</p>
 
-          <a class="survey-detail__close-button" routerLink="/" aria-label="Close survey">
-            <img src="/assets/icons/icon-close-dark.svg" alt=""
-          /></a>
-        </div>
+            <a class="survey-detail__close-button" routerLink="/" aria-label="Close survey">
+              <img src="/assets/icons/icon-close-dark.svg" alt=""
+            /></a>
+          </div>
 
-        <div class="survey-detail__meta">
-          <p>
-            Ends on:
-            @if (survey.endsAt) {
-              {{ survey.endsAt }}
-            } @else {
-              No end date
-            }
-          </p>
-
-          <p>Category: {{ survey.category }}</p>
-        </div>
-
-        <div>
-          <h1 class="survey-detail__title">
-            {{ survey.title }}
-          </h1>
-
-          @if (survey.description) {
-            <p class="survey-detail__description">
-              {{ survey.description }}
+          <div class="survey-detail__meta">
+            <p>
+              Ends on:
+              @if (survey.endsAt) {
+                {{ survey.endsAt }}
+              } @else {
+                No end date
+              }
             </p>
-          }
-        </div>
 
-        <form
-          id="survey-vote-form"
-          class="survey-detail__form"
-          (submit)="submitVote(); $event.preventDefault()"
-        >
-          @for (question of survey.questions; track question.id; let questionIndex = $index) {
-            <fieldset class="survey-question">
-              <div class="survey-question__title-wrapper">
-                <strong>
-                  <legend class="survey-question__title">
-                    <span class="survey-question__number">{{ questionIndex + 1 }}.</span>
-                    <span>{{ question.title }}</span>
-                  </legend>
-                </strong>
+            <p>Category: {{ survey.category }}</p>
+          </div>
 
-                @if (question.allowMultipleChoice) {
-                  <p class="survey-question__multiple-choice-hint">Multiple answers possible</p>
-                }
-              </div>
+          <div>
+            <h1 class="survey-detail__title">
+              {{ survey.title }}
+            </h1>
 
-              <div class="survey-question__answers">
-                @for (answer of question.answers; track answer.id; let answerIndex = $index) {
-                  <label class="survey-question__answer">
-                    <input
-                      class="survey-question__input"
-                      type="checkbox"
-                      [name]="'question-' + question.id"
-                      [value]="answer.id"
-                      [checked]="isSelected(question.id, answer.id)"
-                      (change)="toggleAnswer(question, answer.id, $event)"
-                    />
+            @if (survey.description) {
+              <p class="survey-detail__description">
+                {{ survey.description }}
+              </p>
+            }
+          </div>
 
-                    <span class="survey-question__box">
-                      <strong>
-                        <span class="survey-question__answer-label" aria-hidden="true">
-                          {{ answerOptionLabel(answerIndex) }}
+          <form
+            id="survey-vote-form"
+            class="survey-detail__form"
+            (submit)="submitVote(); $event.preventDefault()"
+          >
+            @for (question of survey.questions; track question.id; let questionIndex = $index) {
+              <fieldset class="survey-question">
+                <div class="survey-question__title-wrapper">
+                  <strong>
+                    <legend class="survey-question__title">
+                      <span class="survey-question__number">{{ questionIndex + 1 }}.</span>
+                      <span>{{ question.title }}</span>
+                    </legend>
+                  </strong>
+
+                  @if (question.allowMultipleChoice) {
+                    <p class="survey-question__multiple-choice-hint">Multiple answers possible</p>
+                  }
+                </div>
+
+                <div class="survey-question__answers">
+                  @for (answer of question.answers; track answer.id; let answerIndex = $index) {
+                    <label class="survey-question__answer">
+                      <input
+                        class="survey-question__input"
+                        type="checkbox"
+                        [name]="'question-' + question.id"
+                        [value]="answer.id"
+                        [checked]="isSelected(question.id, answer.id)"
+                        (change)="toggleAnswer(question, answer.id, $event)"
+                      />
+
+                      <span class="survey-question__box">
+                        <strong>
+                          <span class="survey-question__answer-label" aria-hidden="true">
+                            {{ answerOptionLabel(answerIndex) }}
+                          </span>
+                        </strong>
+
+                        <span class="survey-question__answer-text">
+                          {{ answer.text }}
                         </span>
-                      </strong>
-
-                      <span class="survey-question__answer-text">
-                        {{ answer.text }}
                       </span>
-                    </span>
-                  </label>
-                }
-              </div>
-            </fieldset>
-          }
-        </form>
-        <div class="survey-detail__submit-button-container">
-          <button class="survey-detail__submit-button" type="submit" form="survey-vote-form">
-            Complete
+                    </label>
+                  }
+                </div>
+              </fieldset>
+            }
+          </form>
+          <div class="survey-detail__submit-button-container">
+            <button class="survey-detail__submit-button" type="submit" form="survey-vote-form">
+              Complete
 
-            <img src="/assets/icons/icon-check-dark.svg" alt="" />
-          </button>
-        </div>
-      </div>
-      <aside class="survey-results">
-        <div class="survey-results__popup">
-          <div class="survey-results__trigger-container">
-            <button
-              class="survey-results__trigger"
-              type="button"
-              aria-controls="survey-results-panel"
-              [attr.aria-expanded]="resultsPopupOpen"
-              (click)="toggleResultsPopup()"
-              (keydown.escape)="closeResultsPopup()"
-            >
-              <span>Close results</span>
-
-              <img class="survey-results__icon" [src]="resultsIconSrc" alt="" />
+              <img src="/assets/icons/icon-check-dark.svg" alt="" />
             </button>
           </div>
-          @if (resultsPopupOpen) {
-            <div
-              class="survey-results__menu"
-              id="survey-results-panel"
-              role="region"
-              aria-label="Survey results"
-            >
-              <h2 class="survey-results__title">Survey Result <span> Live </span></h2>
-              @for (question of survey.questions; track question.id; let questionIndex = $index) {
-                <article class="survey-results__item">
-                  <div class="survey-results__header">
-                    <h3 class="survey-results__question-title">
-                      <span class="survey-results__question-number">{{ questionIndex + 1 }}.</span>
-                      <span>{{ question.title }}</span>
-                    </h3>
-                  </div>
-
-                  @for (answer of question.answers; track answer.id; let answerIndex = $index) {
-                    <div class="survey-results__option">
-                      <span class="survey-results__answer-label" aria-hidden="true">
-                        {{ answerOptionLabel(answerIndex) }}
-                      </span>
-
-                      <progress
-                        class="survey-results__progress"
-                        [value]="percentage(question, answer.votesCount)"
-                        max="100"
-                      ></progress>
-
-                      <span class="survey-results__percentage">
-                        {{ percentage(question, answer.votesCount) }}%
-                      </span>
-                    </div>
-                  }
-                </article>
-              }
-            </div>
-          }
         </div>
-      </aside>
-    </section>
-  } @else {
-    <section class="survey-detail__not-found">
-      <h1>Survey not found</h1>
+        <aside class="survey-results">
+          <div class="survey-results__popup">
+            <div class="survey-results__trigger-container">
+              <button
+                class="survey-results__trigger"
+                type="button"
+                aria-controls="survey-results-panel"
+                [attr.aria-expanded]="resultsPopupOpen"
+                (click)="toggleResultsPopup()"
+                (keydown.escape)="closeResultsPopup()"
+              >
+                <span>Close results</span>
 
-      <p>This survey does not exist or was lost after refreshing the page.</p>
+                <img class="survey-results__icon" [src]="resultsIconSrc" alt="" />
+              </button>
+            </div>
+            @if (resultsPopupOpen) {
+              <div
+                class="survey-results__menu"
+                id="survey-results-panel"
+                role="region"
+                aria-label="Survey results"
+              >
+                <h2 class="survey-results__title">Survey Result <span> Live </span></h2>
+                @for (question of survey.questions; track question.id; let questionIndex = $index) {
+                  <article class="survey-results__item">
+                    <div class="survey-results__header">
+                      <h3 class="survey-results__question-title">
+                        <span class="survey-results__question-number"
+                          >{{ questionIndex + 1 }}.</span
+                        >
+                        <span>{{ question.title }}</span>
+                      </h3>
+                    </div>
 
-      <a routerLink="/"> Back to home </a>
-    </section>
-  }
+                    @for (answer of question.answers; track answer.id; let answerIndex = $index) {
+                      <div class="survey-results__option">
+                        <span class="survey-results__answer-label" aria-hidden="true">
+                          {{ answerOptionLabel(answerIndex) }}
+                        </span>
+
+                        <progress
+                          class="survey-results__progress"
+                          [value]="percentage(question, answer.votesCount)"
+                          max="100"
+                        ></progress>
+
+                        <span class="survey-results__percentage">
+                          {{ percentage(question, answer.votesCount) }}%
+                        </span>
+                      </div>
+                    }
+                  </article>
+                }
+              </div>
+            }
+          </div>
+        </aside>
+      </section>
+    } @else {
+      <section class="survey-detail__not-found">
+        <h1>Survey not found</h1>
+
+        <p>This survey does not exist or was lost after refreshing the page.</p>
+
+        <a routerLink="/"> Back to home </a>
+      </section>
+    }
+  </section>
 </main>
