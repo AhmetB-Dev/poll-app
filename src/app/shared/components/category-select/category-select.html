@@ -1,0 +1,42 @@
+<div class="category-select" [class.category-select--create]="variant === 'create'">
+  <button
+    class="category-select__trigger"
+    type="button"
+    [class.category-select__trigger--active]="menuOpen"
+    aria-haspopup="listbox"
+    [attr.aria-controls]="listboxId"
+    [attr.aria-expanded]="menuOpen"
+    (click)="toggleMenu()"
+    (mouseenter)="triggerHovered = true"
+    (mouseleave)="triggerHovered = false"
+    (keydown.escape)="closeMenu()"
+  >
+    <span>{{ placeholder }}</span>
+    <img class="category-select__icon" [src]="categoryIconSrc" alt="" />
+  </button>
+
+  @if (menuOpen) {
+    <div
+      class="category-select__menu"
+      [id]="listboxId"
+      role="listbox"
+      [attr.aria-label]="ariaLabel"
+    >
+      @for (category of categoryOptions; track category.value) {
+        <button
+          class="category-select__option"
+          type="button"
+          role="option"
+          [attr.aria-selected]="value === category.value"
+          (click)="selectCategory(category.value)"
+        >
+          {{ category.label }}
+        </button>
+      }
+    </div>
+  }
+
+  @if (hasSelectedCategory) {
+    <p class="category-select__selected-category">{{ selectedCategoryLabel }}</p>
+  }
+</div>

@@ -97,52 +97,12 @@
           </button>
         </div>
 
-        <div class="home-surveys__category-select">
-          <button
-            class="home-surveys__category-trigger"
-            type="button"
-            [class.home-surveys__category-trigger--active]="categoryMenuOpen"
-            type="button"
-            aria-haspopup="listbox"
-            aria-controls="home-category-list"
-            [attr.aria-expanded]="categoryMenuOpen"
-            (click)="toggleCategoryMenu()"
-            (mouseenter)="categoryTriggerHovered = true"
-            (mouseleave)="categoryTriggerHovered = false"
-            (keydown.escape)="closeCategoryMenu()"
-          >
-            <span>Sort by categories</span>
-
-            <img class="home-surveys__category-icon" [src]="categoryIconSrc" alt="" />
-          </button>
-
-          @if (categoryMenuOpen) {
-            <div
-              class="home-surveys__category-menu"
-              id="home-category-list"
-              role="listbox"
-              aria-label="Survey categories"
-            >
-              @for (category of categoryOptions; track category.value) {
-                <button
-                  class="home-surveys__category-option"
-                  type="button"
-                  role="option"
-                  [attr.aria-selected]="selectedCategory() === category.value"
-                  (click)="selectCategory(category.value)"
-                >
-                  {{ category.label }}
-                </button>
-              }
-            </div>
-          }
-
-          @if (hasSelectedCategory) {
-            <p class="home-surveys__selected-category">
-              {{ selectedCategoryLabel }}
-            </p>
-          }
-        </div>
+        <app-category-select
+          placeholder="Sort by categories"
+          ariaLabel="Survey categories"
+          [value]="selectedCategory()"
+          (categoryChange)="selectCategory($event)"
+        />
       </div>
 
       <div class="home-surveys__grid" aria-label="Available surveys">

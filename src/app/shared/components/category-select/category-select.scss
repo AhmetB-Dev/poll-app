@@ -1,0 +1,131 @@
+:host {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.category-select {
+  position: relative;
+  width: fit-content;
+  color: white;
+
+  &__trigger {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    border-radius: 6px;
+    padding: 0.5em;
+    color: white;
+    font-family: var(--font-mulish);
+    font-size: clamp(1rem, 1.8vh, 3rem);
+    white-space: nowrap;
+    &:hover,
+    &--active {
+      background-color: #d9d9d91f;
+    }
+  }
+
+  &__icon {
+    width: clamp(0.8rem, 1.5vh, 3rem);
+  }
+
+  &__menu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 0;
+    z-index: 30;
+    border-radius: 6px;
+    width: 100%;
+    background-color: white;
+  }
+
+  &__option {
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+    font-family: var(--font-mulish);
+    font-size: clamp(0.8rem, 2vh, 3rem);
+    text-align: left;
+
+    &:hover,
+    &[aria-selected='true'] {
+      background-color: #f4e9fb;
+      color: var(--dark-bg);
+    }
+  }
+
+  &__selected-category {
+    display: flex;
+    position: absolute;
+    top: 3em;
+    margin: 0;
+    padding: 0.5em 0.7em;
+    color: #ffb770;
+    font-size: clamp(0.8rem, 1.1vh, 1.8rem);
+  }
+
+  &--create {
+    max-width: 100%;
+    border-radius: 6px;
+
+    .category-select__trigger {
+      align-items: center;
+      justify-content: space-between;
+      gap: 2.4rem;
+      width: fit-content;
+      min-height: 1.55rem;
+      border-radius: 6px;
+      padding: 0.5em 0.5em;
+    }
+
+    .category-select__trigger span {
+      color: white;
+      font-weight: 600;
+      font-size: clamp(1rem, 1.4vh, 1.6rem);
+    }
+
+    .category-select__icon {
+      width: 1em;
+      height: 1em;
+      flex-shrink: 0;
+    }
+
+    .category-select__menu {
+      white-space: nowrap;
+      z-index: 20;
+      border-radius: 5px 20px 5px 5px;
+    }
+
+    .category-select__option {
+      display: flex;
+      border-radius: 5px 14px 5px 5px;
+      padding: 0.6rem 0.5rem;
+      font-size: clamp(0.8rem, 1vh, 1.5rem);
+    }
+
+    .category-select__selected-category {
+      position: static;
+      margin: 0;
+      padding: 0.1em 0.6em;
+      font-size: clamp(0.8rem, 1.1vh, 1.4rem);
+    }
+  }
+}
+
+@media (min-width: 1000px) {
+  .category-select--create,
+  .category-select--create * {
+    box-sizing: unset;
+  }
+
+  .category-select--create {
+    .category-select__trigger {
+      gap: 2rem;
+      padding: 0 0.5rem;
+    }
+
+    .category-select__menu {
+      width: 100%;
+    }
+  }
+}

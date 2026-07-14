@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -10,7 +10,7 @@ import {
 import { RouterLink } from '@angular/router';
 
 import { SurveyService } from '../../features/surveys/services/survey.service';
-import { SURVEY_CATEGORIES } from '../../shared/constants/survey-categories';
+import { CategorySelect } from '../../shared/components/category-select/category-select';
 import { Survey } from '../../shared/models/survey.model';
 
 /**
@@ -28,13 +28,13 @@ type SurveyQuestionFormValue = {
  * Responsibilities:
  * - manages the reactive form
  * - adds/removes questions and answers
- * - handles the custom category dropdown
+ * - connects the shared category dropdown to the reactive form
  * - converts valid form data into a Survey model
  * - sends the finished survey to Supabase through SurveyService
  */
 @Component({
   selector: 'app-create-survey',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, CategorySelect],
   templateUrl: './create-survey.html',
   styleUrls: [
     './create-survey.scss',
@@ -51,15 +51,6 @@ export class CreateSurvey {
 
   /** Prevents duplicate publish requests while the current request is still running. */
   protected isPublishing = signal(false);
-
-  /** Controls whether the custom category menu is expanded. */
-  protected categoryMenuOpen = false;
-
-  /** Tracks hover state for the category trigger icon. */
-  protected categoryTriggerHovered = false;
-
-  /** Central list of available survey categories. */
-  protected readonly categoryOptions = SURVEY_CATEGORIES;
 
   /**
    * Reactive form used by the create-survey page.
@@ -78,38 +69,6 @@ export class CreateSurvey {
   /** Returns the questions FormArray for cleaner template access. */
   protected get questions(): FormArray {
     return this.surveyForm.controls.questions;
-  }
-
-  /** Returns the visible label of the currently selected category. */
-  protected get selectedCategoryLabel(): string {
-    const selectedValue = this.surveyForm.controls.category.value;
-
-    return (
-      this.categoryOptions.find((category) => category.value === selectedValue)?.label ??
-      'Choose category'
-    );
-  }
-
-  /** True when the user has selected a category value. */
-  protected get hasSelectedCategory(): boolean {
-    return this.surveyForm.controls.category.value !== '';
-  }
-
-  /** Selects the correct dropdown icon based on menu and hover state. */
-  protected get categoryIconSrc(): string {
-    if (this.categoryMenuOpen && this.categoryTriggerHovered) {
-      return '/assets/icons/arrow_drop_up_white.svg';
-    }
-
-    if (this.categoryMenuOpen) {
-      return '/assets/icons/arrow_drop_up_orange.svg';
-    }
-
-    if (this.categoryTriggerHovered) {
-      return '/assets/icons/arrow_drop_down_orange.svg';
-    }
-
-    return '/assets/icons/arrow_drop_down.svg';
   }
 
   /**
@@ -137,17 +96,6 @@ export class CreateSurvey {
     } catch {}
   }
 
-  /** Opens or closes the category dropdown. */
-  protected toggleCategoryMenu(): void {
-    this.categoryMenuOpen = !this.categoryMenuOpen;
-  }
-
-  /** Closes the category dropdown and marks the category field as touched. */
-  protected closeCategoryMenu(): void {
-    this.categoryMenuOpen = false;
-    this.surveyForm.controls.category.markAsTouched();
-  }
-
   /**
    * Saves the selected category value in the form and closes the dropdown.
    *
@@ -157,18 +105,11 @@ export class CreateSurvey {
     this.surveyForm.controls.category.setValue(value);
     this.surveyForm.controls.category.markAsTouched();
     this.surveyForm.controls.category.updateValueAndValidity();
-
-    this.categoryMenuOpen = false;
   }
 
-  /** Closes the category dropdown when the user clicks outside the select area. */
-  @HostListener('document:click', ['$event'])
-  protected closeCategoryMenuOnOutsideClick(event: MouseEvent): void {
-    const target = event.target;
-
-    if (target instanceof HTMLElement && !target.closest('.create-survey__category-select')) {
-      this.categoryMenuOpen = false;
-    }
+  /** Marks the required category form control after the shared menu closes. */
+  protected markCategoryTouched(): void {
+    this.surveyForm.controls.category.markAsTouched();
   }
 
   /** Closes the publish success popup manually. */

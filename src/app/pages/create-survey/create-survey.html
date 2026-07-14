@@ -90,47 +90,14 @@
             </div>
 
             <div class="create-survey__field create-survey__field--category">
-              <div class="create-survey__category-select">
-                <button
-                  class="create-survey__category-trigger"
-                  type="button"
-                  aria-haspopup="listbox"
-                  aria-controls="survey-category-list"
-                  [attr.aria-expanded]="categoryMenuOpen"
-                  (click)="toggleCategoryMenu()"
-                  (mouseenter)="categoryTriggerHovered = true"
-                  (mouseleave)="categoryTriggerHovered = false"
-                  (keydown.escape)="closeCategoryMenu()"
-                >
-                  <span>Choose category</span>
-                  <img [src]="categoryIconSrc" alt="" />
-                </button>
-
-                @if (categoryMenuOpen) {
-                  <div
-                    class="create-survey__category-menu"
-                    id="survey-category-list"
-                    role="listbox"
-                    aria-label="Survey category"
-                  >
-                    @for (category of categoryOptions; track category.value) {
-                      <button
-                        class="create-survey__category-option"
-                        type="button"
-                        role="option"
-                        [attr.aria-selected]="surveyForm.controls.category.value === category.value"
-                        (click)="selectCategory(category.value)"
-                      >
-                        {{ category.label }}
-                      </button>
-                    }
-                  </div>
-                }
-
-                @if (hasSelectedCategory) {
-                  <p class="create-survey__selected-category">{{ selectedCategoryLabel }}</p>
-                }
-              </div>
+              <app-category-select
+                variant="create"
+                placeholder="Choose category"
+                ariaLabel="Survey category"
+                [value]="surveyForm.controls.category.value"
+                (categoryChange)="selectCategory($event)"
+                (closed)="markCategoryTouched()"
+              />
             </div>
           </div>
 

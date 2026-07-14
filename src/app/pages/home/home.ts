@@ -1,7 +1,8 @@
-import { Component, HostListener, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { SurveyService } from '../../features/surveys/services/survey.service';
+import { CategorySelect } from '../../shared/components/category-select/category-select';
 import { SURVEY_CATEGORIES } from '../../shared/constants/survey-categories';
 import { Survey } from '../../shared/models/survey.model';
 
@@ -15,11 +16,11 @@ type SurveyStatusFilter = 'active' | 'past';
  * - reads surveys from SurveyService
  * - filters surveys by status and category
  * - displays ending-soon surveys
- * - manages the custom category dropdown state
+ * - reacts to category selections from the shared dropdown
  */
 @Component({
   selector: 'app-home',
-  imports: [RouterLink],
+  imports: [RouterLink, CategorySelect],
   templateUrl: './home.html',
   styleUrls: ['./home.scss', './home-responsive.scss'],
 })
@@ -31,12 +32,6 @@ export class Home {
 
   /** Currently selected category value; an empty string means all categories. */
   protected readonly selectedCategory = signal('');
-
-  /** Controls whether the category dropdown is open. */
-  protected categoryMenuOpen = false;
-
-  /** Tracks hover state for the category trigger icon. */
-  protected categoryTriggerHovered = false;
 
   /** Central list of available survey categories. */
   protected readonly categoryOptions = SURVEY_CATEGORIES;
@@ -56,55 +51,14 @@ export class Home {
     this.filterSurveys(this.selectedStatus(), this.selectedCategory()),
   );
 
-  /** Returns the visible label for the currently selected category filter. */
-  protected get selectedCategoryLabel(): string {
-    return (
-      this.categoryOptions.find((category) => category.value === this.selectedCategory())?.label ??
-      ''
-    );
-  }
-
-  /** True when a category filter is currently active. */
-  protected get hasSelectedCategory(): boolean {
-    return this.selectedCategory() !== '';
-  }
-
-  /** Selects the correct dropdown icon based on menu and hover state. */
-  protected get categoryIconSrc(): string {
-    if (this.categoryMenuOpen && this.categoryTriggerHovered) {
-      return '/assets/icons/arrow_drop_up_white.svg';
-    }
-
-    if (this.categoryMenuOpen) {
-      return '/assets/icons/arrow_drop_up_orange.svg';
-    }
-
-    if (this.categoryTriggerHovered) {
-      return '/assets/icons/arrow_drop_down_orange.svg';
-    }
-
-    return '/assets/icons/arrow_drop_down.svg';
-  }
-
   /** Updates the active/past filter shown on the home page. */
   protected selectStatus(status: SurveyStatusFilter): void {
     this.selectedStatus.set(status);
   }
 
-  /** Opens or closes the category dropdown. */
-  protected toggleCategoryMenu(): void {
-    this.categoryMenuOpen = !this.categoryMenuOpen;
-  }
-
-  /** Closes the category dropdown without changing the selected value. */
-  protected closeCategoryMenu(): void {
-    this.categoryMenuOpen = false;
-  }
-
-  /** Selects a category filter and closes the dropdown. */
+  /** Applies the category selected in the shared dropdown. */
   protected selectCategory(category: string): void {
     this.selectedCategory.set(category);
-    this.categoryMenuOpen = false;
   }
 
   /** Returns a readable category label for a stored category value. */
@@ -122,16 +76,6 @@ export class Home {
     }
 
     return this.formatDaysLeft(this.getDaysLeft(survey.endsAt));
-  }
-
-  /** Closes the category dropdown when the user clicks outside the select area. */
-  @HostListener('document:click', ['$event'])
-  protected closeCategoryMenuOnOutsideClick(event: MouseEvent): void {
-    const target = event.target;
-
-    if (target instanceof HTMLElement && !target.closest('.home-surveys__category-select')) {
-      this.categoryMenuOpen = false;
-    }
   }
 
   /** Filters surveys by selected status and selected category. */

@@ -11,6 +11,11 @@
     background-color: #ffb770;
     border-radius: 10px;
     font-weight: 800;
+    font-size: clamp(1rem, 1.5vh, 2.5rem);
+
+    img {
+      width: clamp(1rem, 1.5vh, 3rem);
+    }
 
     &:disabled {
       opacity: 0.6;
@@ -84,5 +89,18 @@
   &__publish-popup-text {
     margin: 0.7rem 0 0;
     color: #f4e9f7;
+  }
+}
+
+@media (min-width: 1000px) {
+  .create-survey {
+    &__publish-button {
+      padding: 0.8em 1em;
+    }
+    &__publish-area {
+      display: flex;
+      justify-content: flex-end;
+      padding: 3em 0em;
+    }
   }
 }

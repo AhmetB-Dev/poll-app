@@ -4,11 +4,7 @@
 }
 
 .create-survey {
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
   background-color: #ffffff;
-  // /* padding: 4rem 6rem 1.5rem 4rem;
 
   &__logo {
     padding: var(--pd-logo);
@@ -90,14 +86,6 @@
     padding: 0.35em 0;
   }
 
-  &__date-category-row {
-    // //  grid-area: date-category;
-    // display: flex;
-    // /* grid-template-columns: minmax(16rem, 1fr) auto; */
-    // align-items: start;
-    // flex-direction: row;
-  }
-
   &__field-header {
     display: flex;
     justify-content: space-between;
@@ -123,7 +111,8 @@
     width: fit-content;
     gap: 2rem;
     font-family: var(--font-mulish);
-    padding: 0rem 0.5rem;
+    border-radius: 6px;
+    padding: 0.4em 0.4em 0.1em 0.4em;
 
     img {
       width: clamp(1rem, 1.8vh, 3rem);
@@ -153,65 +142,6 @@
 
   &__clear-field-icon--active {
     display: none;
-  }
-
-  &__category-select {
-    position: relative;
-    width: fit-content;
-    max-width: 100%;
-    border-radius: 6px;
-  }
-
-  &__category-trigger {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2.4rem;
-    width: fit-content;
-    min-height: 1.55rem;
-    color: #ffffff;
-    border-radius: 0;
-    font-family: var(--font-mulish);
-    font-size: 1rem;
-    padding: 0;
-
-    &:hover {
-      background-color: transparent;
-    }
-  }
-
-  &__category-trigger img {
-    width: 1em;
-    height: 1em;
-    flex-shrink: 0;
-  }
-
-  &__category-menu {
-    display: flex;
-    flex-direction: column;
-    white-space: nowrap;
-    position: absolute;
-    left: 0;
-    z-index: 20;
-    border-radius: 5px 20px 5px 5px;
-    background-color: #ffffff;
-  }
-
-  &__category-option {
-    display: flex;
-    border-radius: 5px 14px 5px 5px;
-    padding: 0.6rem 0.5rem;
-    font-size: clamp(0.6rem, 1vh, 1.5rem);
-    &:hover {
-      background-color: #f4e9fb;
-    }
-  }
-
-  &__selected-category {
-    margin: 0;
-    padding: 0.1em 0.6em;
-    color: #ffb770;
-    font-size: clamp(0.8rem, 1.1vh, 1.4rem);
   }
 
   &__question-card {
