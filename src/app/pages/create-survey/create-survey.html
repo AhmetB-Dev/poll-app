@@ -241,9 +241,9 @@
       <div class="create-survey__publish-area">
         <button
           class="create-survey__publish-button"
-          type="submit"
-          form="create-survey-form"
+          type="button"
           [disabled]="isPublishing()"
+          (click)="submitSurvey()"
         >
           @if (isPublishing()) {
             Publishing...

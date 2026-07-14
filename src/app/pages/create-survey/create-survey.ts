@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { SurveyService } from '../../features/surveys/services/survey.service';
 import { CategorySelect } from '../../shared/components/category-select/category-select';
@@ -44,13 +44,18 @@ type SurveyQuestionFormValue = {
 })
 export class CreateSurvey {
   private readonly fb = inject(NonNullableFormBuilder);
+  private readonly router = inject(Router);
   private readonly surveyService = inject(SurveyService);
+  private publishedSurveyId: string | null = null;
 
   /** Controls the success popup after a survey was published. */
   protected publishPopupOpen = signal(false);
 
   /** Prevents duplicate publish requests while the current request is still running. */
   protected isPublishing = signal(false);
+
+  /** Gives the user feedback when validation or saving prevents publishing. */
+  protected publishErrorMessage = signal('');
 
   /**
    * Reactive form used by the create-survey page.
@@ -112,9 +117,18 @@ export class CreateSurvey {
     this.surveyForm.controls.category.markAsTouched();
   }
 
-  /** Closes the publish success popup manually. */
-  protected closePublishPopup(): void {
+  /** Closes the success popup and opens the newly created survey. */
+  protected async closePublishPopup(): Promise<void> {
     this.publishPopupOpen.set(false);
+
+    const surveyId = this.publishedSurveyId;
+
+    if (!surveyId) {
+      return;
+    }
+
+    this.publishedSurveyId = null;
+    await this.router.navigate(['/survey', surveyId]);
   }
 
   /** Adds a new empty question block to the survey form. */
@@ -171,10 +185,15 @@ export class CreateSurvey {
 
   /** Validates the form and publishes the survey when all required data is valid. */
   protected async submitSurvey(): Promise<void> {
-    if (this.isPublishing() || !this.hasValidSurveyForm()) {
+    if (this.isPublishing()) {
       return;
     }
 
+    if (!this.hasValidSurveyForm()) {
+      return;
+    }
+
+    this.publishErrorMessage.set('');
     await this.publishSurvey(this.buildSurvey());
   }
 
@@ -306,8 +325,10 @@ export class CreateSurvey {
     try {
       this.isPublishing.set(true);
       await this.surveyService.createSurvey(survey);
+      this.publishedSurveyId = survey.id;
       this.publishPopupOpen.set(true);
     } catch (error) {
+      this.publishErrorMessage.set('The survey could not be saved. Please try again.');
       console.error('Survey could not be created:', error);
     } finally {
       this.isPublishing.set(false);
