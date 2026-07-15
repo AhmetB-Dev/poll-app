@@ -1,25 +1,24 @@
 <main class="survey-detail">
-  <section class="page-container">
-    <header class="survey-detail__header">
-      <img
-        class="survey-detail__logo"
-        src="/assets/img/logos/poll-app-logo-dark.svg"
-        alt="PollApp"
-      />
+  @if (survey(); as survey) {
+    <section class="page-container">
+      <header class="survey-detail__header">
+        <img
+          class="survey-detail__logo"
+          src="/assets/img/logos/poll-app-logo-dark.svg"
+          alt="PollApp"
+        />
 
-      <a class="survey-detail__create-btn desktop-hover-icon" routerLink="/create">
-        create survey
-        <span class="desktop-hover-icon__media" aria-hidden="true">
-          <img
-            class="survey-detail__cta-icon desktop-hover-icon__icon"
-            src="/assets/icons/icon-add-circle-dark.svg"
-            alt=""
-          />
-        </span>
-      </a>
-    </header>
-
-    @if (survey(); as survey) {
+        <a class="survey-detail__create-btn desktop-hover-icon" routerLink="/create">
+          create survey
+          <span class="desktop-hover-icon__media" aria-hidden="true">
+            <img
+              class="survey-detail__cta-icon desktop-hover-icon__icon"
+              src="/assets/icons/icon-add-circle-dark.svg"
+              alt=""
+            />
+          </span>
+        </a>
+      </header>
       <section class="survey-detail__content">
         <div class="survey-detail__content-card">
           <div class="survey-detail__topbar">
@@ -32,7 +31,7 @@
 
           <div class="survey-detail__meta">
             <p>
-              Ends on:
+              Ends on
               @if (survey.endsAt) {
                 {{ survey.endsAt | date: 'dd.MM.yyyy' }}
               } @else {
@@ -171,14 +170,14 @@
           </div>
         </aside>
       </section>
-    } @else {
-      <section class="survey-detail__not-found">
-        <h1>Survey not found</h1>
+    </section>
+  } @else {
+    <section class="survey-detail__not-found">
+      <h1>Survey not found</h1>
 
-        <p>This survey does not exist or was lost after refreshing the page.</p>
+      <p>This survey does not exist or was lost after refreshing the page.</p>
 
-        <a routerLink="/"> Back to home </a>
-      </section>
-    }
-  </section>
+      <a routerLink="/"> Back to home </a>
+    </section>
+  }
 </main>

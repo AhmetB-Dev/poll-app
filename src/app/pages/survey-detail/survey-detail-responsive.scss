@@ -1,10 +1,11 @@
 @media (min-width: 1000px) {
   .survey-detail {
-    padding: 4em 0em 2em 0em;
-    height: 100dvh;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    padding: 4em 0em 2em 0em;
+    height: 100dvh;
 
     &__header {
       display: flex;
@@ -17,9 +18,19 @@
     }
 
     &__create-btn {
-      display: block;
       display: flex;
       align-items: center;
+      padding: 0.7em 1em 0.7em 1em;
+      background-color: #ffb770;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: clamp(0.8rem, 1.2vh, 2rem);
+    }
+
+    &__cta-icon {
+      display: flex;
+      align-items: center;
+      width: clamp(1rem, 1vh, 2rem);
     }
 
     &__content {
