@@ -1,4 +1,4 @@
-@media (min-width: 800px) {
+@media (min-width: 1000px) {
   .survey-detail {
     padding: 4em 0em 2em 0em;
     height: 100dvh;
@@ -6,8 +6,20 @@
     flex-direction: column;
     justify-content: center;
 
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      padding: 0rem 5rem 0rem 5rem;
+    }
+
     &__logo {
       padding: 0;
+    }
+
+    &__create-btn {
+      display: block;
+      display: flex;
+      align-items: center;
     }
 
     &__content {

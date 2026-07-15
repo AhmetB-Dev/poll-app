@@ -7,11 +7,10 @@
   &__header {
     display: flex;
     justify-content: space-between;
-    padding: 0rem 5rem 0rem 5rem;
   }
 
   &__logo {
-    padding: 0em 0em 3em 1em;
+    padding: 0em 0em 0em 1em;
 
     img {
       width: 9em;
@@ -19,18 +18,21 @@
   }
 
   &__create-btn {
-    display: flex;
-    align-items: center;
+    display: none;
+  }
+
+  &__description {
+    margin: 0;
   }
 
   &__content {
-    padding: 3rem 0.8rem 0rem 0.8rem;
+    padding: 2rem 0.8rem 0rem 0.8rem;
   }
 
   &__content-card {
     background-color: #8e70991a;
     border-top-right-radius: 100px;
-    padding: 4em 1em 2.5em 1em;
+    padding: 2em 1em 2.5em 1em;
   }
 
   &__topbar {
@@ -43,6 +45,7 @@
     background-color: #ffb770;
     border-top-right-radius: 18px;
     padding: 0.3em 1em 0.3em 0.4em;
+    font-size: clamp(0.8rem, 1.2vh, 2rem);
   }
 
   &__close-button {
@@ -72,7 +75,7 @@
 
 .survey-question {
   &__title-wrapper {
-    padding: 1.5rem 0rem 1.5rem 0rem;
+    padding: 1.5rem 0rem 1rem 0rem;
   }
 
   &__title {
@@ -83,6 +86,7 @@
   &__multiple-choice-hint {
     margin: 0;
     padding-left: 1.1rem;
+    font-size: clamp(0.8rem, 1vh, 2rem);
   }
 
   &__answers {
@@ -193,5 +197,6 @@
   &__percentage {
     text-align: right;
     font-family: var(--font-mulish);
+    color: rgba(215, 148, 81, 1);
   }
 }
