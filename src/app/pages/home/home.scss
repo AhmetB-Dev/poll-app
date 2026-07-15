@@ -66,16 +66,20 @@
   &__cta {
     @include flex-center(1rem);
     padding: 0.7em 1.2rem;
-
     border-radius: 10px;
     font-size: clamp(1rem, 1.5vw, 2.8rem);
     background-color: var(--color-title);
-    color: var(--dark-bg);
+    color: black;
     font-weight: bolder;
   }
 
+  &__cta-icon-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
   &__cta-icon {
-    width: clamp(0.9rem, 1.5vh, 2.8rem);
+    width: clamp(1rem, 1.8vh, 2.4rem);
   }
 }
 

@@ -1,0 +1,38 @@
+@media (min-width: 1000px) and (hover: hover) and (pointer: fine) {
+  .desktop-hover-icon.desktop-hover-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .desktop-hover-icon__media {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    max-width: 0;
+    margin-left: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(-0.4rem);
+
+    transition:
+      max-width 250ms ease,
+      margin-left 250ms ease,
+      opacity 180ms ease,
+      transform 250ms ease;
+  }
+
+  .desktop-hover-icon__icon {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .desktop-hover-icon:not(:disabled):hover > .desktop-hover-icon__media,
+  .desktop-hover-icon:focus-visible > .desktop-hover-icon__media {
+    max-width: var(--hover-icon-width, 3rem);
+    margin-left: 0.65rem;
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

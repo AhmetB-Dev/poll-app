@@ -240,7 +240,7 @@
 
       <div class="create-survey__publish-area">
         <button
-          class="create-survey__publish-button"
+          class="create-survey__publish-button desktop-hover-icon"
           type="button"
           [disabled]="isPublishing()"
           (click)="submitSurvey()"
@@ -249,7 +249,14 @@
             Publishing...
           } @else {
             Publish
-            <img src="/assets/icons/icon-check-dark.svg" alt="" />
+
+            <span class="desktop-hover-icon__media" aria-hidden="true">
+              <img
+                class="desktop-hover-icon__icon"
+                src="/assets/icons/icon-check-dark.svg"
+                alt=""
+              />
+            </span>
           }
         </button>
       </div>

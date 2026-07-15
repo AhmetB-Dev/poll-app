@@ -1,4 +1,4 @@
-@media (min-width: 850px) {
+@media (min-width: 1000px) {
   .home {
     &__content[_ngcontent-ng-c4170667492] {
       padding: 0rem 3rem;
@@ -33,6 +33,11 @@
     &__content {
       align-items: flex-start;
       padding-top: 0;
+    }
+
+    &__cta {
+      gap: 0em;
+      padding: 0.5em 2rem;
     }
 
     &__preview {
