@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
@@ -18,7 +19,7 @@ import { Survey } from '../../shared/models/survey.model';
  */
 @Component({
   selector: 'app-survey-detail',
-  imports: [RouterLink],
+  imports: [DatePipe, RouterLink],
   templateUrl: './survey-detail.html',
   styleUrls: ['./survey-detail.scss', './survey-detail-responsive.scss'],
 })

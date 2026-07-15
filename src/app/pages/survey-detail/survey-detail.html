@@ -34,7 +34,7 @@
             <p>
               Ends on:
               @if (survey.endsAt) {
-                {{ survey.endsAt }}
+                {{ survey.endsAt | date: 'dd.MM.yyyy' }}
               } @else {
                 No end date
               }
