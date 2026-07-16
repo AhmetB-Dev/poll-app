@@ -97,7 +97,7 @@
 
   &__title {
     color: var(--color-title);
-    font-size: clamp(3rem, 6vw, 12rem);
+    font-size: clamp(2.8rem, 6vw, 12rem);
   }
 
   &__ending-soon {
@@ -165,7 +165,7 @@
   }
 
   &__category {
-    font-size: clamp(0.6rem, 1.5vw, 1.9rem);
+    font-size: clamp(0.6rem, 1.3vw, 1.9rem);
   }
 
   &__card-title {
@@ -182,7 +182,7 @@
     background-color: #ffcfa1;
     font-weight: 500;
     color: black;
-    font-size: clamp(0.6rem, 1.3vh, 2rem);
+    font-size: clamp(0.6rem, 1.2vh, 2rem);
   }
 
   &__tools {
@@ -217,7 +217,7 @@
 
   &__grid {
     display: grid;
-    grid-template-columns: repeat(1, minmax(17rem, 1fr));
+    grid-template-columns: repeat(1, minmax(15rem, 1fr));
     gap: 1rem;
 
     &:has(> .survey-card:nth-of-type(7)) {
