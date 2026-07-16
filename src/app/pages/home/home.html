@@ -49,9 +49,10 @@
       </header>
 
       <section class="home-surveys__ending-soon" aria-labelledby="ending-soon-title">
-        <h3 class="home-surveys__section-title" id="ending-soon-title">Ending soon surveys</h3>
-
         <div class="home-surveys__scroll" tabindex="0" aria-label="Ending soon surveys">
+          <div>
+            <h3 class="home-surveys__section-title" id="ending-soon-title">Ending soon surveys</h3>
+          </div>
           <div class="home-surveys__track">
             @for (survey of endingSoonSurveys(); track survey.id) {
               <article class="home-surveys__highlight-card">

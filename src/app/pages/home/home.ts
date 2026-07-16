@@ -39,11 +39,12 @@ export class Home {
   /** Reactive list of all loaded surveys from the service. */
   protected readonly surveys = computed(() => this.surveyService.allSurveys());
 
-  /** Shows all active surveys with an end date, sorted from earliest to latest. */
+  /** Shows up to three active surveys with an end date, sorted from earliest to latest. */
   protected readonly endingSoonSurveys = computed(() =>
     this.surveys()
       .filter((survey) => this.isActiveSurvey(survey) && survey.endsAt)
-      .sort((firstSurvey, secondSurvey) => this.sortByEndDate(firstSurvey, secondSurvey)),
+      .sort((firstSurvey, secondSurvey) => this.sortByEndDate(firstSurvey, secondSurvey))
+      .slice(0, 3),
   );
 
   /** Survey list after applying the selected status and category filters. */

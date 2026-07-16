@@ -37,7 +37,7 @@
   &__title {
     order: 1;
     color: var(--color-title);
-    font-size: clamp(3rem, 7vw, 10rem);
+    font-size: clamp(3rem, 7vw, 8rem);
     line-height: 0.82;
     width: 12ch;
   }
@@ -127,8 +127,8 @@
 
   &__track {
     display: flex;
+
     gap: 1rem;
-    // width: max-content;
   }
 
   &__highlight-card {
@@ -160,13 +160,13 @@
   }
 
   &__category {
-    font-size: clamp(0.6rem, 1.2vw, 2.2rem);
+    font-size: clamp(0.6rem, 1.8vw, 2.2rem);
   }
 
   &__card-title {
     margin: 0;
-    font-size: clamp(1rem, 2vh, 5rem);
-    width: 20ch;
+    font-size: clamp(1rem, 2vh, 2.3rem);
+    width: clamp(15ch, 25vw, 17ch);
   }
 
   &__deadline {
@@ -212,16 +212,20 @@
 
   &__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    grid-template-columns: repeat(1, minmax(17rem, 1fr));
     gap: 1rem;
 
     &:has(> .survey-card:nth-of-type(7)) {
       max-height: 70dvh;
       overflow-y: auto;
       padding-right: 0.35rem;
-      scrollbar-width: thin;
-      scrollbar-color: #ee9236 transparent;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
       -webkit-overflow-scrolling: touch;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
   }
 
@@ -256,7 +260,7 @@
 
   &__category {
     color: #ffcfa1;
-    font-size: clamp(1rem, 1vw, 4rem);
+    font-size: clamp(1rem, 1vw, 1.6rem);
     padding-bottom: 0.1rem;
   }
 
@@ -264,7 +268,7 @@
     margin: 0;
     color: var(--light-bg);
     font-family: var(--font-mulish);
-    font-size: clamp(1rem, 1.8vw, 5rem);
+    font-size: clamp(1rem, 1.8vw, 2rem);
   }
 
   &__deadline {
@@ -278,7 +282,7 @@
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
     background-color: #ffcfa1;
-    font-size: clamp(0.6rem, 1.4vh, 3rem);
+    font-size: clamp(0.6rem, 1.4vh, 1.5rem);
     color: var(--dark-bg);
   }
 }

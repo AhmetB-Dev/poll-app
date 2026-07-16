@@ -3,9 +3,14 @@
     &__content[_ngcontent-ng-c4170667492] {
       padding: 0rem 3rem;
     }
+
+    &__header {
+      padding: 3rem 0rem 0rem 5rem;
+    }
   }
 
   .home-hero {
+    padding: 0rem 5rem 3rem;
     &__header {
       display: flex;
       align-items: center;
@@ -46,9 +51,26 @@
   }
 
   .home-surveys {
+    padding: 0rem 8rem 7rem 8rem;
+
     &__grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(31rem, 1fr));
+      grid-template-columns: repeat(2, minmax(17rem, 1fr));
+
+      &:has(> .survey-card:nth-of-type(7)) {
+        scrollbar-width: thin;
+        scrollbar-color: #ee9236 transparent;
+
+        &::-webkit-scrollbar {
+          display: block;
+          width: 0.45rem;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          border-radius: 999px;
+          background-color: #ee9236;
+        }
+      }
     }
 
     &__tools {
@@ -56,6 +78,11 @@
       justify-content: space-between;
       flex-direction: unset;
       align-items: baseline;
+    }
+
+    &__track {
+      justify-content: unset;
+      gap: 1rem;
     }
 
     &__highlight-content {
@@ -67,8 +94,13 @@
     &__highlight-link {
       display: flex;
       flex-direction: column;
-      gap: 12rem;
-      padding: 6rem 4rem;
+      gap: 7rem;
+      padding: 3rem 2rem;
+      width: 100%;
+    }
+
+    &__scroll {
+      all: unset;
     }
   }
 }
