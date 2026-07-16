@@ -7,7 +7,7 @@
 .survey-detail {
   background-color: white;
   padding: 4em 0em 2em 0em;
-
+  margin-bottom: 20rem;
   &__header {
     display: flex;
     justify-content: space-between;
@@ -141,9 +141,43 @@
     cursor: pointer;
   }
 
+  &__label {
+    display: inline-grid;
+    grid-template-areas: 'result-label';
+    overflow: hidden;
+  }
+
+  &__label-text {
+    grid-area: result-label;
+    opacity: 0;
+    transition:
+      opacity 900ms ease-in-out,
+      transform 900ms ease-in-out;
+
+    &--close {
+      transform: translateY(-0.35em);
+    }
+
+    &--see {
+      transform: translateY(0.35em);
+    }
+
+    &--visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   &__icon {
     width: 1em;
     height: 1em;
+    transform: rotate(0deg);
+    transform-origin: center;
+    transition: transform 380ms ease-in-out;
+
+    &--open {
+      transform: rotate(180deg);
+    }
   }
 
   &__menu {
@@ -162,7 +196,7 @@
     display: flex;
     gap: 0.2em;
     padding: 0em 0.5em;
-    font-size: clamp(1.2rem, 1.5vh, 2.2rem);
+    font-size: clamp(1rem, 1.5vh, 2.2rem);
   }
 
   &__option {
@@ -180,7 +214,7 @@
   &__progress {
     width: 100%;
     min-width: 0;
-    height: 1em;
+    height: 0.8em;
     border-radius: 0;
     appearance: none;
     -webkit-appearance: none;
@@ -216,4 +250,14 @@
 
 span {
   font-family: var(--font-mulish);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .survey-results__label-text {
+    transition: none;
+  }
+
+  .survey-results__icon {
+    transition: none;
+  }
 }

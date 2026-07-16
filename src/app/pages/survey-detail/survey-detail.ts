@@ -34,6 +34,7 @@ export class SurveyDetail {
   /** Controls whether the result popup is expanded. */
   protected resultsPopupOpen = true;
 
+
   /** Current survey resolved from the route id and the locally loaded survey list. */
   protected readonly survey = computed<Survey | undefined>(() => this.getCurrentSurvey());
 
@@ -73,22 +74,17 @@ export class SurveyDetail {
     return Math.round((votesCount / total) * 100);
   }
 
-  /** Selects the correct icon for the result popup toggle button. */
-  protected get resultsIconSrc(): string {
-    if (this.resultsPopupOpen) {
-      return '/assets/icons/arrow_drop_down_dark.svg';
-    }
-
-    return '/assets/icons/arrow_drop_up_dark.svg';
-  }
-
   /** Opens or closes the result popup. */
   protected toggleResultsPopup(): void {
     this.resultsPopupOpen = !this.resultsPopupOpen;
   }
 
-  /** Closes the result popup. */
+  /** Closes the result popup when it is currently open. */
   protected closeResultsPopup(): void {
+    if (!this.resultsPopupOpen) {
+      return;
+    }
+
     this.resultsPopupOpen = false;
   }
 

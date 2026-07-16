@@ -121,10 +121,32 @@
                 [attr.aria-expanded]="resultsPopupOpen"
                 (click)="toggleResultsPopup()"
                 (keydown.escape)="closeResultsPopup()"
+                [attr.aria-label]="resultsPopupOpen ? 'Close results' : 'See results'"
               >
-                <span>Close results</span>
+                <span class="survey-results__label" aria-live="polite">
+                  <span
+                    class="survey-results__label-text survey-results__label-text--close"
+                    [class.survey-results__label-text--visible]="resultsPopupOpen"
+                    [attr.aria-hidden]="!resultsPopupOpen"
+                  >
+                    Close results
+                  </span>
 
-                <img class="survey-results__icon" [src]="resultsIconSrc" alt="" />
+                  <span
+                    class="survey-results__label-text survey-results__label-text--see"
+                    [class.survey-results__label-text--visible]="!resultsPopupOpen"
+                    [attr.aria-hidden]="resultsPopupOpen"
+                  >
+                    See results
+                  </span>
+                </span>
+
+                <img
+                  class="survey-results__icon"
+                  [class.survey-results__icon--open]="resultsPopupOpen"
+                  src="/assets/icons/arrow_drop_down_dark.svg"
+                  alt=""
+                />
               </button>
             </div>
             @if (resultsPopupOpen) {
