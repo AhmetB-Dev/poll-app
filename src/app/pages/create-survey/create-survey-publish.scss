@@ -32,27 +32,23 @@
   }
 
   &__publish-popup {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 4rem;
+    border-radius: 5px 50px 5px 5px;
+    padding: 1.5em 1em 4em 1rem;
+
     position: fixed;
     top: 50%;
     left: 50%;
-    /* width: min(100% - 2rem, 22rem); */
-    padding: 1.2em 1.5em 1.2em;
-    border-radius: 5px 42px 5px 5px;
+
     background-color: #fee9d4;
-    display: flex;
-    gap: 3rem;
     animation: publish-popup-enter 260ms ease-out both;
-    justify-content: space-between;
-    align-items: center;
   }
 
-  &__publish-popup-close {
-    height: 2.2rem;
-
-    img {
-      width: 0.9rem;
-      height: 0.9rem;
-    }
+  &__publish-popup-close img {
+    width: clamp(1rem, 1.5vh, 2.2rem);
   }
 
   &__publish-popup-title {
