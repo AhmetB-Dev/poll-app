@@ -127,12 +127,12 @@
 
   &__track {
     display: flex;
-
     gap: 1rem;
   }
 
   &__highlight-card {
     display: flex;
+    width: 100%;
     border-top-right-radius: 80px;
     background: white;
     color: black;
@@ -150,7 +150,8 @@
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    padding: 1rem;
+    padding: 1rem 0rem 1rem 1rem;
+    margin-right: 3em;
   }
 
   &__highlight-content {
@@ -160,13 +161,13 @@
   }
 
   &__category {
-    font-size: clamp(0.6rem, 1.8vw, 2.2rem);
+    font-size: clamp(0.6rem, 1.5vw, 1.9rem);
   }
 
   &__card-title {
     margin: 0;
-    font-size: clamp(1rem, 2vh, 2.3rem);
-    width: clamp(15ch, 25vw, 17ch);
+    font-size: clamp(1rem, 2.1vh, 2.5rem);
+    width: clamp(12ch, 14vw, 16ch);
   }
 
   &__deadline {
@@ -177,7 +178,7 @@
     background-color: #ffcfa1;
     font-weight: 500;
     color: black;
-    font-size: clamp(0.6rem, 1.4vh, 3rem);
+    font-size: clamp(0.6rem, 1.3vh, 2rem);
   }
 
   &__tools {
