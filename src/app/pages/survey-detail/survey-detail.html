@@ -2,12 +2,13 @@
   @if (survey(); as survey) {
     <section class="page-container">
       <header class="survey-detail__header">
-        <img
-          class="survey-detail__logo"
-          src="/assets/img/logos/poll-app-logo-dark.svg"
-          alt="PollApp"
-        />
-
+        <a routerLink="">
+          <img
+            class="survey-detail__logo"
+            src="/assets/img/logos/poll-app-logo-dark.svg"
+            alt="PollApp"
+          />
+        </a>
         <a class="survey-detail__create-btn desktop-hover-icon" routerLink="/create">
           create survey
           <span class="desktop-hover-icon__media" aria-hidden="true">

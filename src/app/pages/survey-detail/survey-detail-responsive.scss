@@ -1,4 +1,7 @@
 @media (min-width: 1000px) {
+  .page-container {
+    padding-inline: max(1rem, calc((100% - 1440px) / 2));
+  }
   .survey-detail {
     display: flex;
     flex-direction: column;
@@ -7,10 +10,10 @@
     padding: 4em 0em 2em 0em;
     height: 100dvh;
     margin-bottom: 0;
+
     &__header {
       display: flex;
       justify-content: space-between;
-      padding: 0rem 5rem 0rem 5rem;
     }
 
     &__logo {
@@ -24,7 +27,7 @@
       background-color: #ffb770;
       border-radius: 10px;
       font-weight: 700;
-      font-size: clamp(0.8rem, 1.2vh, 2rem);
+      font-size: clamp(0.8rem, 1vh, 2rem);
     }
 
     &__cta-icon {

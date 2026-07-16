@@ -271,19 +271,18 @@
         aria-modal="true"
         aria-labelledby="publish-popup-title"
       >
+        <h2 class="create-survey__publish-popup-title" id="publish-popup-title">
+          Your survey is now <br />published!
+        </h2>
+
         <button
           class="create-survey__publish-popup-close"
           type="button"
           (click)="closePublishPopup()"
           aria-label="Close publish message"
         >
-          <img src="/assets/icons/icon-close-white.svg" alt="" />
+          <img src="/assets/icons/icon-close-dark.svg" alt="" />
         </button>
-        <div class="create-survey__publish-popup-icon" aria-hidden="true">✓</div>
-        <h2 class="create-survey__publish-popup-title" id="publish-popup-title">
-          Your survey is now published!
-        </h2>
-        <p class="create-survey__publish-popup-text">The survey was saved successfully.</p>
       </aside>
     </div>
   }
