@@ -30,6 +30,25 @@
       width: unset;
     }
 
+    &__preview-wrapper {
+      order: 2;
+      flex: 0 0 42%;
+      width: 100%;
+      background-image: url('/assets/img/typing-bubble.svg'), url('/assets/img/check.svg');
+      background-repeat: no-repeat;
+      background-position:
+        1em 5em,
+        right bottom;
+      background-size: 30%, 25%;
+      transition: background-position 550ms cubic-bezier(0.22, 1, 0.36, 1);
+
+      &:hover {
+        background-position:
+          calc(1em + 1rem) 5em,
+          calc(100% - 0.5rem) bottom;
+      }
+    }
+
     &__content {
       align-items: flex-start;
       padding-top: 0;
@@ -40,20 +59,13 @@
       padding: 0.5em 0.8rem;
     }
 
-    &__preview-wrapper {
-      order: 2;
-      flex: 0 0 42%;
-      width: 100%;
-      background-image: url(/assets/img/typing-bubble.svg), url(/assets/img/check.svg);
-      background-repeat: no-repeat;
-      background-position:
-        1em 5em,
-        right bottom;
-      background-size: 7rem, 4.5rem;
+    &__cta-icon-mobile {
+      display: none;
     }
 
     &__preview {
       width: 100%;
+      display: block;
     }
   }
 

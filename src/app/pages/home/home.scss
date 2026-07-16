@@ -48,6 +48,10 @@
   }
 
   &__preview {
+    display: none;
+  }
+
+  &__cta-icon-mobile {
     width: clamp(20rem, 20vw, 40rem);
   }
 
