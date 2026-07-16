@@ -30,11 +30,6 @@
       width: unset;
     }
 
-    &__preview-wrapper {
-      order: 2;
-      flex: 0 0 42%;
-    }
-
     &__content {
       align-items: flex-start;
       padding-top: 0;
@@ -43,6 +38,18 @@
     &__cta {
       gap: 0.6em;
       padding: 0.5em 0.8rem;
+    }
+
+    &__preview-wrapper {
+      order: 2;
+      flex: 0 0 42%;
+      width: 100%;
+      background-image: url(/assets/img/typing-bubble.svg), url(/assets/img/check.svg);
+      background-repeat: no-repeat;
+      background-position:
+        1em 5em,
+        right bottom;
+      background-size: 7rem, 4.5rem;
     }
 
     &__preview {
