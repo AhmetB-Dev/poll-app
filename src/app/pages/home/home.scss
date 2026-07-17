@@ -21,6 +21,7 @@
   }
   &__logo {
     width: var(--logo-size);
+    height: clamp(3rem, 1rem + 1vw, 3.2rem);
   }
 }
 

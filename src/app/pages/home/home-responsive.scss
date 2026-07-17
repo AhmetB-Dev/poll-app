@@ -35,7 +35,9 @@
     }
 
     &__preview-wrapper {
-      background-image: url(/media/typing-bubble.svg), url(/media/check.svg);
+      background-image:
+        url('../../../../public/assets/img/typing-bubble.svg'),
+        url('../../../../public/assets/img/check.svg');
       background-repeat: no-repeat;
       order: 2;
       width: 100%;

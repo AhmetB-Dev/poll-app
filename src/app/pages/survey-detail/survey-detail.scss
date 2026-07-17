@@ -16,10 +16,8 @@
 
   &__logo {
     padding: 0em 0em 0em 1em;
-
-    img {
-      width: var(--logo-size);
-    }
+    width: var(--logo-size);
+    height: clamp(3rem, 1rem + 1vw, 3.2rem);
   }
 
   &__create-btn {
@@ -28,7 +26,7 @@
 
   &__description {
     margin: 0;
-    font-size: clamp(1rem, 1.2vh, 2rem);
+    font-size: clamp(1rem, 1rem + 1vw, 1.2rem);
   }
 
   &__content {
@@ -36,7 +34,7 @@
   }
 
   &__title {
-    font-size: clamp(1.6rem, 2vh, 3rem);
+    font-size: clamp(3rem, 3rem + 1vh, 4rem);
   }
 
   &__content-card {
@@ -55,7 +53,7 @@
     background-color: #ffb770;
     border-top-right-radius: 18px;
     padding: 0.3em 1em 0.3em 0.4em;
-    font-size: clamp(0.6rem, 1.1vh, 1.5rem);
+    font-size: clamp(1rem, 0.2rem + 0.5vw, 1.1rem);
   }
 
   &__close-button {
@@ -72,7 +70,7 @@
   &__meta {
     display: flex;
     justify-content: space-between;
-    font-size: clamp(0.65rem, 1.2vh, 2rem);
+    font-size: clamp(0.7rem, 0.3rem + 0.6vw, 1.2rem);
   }
 
   &__submit-button-container {
@@ -89,7 +87,7 @@
 
     background-color: #ffb7704d;
     border-radius: 10px;
-    font-size: clamp(0.8rem, 1.2vh, 2rem);
+    font-size: clamp(0.9rem, 0.2rem + 0.6vw, 1.2rem);
     font-weight: 700;
 
     img {
@@ -121,7 +119,7 @@
   &__title {
     display: flex;
     gap: 0.2rem;
-    font-size: clamp(1rem, 1.5vh, 2.2rem);
+    font-size: clamp(1rem, 0.4rem + 0.8vw, 1.4rem);
   }
 
   &__multiple-choice-hint {
@@ -130,14 +128,14 @@
     font-size: clamp(0.9rem, 1.1vh, 2rem);
   }
 
+  &__box {
+    font-size: clamp(0.9rem, 0.2rem + 0.6vw, 1.2rem);
+  }
+
   &__answers {
     display: flex;
     flex-direction: column;
     gap: 0.4em;
-  }
-
-  &__answer-text {
-    font-size: clamp(1rem, 1.2vh, 2rem);
   }
 
   &__answer:not(.survey-question__answer--disabled):hover {
@@ -179,7 +177,7 @@
   }
 
   &__title {
-    font-size: clamp(1.6rem, 2vh, 3rem);
+    font-size: clamp(2rem, 0.5rem + 0.5vh, 2.5rem);
   }
 
   &__trigger {
@@ -189,6 +187,7 @@
     justify-content: space-between;
     gap: 0.35em;
     cursor: pointer;
+    font-size: clamp(1.1rem, 0.5rem + 0.5vw, 1.4rem);
   }
 
   &__label {
@@ -246,7 +245,7 @@
     display: flex;
     gap: 0.2em;
     padding: 0em 0.5em;
-    font-size: clamp(1rem, 1.5vh, 2.2rem);
+    font-size: clamp(1rem, 0.4rem + 0.8vw, 1.4rem);
   }
 
   &__option {
@@ -258,7 +257,7 @@
   }
 
   &__answer-label {
-    font-size: clamp(0.8rem, 1vh, 1.5rem);
+    font-size: clamp(0.8rem, 0.3rem + 0.6vh, 1rem);
     text-align: left;
   }
 
@@ -297,6 +296,7 @@
     font-family: var(--font-mulish);
     color: rgba(215, 148, 81, 1);
   }
+  font-size: clamp(0.9rem, 0.5rem + 0.6vh, 1rem);
 }
 
 span {

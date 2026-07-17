@@ -6,6 +6,9 @@
   --pd-logo: 0 0 3em 1em;
   --color-title: #ffb770;
   --border-right-radius: 5rem;
+
+  --font-size-m: clamp(1.1rem, 0.6rem + 0.9vw, 2rem);
+  --font-size-l: clamp(1.1rem, calc(1.8rem + 3.5vw), 6rem);
   --font-nerko: 'Nerko';
   --font-mulish: 'Mulish';
   --font-nokora: 'Nokora';
