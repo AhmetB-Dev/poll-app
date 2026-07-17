@@ -164,10 +164,6 @@
     padding-top: 0;
   }
 
-  &__question-header {
-    // padding-right: 0rem;
-  }
-
   &__answer-list-header {
     display: flex;
     justify-content: space-between;
@@ -238,12 +234,13 @@
   }
 
   &__error-message {
-    margin: 0.35rem 0 0;
     color: #ff7b72;
     font-family: var(--font-mulish);
     font-size: clamp(0.75rem, 1vw, 1rem);
     font-weight: 600;
     line-height: 1.2;
+    position: relative;
+    bottom: 0.9em;
   }
 
   &__add-answer-button {
