@@ -54,18 +54,18 @@ export class CategorySelect {
   /** Uses the same hover/open icon behaviour on every page. */
   protected get categoryIconSrc(): string {
     if (this.menuOpen && this.triggerHovered) {
-      return '/assets/icons/arrow_drop_up_white.svg';
+      return 'assets/icons/arrow_drop_up_white.svg';
     }
 
     if (this.menuOpen) {
-      return '/assets/icons/arrow_drop_up_orange.svg';
+      return 'assets/icons/arrow_drop_up_orange.svg';
     }
 
     if (this.triggerHovered) {
-      return '/assets/icons/arrow_drop_down_orange.svg';
+      return 'assets/icons/arrow_drop_down_orange.svg';
     }
 
-    return '/assets/icons/arrow_drop_down.svg';
+    return 'assets/icons/arrow_drop_down.svg';
   }
 
   protected toggleMenu(): void {
