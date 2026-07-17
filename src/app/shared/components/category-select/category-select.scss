@@ -17,7 +17,7 @@
     padding: 0.5em;
     color: white;
     font-family: var(--font-mulish);
-    font-size: clamp(1rem, 1.8vh, 2.2rem);
+    font-size: clamp(1rem, 0.6rem + 0.6vw, 1.8rem);
     white-space: nowrap;
     &:hover,
     &--active {
@@ -44,13 +44,13 @@
     border-radius: 6px;
     padding: 0.4rem 0.8rem;
     font-family: var(--font-mulish);
-    font-size: clamp(0.8rem, 1.6vh, 1.4rem);
+    font-size: clamp(0.8rem, 0.5rem + 0.5vw, 1.8rem);
     text-align: left;
 
     &:hover,
     &[aria-selected='true'] {
       background-color: #f4e9fb;
-      color: var(--dark-bg);
+      color: rgba(53, 39, 58, 1);
     }
   }
 

@@ -2,13 +2,10 @@
 @use './styles/desktop-hover-icon';
 
 :root {
+  --logo-size: clamp(7.5rem, 3.5rem + 7vw, 10rem);
   --pd-logo: 0 0 3em 1em;
-  --logo-size: clamp(7.5rem, 13vw, 25rem);
-  --border-right-radius: 5rem;
-  --title-size: clamp(3rem, 5.5vw, 6rem);
-  --dark-bg: rgba(53, 39, 58, 1);
-  --light-bg: #ffffff;
   --color-title: #ffb770;
+  --border-right-radius: 5rem;
   --font-nerko: 'Nerko';
   --font-mulish: 'Mulish';
   --font-nokora: 'Nokora';

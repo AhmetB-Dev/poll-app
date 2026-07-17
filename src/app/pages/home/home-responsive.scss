@@ -1,4 +1,8 @@
 @media (min-width: 1000px) {
+  .page-container {
+    padding-inline: max(1rem, calc((100% - 1440px) / 2));
+  }
+
   .home {
     padding: 0;
     &__content[_ngcontent-ng-c4170667492] {
@@ -16,7 +20,6 @@
       display: flex;
       align-items: center;
       flex-direction: unset;
-      //   gap: 4rem;
     }
 
     &__text {
@@ -28,27 +31,25 @@
 
     &__title {
       margin-bottom: 0;
-      width: unset;
+      width: 16ch;
     }
 
     &__preview-wrapper {
-      order: 2;
-      flex: 0 0 42%;
-      width: 100%;
-      background-image:
-        url('../../../../public/assets/img/typing-bubble.svg'),
-        url('../../../../public/assets/img/check.svg');
+      background-image: url(/media/typing-bubble.svg), url(/media/check.svg);
       background-repeat: no-repeat;
+      order: 2;
+      width: 100%;
+
       background-position:
-        1em 5em,
-        right bottom;
-      background-size: 30%, 25%;
+        17% 28%,
+        90% bottom;
+      background-size: 25%, 20%;
       transition: background-position 550ms cubic-bezier(0.22, 1, 0.36, 1);
 
       &:hover {
         background-position:
-          calc(1em + 1rem) 5em,
-          calc(100% - 0.5rem) bottom;
+          calc(19% + 3%) 27%,
+          calc(100% - 3.5rem) bottom;
       }
     }
 
@@ -67,7 +68,7 @@
     }
 
     &__preview {
-      width: 100%;
+      width: 80%;
       display: block;
     }
   }
@@ -121,8 +122,8 @@
     &__highlight-link {
       display: flex;
       flex-direction: column;
-      gap: 6rem;
-      padding: 2rem 2rem 2rem 1rem;
+      gap: 5rem;
+      padding: 2rem 2rem 2rem 2rem;
       width: 100%;
     }
   }
