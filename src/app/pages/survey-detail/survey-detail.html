@@ -77,7 +77,12 @@
 
                 <div class="survey-question__answers">
                   @for (answer of question.answers; track answer.id; let answerIndex = $index) {
-                    <label class="survey-question__answer">
+                    <label
+                      class="survey-question__answer"
+                      [class.survey-question__answer--disabled]="
+                        hasVoted() || isSubmittingVote()
+                      "
+                    >
                       <input
                         class="survey-question__input"
                         type="checkbox"
