@@ -146,6 +146,10 @@
       grid-area: auto;
     }
 
+    &__answer-error {
+      grid-column: 2 / -1;
+    }
+
     &__add-question-area {
       justify-content: flex-start;
       align-items: flex-start;

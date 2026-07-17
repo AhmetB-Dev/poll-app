@@ -51,6 +51,13 @@
                 </span>
               </button>
             </div>
+            @if (showValidationError(surveyForm.controls.title, 'required')) {
+              <p class="create-survey__error-message" role="alert">Required</p>
+            } @else if (showValidationError(surveyForm.controls.title, 'minlength')) {
+              <p class="create-survey__error-message" role="alert">
+                Enter at least 3 characters.
+              </p>
+            }
           </div>
 
           <div class="create-survey__date-category-row">
@@ -64,6 +71,7 @@
                   #endDateInput
                   id="survey-end-date"
                   type="date"
+                  [min]="minimumEndDate"
                   formControlName="endsAt"
                   (click)="openNativeDatePicker(endDateInput)"
                 />
@@ -87,6 +95,11 @@
                   </span>
                 </button>
               </div>
+              @if (showValidationError(surveyForm.controls.endsAt, 'pastDate')) {
+                <p class="create-survey__error-message" role="alert">
+                  Past dates are not allowed.
+                </p>
+              }
             </div>
 
             <div class="create-survey__field create-survey__field--category">
@@ -98,6 +111,9 @@
                 (categoryChange)="selectCategory($event)"
                 (closed)="markCategoryTouched()"
               />
+              @if (showValidationError(surveyForm.controls.category, 'required')) {
+                <p class="create-survey__error-message" role="alert">Required</p>
+              }
             </div>
           </div>
 
@@ -164,6 +180,15 @@
                   formControlName="title"
                 />
               </div>
+              @if (showValidationError(getQuestionTitleControl(questionIndex), 'required')) {
+                <p class="create-survey__error-message" role="alert">Required</p>
+              } @else if (
+                showValidationError(getQuestionTitleControl(questionIndex), 'minlength')
+              ) {
+                <p class="create-survey__error-message" role="alert">
+                  Enter at least 5 characters.
+                </p>
+              }
 
               <div class="create-survey__answer-list-header">
                 <span>Answers</span>
@@ -210,6 +235,21 @@
                         />
                       </span>
                     </button>
+                    @if (showValidationError(answer, 'required')) {
+                      <p
+                        class="create-survey__error-message create-survey__answer-error"
+                        role="alert"
+                      >
+                        Required
+                      </p>
+                    } @else if (showValidationError(answer, 'minlength')) {
+                      <p
+                        class="create-survey__error-message create-survey__answer-error"
+                        role="alert"
+                      >
+                        Enter at least 2 characters.
+                      </p>
+                    }
                   </div>
                 }
               </div>

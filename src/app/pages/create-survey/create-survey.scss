@@ -210,7 +210,8 @@
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
       'label delete'
-      'input input';
+      'input input'
+      'error error';
     align-items: center;
     gap: 0.25rem 0.6rem;
   }
@@ -230,6 +231,19 @@
   &__answer-row > .create-survey__clear-field-button {
     grid-area: delete;
     justify-self: end;
+  }
+
+  &__answer-error {
+    grid-area: error;
+  }
+
+  &__error-message {
+    margin: 0.35rem 0 0;
+    color: #ff7b72;
+    font-family: var(--font-mulish);
+    font-size: clamp(0.75rem, 1vw, 1rem);
+    font-weight: 600;
+    line-height: 1.2;
   }
 
   &__add-answer-button {

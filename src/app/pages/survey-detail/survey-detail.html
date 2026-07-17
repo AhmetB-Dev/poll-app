@@ -107,6 +107,9 @@
                     </label>
                   }
                 </div>
+                @if (showRequiredAnswer(question.id)) {
+                  <p class="survey-question__error-message" role="alert">Required</p>
+                }
               </fieldset>
             }
           </form>

@@ -148,6 +148,15 @@
     cursor: default;
   }
 
+  &__error-message {
+    margin: 0.45rem 0 0;
+    color: #b42318;
+    font-family: var(--font-mulish);
+    font-size: clamp(0.75rem, 1vw, 1rem);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
   &__answer-label {
     &::after {
       content: '.';

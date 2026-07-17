@@ -5,6 +5,7 @@ import {
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -20,6 +21,26 @@ type SurveyQuestionFormValue = {
   title: string;
   allowMultipleChoice: boolean;
   answers: string[];
+};
+
+/** Formats a date for an HTML date input without UTC timezone shifts. */
+function toLocalDateInputValue(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
+/** Allows an empty optional date, but rejects every date before today. */
+const notPastDateValidator: ValidatorFn = (control) => {
+  const dateValue = control.value;
+
+  if (typeof dateValue !== 'string' || dateValue === '') {
+    return null;
+  }
+
+  return dateValue < toLocalDateInputValue(new Date()) ? { pastDate: true } : null;
 };
 
 /**
@@ -57,6 +78,9 @@ export class CreateSurvey {
   /** Gives the user feedback when validation or saving prevents publishing. */
   protected publishErrorMessage = signal('');
 
+  /** Earliest selectable value for the native end-date picker. */
+  protected minimumEndDate = toLocalDateInputValue(new Date());
+
   /**
    * Reactive form used by the create-survey page.
    *
@@ -67,7 +91,7 @@ export class CreateSurvey {
     title: ['', [Validators.required, Validators.minLength(3)]],
     description: [''],
     category: ['', [Validators.required]],
-    endsAt: [''],
+    endsAt: ['', [notPastDateValidator]],
     questions: this.fb.array([this.createQuestion()]),
   });
 
@@ -92,8 +116,19 @@ export class CreateSurvey {
     return this.questions.at(questionIndex).get('answers') as FormArray<FormControl<string>>;
   }
 
+  /** Returns the title control belonging to one question. */
+  protected getQuestionTitleControl(questionIndex: number): FormControl<string> {
+    return this.questions.at(questionIndex).get('title') as FormControl<string>;
+  }
+
+  /** Returns whether a specific validation error should currently be visible. */
+  protected showValidationError(control: AbstractControl, errorName: string): boolean {
+    return control.touched && control.hasError(errorName);
+  }
+
   /** Opens the native date picker when the user clicks into the date input. */
   protected openNativeDatePicker(dateInput: HTMLInputElement & { showPicker?: () => void }): void {
+    this.refreshEndDateValidation(dateInput);
     dateInput.focus();
 
     try {
@@ -200,6 +235,8 @@ export class CreateSurvey {
       return;
     }
 
+    this.refreshEndDateValidation();
+
     if (!this.hasValidSurveyForm()) {
       return;
     }
@@ -211,6 +248,17 @@ export class CreateSurvey {
   /** Creates one validated text control for an answer option. */
   private createAnswerControl(): FormControl<string> {
     return this.fb.control('', [Validators.required, Validators.minLength(2)]);
+  }
+
+  /** Keeps both the date picker limit and Angular validation on the current local date. */
+  private refreshEndDateValidation(dateInput?: HTMLInputElement): void {
+    this.minimumEndDate = toLocalDateInputValue(new Date());
+
+    if (dateInput) {
+      dateInput.min = this.minimumEndDate;
+    }
+
+    this.surveyForm.controls.endsAt.updateValueAndValidity();
   }
 
   /** Resets a question to its initial state without removing the question block. */

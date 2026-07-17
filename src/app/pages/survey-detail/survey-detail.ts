@@ -34,6 +34,9 @@ export class SurveyDetail implements OnInit {
   /** Prevents repeated clicks while the current vote request is running. */
   protected readonly isSubmittingVote = signal(false);
 
+  /** Controls required-answer messages after the user tries to submit. */
+  protected readonly showVoteErrors = signal(false);
+
   /** Remembers whether this browser has already completed the current survey. */
   protected readonly hasVoted = signal(this.hasCompletedCurrentSurvey());
 
@@ -126,8 +129,9 @@ export class SurveyDetail implements OnInit {
       return;
     }
 
+    this.showVoteErrors.set(true);
+
     if (!this.hasAnsweredAllQuestions(survey)) {
-      console.log('Please answer all questions.');
       return;
     }
 
@@ -138,6 +142,11 @@ export class SurveyDetail implements OnInit {
     } finally {
       this.isSubmittingVote.set(false);
     }
+  }
+
+  /** Returns whether one unanswered question should display its required message. */
+  protected showRequiredAnswer(questionId: string): boolean {
+    return this.showVoteErrors() && !this.hasSelectedAnswer(questionId);
   }
 
   /** Reads the stored completion state for the survey id in the current route. */
