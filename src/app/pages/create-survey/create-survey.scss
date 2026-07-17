@@ -107,12 +107,12 @@
   &__clear-field-button {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     width: fit-content;
     gap: 2rem;
     font-family: var(--font-mulish);
     border-radius: 6px;
-    padding: 0.4em 0.4em 0.1em 0.4em;
+    padding: 0.3em 0.3em 0.3em 0.3em;
 
     img {
       width: clamp(1rem, 1.8vh, 3rem);
@@ -126,11 +126,11 @@
       background-color: #ffb77099;
 
       .create-survey__clear-field-icon--default {
-        display: none;
+        opacity: 0;
       }
 
       .create-survey__clear-field-icon--active {
-        display: block;
+        opacity: 1;
       }
     }
 
@@ -140,8 +140,24 @@
     }
   }
 
+  &__clear-field-icon-wrap {
+    position: relative;
+    display: block;
+    width: clamp(1rem, 1.8vh, 3rem);
+    height: clamp(1rem, 1.8vh, 3rem);
+    flex: 0 0 auto;
+  }
+
+  &__clear-field-icon {
+    position: absolute;
+    inset: 0;
+    display: block;
+    height: 100%;
+    object-fit: contain;
+  }
+
   &__clear-field-icon--active {
-    display: none;
+    opacity: 0;
   }
 
   &__question-card {
