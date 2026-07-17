@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { SurveyService } from '../../features/surveys/services/survey.service';
@@ -23,13 +23,19 @@ import { Survey } from '../../shared/models/survey.model';
   templateUrl: './survey-detail.html',
   styleUrls: ['./survey-detail.scss', './survey-detail-responsive.scss'],
 })
-export class SurveyDetail {
+export class SurveyDetail implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly surveyService = inject(SurveyService);
   private readonly voteService = inject(VoteService);
 
   /** Stores selected answer ids by question id. */
   protected readonly selectedAnswers = signal<Record<string, string[]>>({});
+
+  /** Prevents repeated clicks while the current vote request is running. */
+  protected readonly isSubmittingVote = signal(false);
+
+  /** Remembers whether this browser has already completed the current survey. */
+  protected readonly hasVoted = signal(this.hasCompletedCurrentSurvey());
 
   /** Controls whether the result popup is expanded. */
   protected resultsPopupOpen = true;
@@ -38,10 +44,19 @@ export class SurveyDetail {
   /** Current survey resolved from the route id and the locally loaded survey list. */
   protected readonly survey = computed<Survey | undefined>(() => this.getCurrentSurvey());
 
+  /** Restores the submitted selections whenever this survey page is opened again. */
+  ngOnInit(): void {
+    void this.restoreSelectedAnswers();
+  }
+
   /**
    * Toggles the selected answer for a question based on the clicked input element.
    */
   protected toggleAnswer(question: Question, answerId: string, event: Event): void {
+    if (this.hasVoted() || this.isSubmittingVote()) {
+      return;
+    }
+
     const input = this.getInputElement(event);
 
     if (!input) {
@@ -107,12 +122,39 @@ export class SurveyDetail {
   protected async submitVote(): Promise<void> {
     const survey = this.survey();
 
-    if (!survey || !this.hasAnsweredAllQuestions(survey)) {
+    if (!survey || this.hasVoted() || this.isSubmittingVote()) {
+      return;
+    }
+
+    if (!this.hasAnsweredAllQuestions(survey)) {
       console.log('Please answer all questions.');
       return;
     }
 
-    await this.saveVote(survey);
+    this.isSubmittingVote.set(true);
+
+    try {
+      await this.saveVote(survey);
+    } finally {
+      this.isSubmittingVote.set(false);
+    }
+  }
+
+  /** Reads the stored completion state for the survey id in the current route. */
+  private hasCompletedCurrentSurvey(): boolean {
+    const surveyId = this.route.snapshot.paramMap.get('id');
+    return surveyId ? this.voteService.hasVoted(surveyId) : false;
+  }
+
+  /** Loads the answers saved for a completed survey back into the checkbox state. */
+  private async restoreSelectedAnswers(): Promise<void> {
+    const surveyId = this.route.snapshot.paramMap.get('id');
+
+    if (!surveyId || !this.hasVoted()) {
+      return;
+    }
+
+    this.selectedAnswers.set(await this.voteService.getSelectedAnswers(surveyId));
   }
 
   /** Resolves the current survey from the route parameter. */
@@ -192,12 +234,12 @@ export class SurveyDetail {
     return (this.selectedAnswers()[questionId]?.length ?? 0) > 0;
   }
 
-  /** Saves the vote, reloads survey results and clears the local selection state. */
+  /** Saves the vote, locks the form and reloads the live results. */
   private async saveVote(survey: Survey): Promise<void> {
     try {
       await this.voteService.submitVote(survey, this.selectedAnswers());
+      this.hasVoted.set(true);
       await this.surveyService.loadSurveys();
-      this.selectedAnswers.set({});
     } catch (error) {
       console.error('Vote could not be saved:', error);
     }

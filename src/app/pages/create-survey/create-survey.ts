@@ -144,9 +144,15 @@ export class CreateSurvey {
   /**
    * Removes a question or clears it when it is the last remaining question.
    *
-   * @param questionIndex Index of the question in the questions FormArray.
+   * @param questionControl Exact question control selected by the user.
    */
-  protected removeQuestion(questionIndex: number): void {
+  protected removeQuestion(questionControl: AbstractControl): void {
+    const questionIndex = this.questions.controls.indexOf(questionControl);
+
+    if (questionIndex < 0) {
+      return;
+    }
+
     if (this.questions.length <= 1) {
       this.clearQuestion(questionIndex);
       return;
@@ -172,11 +178,16 @@ export class CreateSurvey {
   /**
    * Removes an answer or clears it when the minimum of two answers would be broken.
    */
-  protected removeAnswer(questionIndex: number, answerIndex: number): void {
+  protected removeAnswer(questionIndex: number, answerControl: FormControl<string>): void {
     const answers = this.getAnswers(questionIndex);
+    const answerIndex = answers.controls.indexOf(answerControl);
+
+    if (answerIndex < 0) {
+      return;
+    }
 
     if (answers.length <= 2) {
-      this.clearTextControl(answers.at(answerIndex));
+      this.clearTextControl(answerControl);
       return;
     }
 

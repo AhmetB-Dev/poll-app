@@ -132,14 +132,14 @@
         </div>
 
         <div class="create-survey__questions-column" formArrayName="questions">
-          @for (question of questions.controls; track $index; let questionIndex = $index) {
+          @for (question of questions.controls; track question; let questionIndex = $index) {
             <fieldset class="create-survey__question-card" [formGroupName]="questionIndex">
               <div class="create-survey__field-header create-survey__question-header">
                 <legend>{{ questionIndex + 1 }}. Question</legend>
                 <button
                   class="create-survey__clear-field-button"
                   type="button"
-                  (click)="removeQuestion(questionIndex)"
+                  (click)="removeQuestion(question)"
                   aria-label="Clear or remove question"
                 >
                   <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">
@@ -176,7 +176,7 @@
               <div class="create-survey__answers" formArrayName="answers">
                 @for (
                   answer of getAnswers(questionIndex).controls;
-                  track $index;
+                  track answer;
                   let answerIndex = $index
                 ) {
                   <div class="create-survey__answer-row">
@@ -194,7 +194,7 @@
                     <button
                       class="create-survey__clear-field-button"
                       type="button"
-                      (click)="removeAnswer(questionIndex, answerIndex)"
+                      (click)="removeAnswer(questionIndex, answer)"
                       aria-label="Clear or remove answer"
                     >
                       <span class="create-survey__clear-field-icon-wrap" aria-hidden="true">

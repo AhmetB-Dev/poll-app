@@ -115,8 +115,16 @@
 
       <div class="home-surveys__grid" aria-label="Available surveys">
         @for (survey of filteredSurveys(); track survey.id) {
-          <article class="survey-card">
-            <a class="survey-card__link" [routerLink]="['/survey', survey.id]">
+          <article
+            class="survey-card"
+            [class.survey-card--past]="selectedStatus() === 'past'"
+          >
+            <a
+              class="survey-card__link"
+              [routerLink]="selectedStatus() === 'active' ? ['/survey', survey.id] : null"
+              [attr.aria-disabled]="selectedStatus() === 'past' ? true : null"
+              [attr.tabindex]="selectedStatus() === 'past' ? -1 : null"
+            >
               <div>
                 <span class="survey-card__category">
                   {{ categoryLabel(survey.category) }}
