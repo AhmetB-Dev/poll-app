@@ -23,7 +23,6 @@ yarn-error.log
 !.vscode/mcp.json
 .history/*
 
-# Miscellaneous
 /.angular/cache
 .sass-cache/
 /connect.lock
@@ -33,7 +32,7 @@ testem.log
 /typings
 __screenshots__/
 
-# System files
+
 .DS_Store
 Thumbs.db
 .vscode/extensions.json
