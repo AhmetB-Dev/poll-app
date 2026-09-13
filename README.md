@@ -1,85 +1,66 @@
 # PollApp
 
-Create surveys, collect votes, and follow the results.
+Responsive Angular application for creating surveys, collecting votes and viewing results.
 
-![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3FCF8E?logo=supabase&logoColor=white)
-![SCSS](https://img.shields.io/badge/Styles-SCSS-CC6699?logo=sass&logoColor=white)
+[Live Demo](https://ahmet-balci.de/projects/poll-app/)
 
 ## Overview
 
-PollApp is a responsive survey application built with Angular 21 and Supabase. It allows users to browse and filter surveys, create surveys with dynamic questions, submit votes, and view the current results.
+PollApp is a frontend-focused portfolio project built with Angular, TypeScript, SCSS and Supabase.
 
-The project focuses on a clear feature-based Angular architecture, reusable UI components, reactive state with signals, validated reactive forms, and persistent data stored in Supabase.
+The project focuses on dynamic Reactive Forms, reusable components, Angular Signals, responsive layouts and persistent data.
 
 ## Features
 
 - Browse active and past surveys
-- Display up to three surveys that are ending soon
 - Filter surveys by category
-- Create surveys with an optional description and end date
-- Add or remove questions and answer options dynamically
-- Configure single-choice or multiple-choice questions
-- Validate survey data before publishing
-- Submit answers for every question in a survey
-- Reload and display vote percentages after a submission
-- Expand or collapse the results panel
-- Responsive layouts for desktop and mobile devices
-- Custom controls with semantic labels and ARIA attributes
+- Highlight surveys ending soon
+- Create surveys with dynamic questions and answer options
+- Single-choice and multiple-choice questions
+- Form validation before publishing
+- Submit votes
+- Display current result percentages
+- Responsive desktop and mobile layouts
+- Accessible custom form controls
 
 ## Tech Stack
 
-| Area     | Technology                      |
-| -------- | ------------------------------- |
-| Frontend | Angular 21                      |
-| Language | TypeScript                      |
-| Forms    | Angular Reactive Forms          |
-| State    | Angular Signals                 |
-| Routing  | Angular Router                  |
-| Styling  | SCSS with BEM-style class names |
-| Backend  | Supabase                        |
-| Database | PostgreSQL                      |
+| Area | Technology |
+| --- | --- |
+| Framework | Angular |
+| Language | TypeScript |
+| Forms | Angular Reactive Forms |
+| State | Angular Signals |
+| Routing | Angular Router |
+| Styling | SCSS |
+| Backend service | Supabase |
+| Database | PostgreSQL |
+| Testing | Vitest |
 
-## Project Structure
+## Main Routes
 
-```text
-src/app/
-├── core/
-│   └── supabase/             # Supabase client configuration
-├── features/
-│   ├── surveys/services/     # Survey loading and publishing
-│   └── votes/services/       # Vote persistence
-├── pages/
-│   ├── home/                 # Survey overview and filters
-│   ├── create-survey/        # Dynamic survey form
-│   ├── survey-detail/        # Voting and result display
-│   └── not-found/            # Fallback route
-└── shared/
-    ├── components/           # Reusable UI components
-    ├── constants/            # Survey categories
-    └── models/               # Survey, question, answer, and vote models
-```
+| Route | Description |
+| --- | --- |
+| `/` | Browse surveys |
+| `/create` | Create a survey |
+| `/survey/:id` | Vote and view results |
+| `**` | Not-found page |
 
-## Getting Started
+## Local Setup
 
-### Prerequisites
+### Requirements
 
-- Node.js and npm
-- An Angular 21-compatible development environment
-- A Supabase project
-
-### Installation
+- Node.js
+- npm
+- Supabase project
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/AhmetB-Dev/poll-app.git
 cd poll-app
 npm install
 ```
 
-### Environment Configuration
-
-Configure the Supabase URL and publishable key in `src/environments/environment.ts`:
+Configure the Supabase URL and publishable key in the environment configuration.
 
 ```ts
 export const environment = {
@@ -89,80 +70,63 @@ export const environment = {
 };
 ```
 
-Only use a Supabase publishable/anonymous key in frontend code. Never expose a `service_role` key. Database access must be protected with appropriate Row Level Security policies.
+Never expose a Supabase `service_role` key in frontend code.
 
-### Supabase Requirements
-
-The application expects the following database resources:
-
-| Resource         | Purpose                                         |
-| ---------------- | ----------------------------------------------- |
-| `surveys`        | Survey metadata, status, category, and end date |
-| `questions`      | Questions assigned to a survey                  |
-| `answers`        | Answer options assigned to a question           |
-| `votes`          | Submitted answer selections                     |
-| `answer_results` | Read-only vote totals used by the result view   |
-
-The category constraint in Supabase must accept the same values used by the frontend:
-
-```text
-team-activities
-health
-gaming
-education-learning
-lifestyle-preferences
-technology-innovation
-```
-
-Apply the required database schema, relationships, constraints, result view, and Row Level Security policies before starting the application.
-
-### Development Server
+Start the application:
 
 ```bash
 npm start
 ```
 
-Open the local URL shown by the Angular development server.
-
-### Build
+Build:
 
 ```bash
 npm run build
 ```
 
-### Tests
+## Tests
 
 ```bash
 npm test
 ```
 
-## Routes
+The test suite focuses on application logic such as:
 
-| Route         | Description                          |
-| ------------- | ------------------------------------ |
-| `/`           | Browse and filter surveys            |
-| `/create`     | Create and publish a survey          |
-| `/survey/:id` | Answer a survey and view its results |
-| `**`          | Not-found page                       |
+- survey form validation
+- dynamic questions and answers
+- survey creation
+- single-choice and multiple-choice behavior
+- voting
+- filtering
+- service behavior and error handling
+
+The goal is to test meaningful behavior rather than inflate coverage with trivial UI tests.
+
+## Data Model
+
+PollApp uses Supabase/PostgreSQL for surveys, questions, answers and votes.
+
+Database access must be protected with appropriate Row Level Security policies.
 
 ## Current Limitations
 
-- The application does not currently include user authentication.
-- A browser-local voter key identifies a browser, but it is not a secure user identity or complete protection against duplicate votes.
-- Survey, question, and answer records are currently created through sequential frontend requests. A production version should use a Supabase RPC/PostgreSQL function so the operation runs as one transaction.
-- Results are refreshed after a local vote submission; Supabase Realtime subscriptions are not implemented yet.
-- The Supabase schema and security policies must be configured separately.
+PollApp is a portfolio project, not a production voting platform.
 
-## Planned Improvements
+Current limitations include:
 
-- Add authentication and survey ownership
-- Create surveys through one transactional database function
-- Strengthen duplicate-vote protection
-- Add real-time result updates
-- Add versioned Supabase migrations and seed data
-- Expand automated unit and integration tests
-- Add deployment and live-demo links
+- no user authentication
+- browser-local voter identification is not strong duplicate-vote protection
+- survey creation is not wrapped in one database transaction
+- results refresh after voting instead of using realtime subscriptions
 
-## Project Status
+## Possible Future Improvements
 
-PollApp is under active development. It is currently a portfolio and learning project and is not yet intended for production use.
+- authentication and survey ownership
+- transactional survey creation
+- stronger duplicate-vote protection
+- realtime result updates
+- versioned database migrations
+
+---
+
+Built as part of my Fullstack Developer portfolio.
