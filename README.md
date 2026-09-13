@@ -10,9 +10,6 @@
 
 [**Live Demo**](https://ahmet-balci.de/projects/poll-app/)
 
-<p align="center">
-  <img src="./public/assets/img/poll-phone-preview.svg" alt="PollApp mobile preview" width="760">
-</p>
 
 PollApp is a frontend-focused portfolio project built around dynamic forms and interactive survey workflows. Users can create surveys with flexible question structures, vote and immediately inspect the current result distribution.
 
