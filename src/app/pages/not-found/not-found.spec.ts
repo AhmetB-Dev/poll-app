@@ -19,4 +19,10 @@ describe('NotFound', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should render the fallback message', () => {
+    const message = fixture.nativeElement.querySelector('p') as HTMLParagraphElement;
+
+    expect(message.textContent).toContain('not-found works!');
+  });
 });

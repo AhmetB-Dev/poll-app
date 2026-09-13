@@ -13,4 +13,12 @@ describe('SupabaseService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should expose one stable client instance', () => {
+    const firstClient = service.client;
+    const secondClient = service.client;
+
+    expect(firstClient).toBeTruthy();
+    expect(secondClient).toBe(firstClient);
+  });
 });
