@@ -8,7 +8,7 @@
     <section class="home-hero" aria-labelledby="home-title">
       <div class="home-hero__header">
         <div class="home-hero__text">
-          <h1 class="home-hero__title" id="home-title">Collect Feedback, Unlock Ideas</h1>
+          <h1 class="home-hero__title" id="home-title">test</h1>
 
           <div class="home-hero__content">
             <p class="home-hero__description">
@@ -115,10 +115,7 @@
 
       <div class="home-surveys__grid" aria-label="Available surveys">
         @for (survey of filteredSurveys(); track survey.id) {
-          <article
-            class="survey-card"
-            [class.survey-card--past]="selectedStatus() === 'past'"
-          >
+          <article class="survey-card" [class.survey-card--past]="selectedStatus() === 'past'">
             <a
               class="survey-card__link"
               [routerLink]="selectedStatus() === 'active' ? ['/survey', survey.id] : null"
