@@ -1,0 +1,53 @@
+name: Deploy PollApp
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pollapp-production
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular
+        run: npm run build -- --base-href /projects/poll-app/
+
+      - name: Verify build output
+        run: test -f dist/poll-app/browser/index.html
+
+      - name: Install SFTP client
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Deploy build via SFTP
+        shell: bash
+        env:
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_PORT: ${{ secrets.SFTP_PORT }}
+          SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
+          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+        run: |
+          lftp -u "$SFTP_USERNAME","$SFTP_PASSWORD" -p "$SFTP_PORT" "sftp://$SFTP_HOST" <<'EOF'
+          set cmd:fail-exit yes
+          set sftp:auto-confirm yes
+          mirror -R --verbose dist/poll-app/browser/ .
+          bye
+          EOF
